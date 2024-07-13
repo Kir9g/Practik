@@ -9,13 +9,16 @@ import java.util.Date;
 @Entity
 @Table(name = "InitialED")
 public class InitialED {
+    @Id
+    @GeneratedValue
+    private Long ID;
     @Column(name = "EDNo", nullable = false, length = 9)
     private BigInteger EDNo;
 
     @Column(name = "EDDate",nullable = false)
     private Date EDDate;
 
-    @Id
+
     @Column(name = "EDAuthor", unique = true, length = 10,nullable = false)
     private String EDAuthor;
 

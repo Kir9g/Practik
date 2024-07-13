@@ -69,7 +69,7 @@ public class ParticipantInfoEntity {
     @Column(name = "ParticipantStatus", length = 4)
     private String ParticipantStatus;
 
-    @OneToMany(mappedBy = "Rstr",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id",cascade = CascadeType.ALL)
     private List<RstrListEntity> rstrListEntity;
 
     @OneToOne()

@@ -8,6 +8,8 @@ import java.math.BigInteger;
 @Table(name = "PartInfo")
 public class PartInfoEntity {
     @Id
+    @GeneratedValue
+    private Long id;
     @Column(name = "PartAggregateID",nullable = false,length = 27)
     private String PartAggregateID;
 

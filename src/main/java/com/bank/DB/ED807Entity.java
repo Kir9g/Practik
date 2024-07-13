@@ -11,6 +11,8 @@ import java.util.List;
 @Table(name = "ED807")
 public class ED807Entity {
     @Id
+    @GeneratedValue
+    private BigInteger id;
     @Column(name = "EDNo", length = 9, nullable = false, unique = true)
     private BigInteger Edno;
 
@@ -46,7 +48,7 @@ public class ED807Entity {
     @JoinColumn(name = "ed807Entity", unique = true, nullable = true)
     private InitialED initialED;
 
-    @OneToMany(mappedBy = "ed807Entity", cascade = CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(mappedBy = "ed807Entity", cascade = CascadeType.ALL, orphanRemoval=true, fetch = FetchType.EAGER)
     private List<BICDirectoryEntry> bicDirectoryEntries = new ArrayList<>();
 
     public BigInteger getEdno() {

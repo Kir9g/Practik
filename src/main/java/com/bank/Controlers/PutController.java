@@ -35,7 +35,7 @@ public class PutController {
             JAXBElement<ED807> root = (JAXBElement<ED807>) unmarshaller.unmarshal(inputStream);
             ED807 ed807 = root.getValue();
 
-            List<BICDirectoryEntryType> bicDirectoryEntryTypes =ed807.getBICDirectoryEntry();
+            List<BICDirectoryEntryType> bicDirectoryEntryTypes = ed807.getBICDirectoryEntry();
 
             ed807Service.saveED807(ed807);
 

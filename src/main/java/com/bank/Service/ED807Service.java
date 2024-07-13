@@ -289,6 +289,7 @@ public class ED807Service {
                 .collect(Collectors.toList());
     }
 
+
     private ED807 convertToDTO(ED807Entity ed807Entity) {
         ED807 dto = new ED807();
         // Установка основных полей
@@ -325,56 +326,59 @@ public class ED807Service {
                     .map(this::convertToDTO)
                     .collect(Collectors.toList());
             dto.getBICDirectoryEntry().addAll(bicDirectoryEntryDTOs);
+
         return dto;
     }
 
     private BICDirectoryEntryType convertToDTO(BICDirectoryEntry bicDirectoryEntry) {
         BICDirectoryEntryType dto = new BICDirectoryEntryType();
         dto.setBIC(bicDirectoryEntry.getBIC());
-        if(bicDirectoryEntry.getChangeType() != null) {
-            dto.setChangeType(ChangeType.fromValue(bicDirectoryEntry.getChangeType()));
-        }else {
+        if (bicDirectoryEntry.getChangeType() != null) {
+            dto.setChangeType(ChangeType.valueOf(bicDirectoryEntry.getChangeType()));
+        } else {
             dto.setChangeType(null);
         }
+
         // Преобразование связанных сущностей
         if (bicDirectoryEntry.getParticipantInfo() != null) {
-            dto.setParticipantInfo(convertToDTO(bicDirectoryEntry.getParticipantInfo()));
+            dto.setParticipantInfo(convertToDTO(bicDirectoryEntry.getParticipantInfo())); // Вызов метода для преобразования ParticipantInfoEntity
         }
 
         return dto;
     }
 
 
-    private ParticipantInfoType convertToDTO(ParticipantInfoEntity entity) {
+
+    private ParticipantInfoType convertToDTO(ParticipantInfoEntity participantInfoEntity) {
         ParticipantInfoType dto = new ParticipantInfoType();
-        dto.setNameP(entity.getNameP());
-        dto.setEnglName(entity.getEnglName());
-        dto.setRegN(entity.getRegN());
-        dto.setCntrCd(entity.getCntrCd());
-        dto.setRgn(entity.getRgn());
-        dto.setInd(entity.getInd());
-        dto.setTnp(entity.getTnp());
-        dto.setNnp(entity.getNnp());
-        dto.setAdr(entity.getAdr());
-        dto.setPrntBIC(entity.getPrntBIC());
-        dto.setDateIn(toXMLGregorianCalendar(entity.getDateIn()));
-        dto.setDateOut(toXMLGregorianCalendar(entity.getDateOut()));
-        dto.setPtType(entity.getPtType());
-        dto.setSrvcs(entity.getSrvcs());
-        dto.setXchType(entity.getXchType());
-        dto.setUID(entity.getUID());
-        dto.setParticipantStatus(ParticipantStatusType.fromValue(entity.getParticipantStatus()));
+        dto.setNameP(participantInfoEntity.getNameP());
+        dto.setEnglName(participantInfoEntity.getEnglName());
+        dto.setRegN(participantInfoEntity.getRegN());
+        dto.setCntrCd(participantInfoEntity.getCntrCd());
+        dto.setRgn(participantInfoEntity.getRgn());
+        dto.setInd(participantInfoEntity.getInd());
+        dto.setTnp(participantInfoEntity.getTnp());
+        dto.setNnp(participantInfoEntity.getNnp());
+        dto.setAdr(participantInfoEntity.getAdr());
+        dto.setPrntBIC(participantInfoEntity.getPrntBIC());
+        dto.setDateIn(toXMLGregorianCalendar(participantInfoEntity.getDateIn()));
+        dto.setDateOut(toXMLGregorianCalendar(participantInfoEntity.getDateOut()));
+        dto.setPtType(participantInfoEntity.getPtType());
+        dto.setSrvcs(participantInfoEntity.getSrvcs());
+        dto.setXchType(participantInfoEntity.getXchType());
+        dto.setUID(participantInfoEntity.getUID());
+        dto.setParticipantStatus(ParticipantStatusType.fromValue(participantInfoEntity.getParticipantStatus()));
 
-        if(entity.getRstrListEntity() != null){
-            for (RstrListEntity rstrListEntity : entity.getRstrListEntity()) {
-                RstrListType rstrListType = convertRstrListEntityToRstrListType(rstrListEntity);
-                dto.getRstrList().add(rstrListType);
-            }
-        }
+        // Преобразование rstrListEntity в rstrListType
+        List<RstrListType> rstrList = participantInfoEntity.getRstrListEntity().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        dto.getRstrList().addAll(rstrList);
+
         return dto;
     }
 
-    private RstrListType convertRstrListEntityToRstrListType(RstrListEntity entity){
+    private RstrListType convertToDTO(RstrListEntity entity) {
         if (entity == null) {
             return null;
         }
@@ -383,6 +387,7 @@ public class ED807Service {
         dto.setRstrDate(toXMLGregorianCalendar(entity.getRstrDate()));
         return dto;
     }
+
 
 
 

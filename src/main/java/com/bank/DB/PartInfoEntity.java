@@ -19,7 +19,7 @@ public class PartInfoEntity {
     @Column(name = "PartQuantity", nullable = false, length = 6)
     private BigInteger PartQuantity;
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ed807EntityPartInfo")
     private ED807Entity ed807EntityPartInfo;
 

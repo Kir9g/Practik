@@ -22,7 +22,7 @@ public class RstrListEntity {
     private Date RstrDate;
 
     @ManyToOne()
-    @JoinColumn(name = "Part_id")
+    @JoinColumn(name = "participantInfo")
     private ParticipantInfoEntity participantInfoEntity;
 
     public BigInteger getId() {

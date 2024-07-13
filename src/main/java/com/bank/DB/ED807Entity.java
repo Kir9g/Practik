@@ -12,7 +12,7 @@ import java.util.List;
 public class ED807Entity {
     @Id
     @GeneratedValue
-    private BigInteger id;
+    private BigInteger Id;
     @Column(name = "EDNo", length = 9, nullable = false, unique = true)
     private BigInteger Edno;
 
@@ -41,7 +41,7 @@ public class ED807Entity {
     private BigInteger DirectoryVersion;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ed807EntityPartInfo", referencedColumnName = "PartAggregateID", nullable = true)
+    @JoinColumn(name = "ed807EntityPartInfo", referencedColumnName = "id", nullable = true)
     private PartInfoEntity partInfoEntity;
 
     @OneToOne(cascade = CascadeType.ALL)

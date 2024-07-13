@@ -343,6 +343,23 @@ public class ED807Service {
         if (bicDirectoryEntry.getParticipantInfo() != null) {
             dto.setParticipantInfo(convertToDTO(bicDirectoryEntry.getParticipantInfo())); // Вызов метода для преобразования ParticipantInfoEntity
         }
+        if(bicDirectoryEntry.getAccounts() != null){
+            List<AccountsType> accountsTypes = bicDirectoryEntry.getAccounts().stream()
+                    .map(this::convertToDTO)
+                    .collect(Collectors.toList());
+            dto.getAccounts().addAll(accountsTypes);
+        }else {
+            dto.getAccounts().isEmpty();
+        }
+
+        if(bicDirectoryEntry.getSwbics() != null){
+            List<SWBICList> swbicLists = bicDirectoryEntry.getSwbics().stream()
+                    .map((this::convertToDTO))
+                    .collect(Collectors.toList());
+            dto.getSWBICS().addAll(swbicLists);
+        }else {
+            dto.getSWBICS().isEmpty();
+        }
 
         return dto;
     }
@@ -370,11 +387,14 @@ public class ED807Service {
         dto.setParticipantStatus(ParticipantStatusType.fromValue(participantInfoEntity.getParticipantStatus()));
 
         // Преобразование rstrListEntity в rstrListType
-        List<RstrListType> rstrList = participantInfoEntity.getRstrListEntity().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-        dto.getRstrList().addAll(rstrList);
-
+        if(participantInfoEntity.getRstrListEntity() != null) {
+            List<RstrListType> rstrList = participantInfoEntity.getRstrListEntity().stream()
+                    .map(this::convertToDTO)
+                    .collect(Collectors.toList());
+            dto.getRstrList().addAll(rstrList);
+        }else {
+            dto.getRstrList().isEmpty();
+        }
         return dto;
     }
 
@@ -388,8 +408,61 @@ public class ED807Service {
         return dto;
     }
 
+    private AccountsType convertToDTO(Accounts entity){
+        if(entity == null){
+            return null;
+        }
+        AccountsType dto = new AccountsType();
+        dto.setAccount(entity.getAccount());
+        dto.setRegulationAccountType(AccountType.fromValue(entity.getRegulationAccountType()));
+        dto.setCK(entity.getCk());
+        dto.setAccountCBRBIC(entity.getAccountCBRBIC());
+        dto.setDateIn(toXMLGregorianCalendar(entity.getDateIn()));
+        if(entity.getDateOut() != null){
+            dto.setDateOut(toXMLGregorianCalendar(entity.getDateOut()));
+        }else {
+            dto.setDateOut(null);
+        }
+        if(entity.getAccountStatus() != null){
+            dto.setAccountStatus(AccountStatusType.valueOf(entity.getAccountStatus()));
+        }else {
+            dto.setAccountStatus(null);
+        }
 
+        if(entity.getAccRstrListEntity() != null){
+            List<AccRstrListType> accRstrListTypeList = entity.getAccRstrListEntity().stream()
+                    .map(this::convertToDTO)
+                    .collect(Collectors.toList());
+            dto.getAccRstrList().addAll(accRstrListTypeList);
+        }
+        return dto;
+    }
 
+    private AccRstrListType convertToDTO(AccRstrListEntity entity){
+     if(entity == null){
+         return null;
+     }
+     AccRstrListType dto = new AccRstrListType();
+     dto.setAccRstr(RstrType.fromValue(entity.getAccRstr()));
+     dto.setAccRstrDate(toXMLGregorianCalendar(entity.getAccRstrDate()));
+     if(entity.getSuccessorBIC() != null){
+         dto.setSuccessorBIC(entity.getSuccessorBIC());
+     }else {
+         dto.setSuccessorBIC(null);
+     }
+
+     return dto;
+    }
+    private SWBICList convertToDTO(SWBICSEntity entity){
+        if(entity == null){
+            return null;
+        }
+        SWBICList dto = new SWBICList();
+        dto.setSWBIC(entity.getSWBIC());
+        dto.setDefaultSWBIC(entity.isDefaultSWBIC());
+
+        return dto;
+    }
 
     private XMLGregorianCalendar toXMLGregorianCalendar(Date date) {
         if (date == null) {

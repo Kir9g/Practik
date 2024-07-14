@@ -13,6 +13,16 @@ public class ED807Entity {
     @Id
     @GeneratedValue
     private BigInteger Id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "file_path")
+    private String filePath;
+
+    @Column(name = "CreationDate")
+    private Date CreationDate;
+
     @Column(name = "EDNo", length = 9, nullable = false, unique = true)
     private BigInteger Edno;
 
@@ -50,6 +60,68 @@ public class ED807Entity {
 
     @OneToMany(mappedBy = "ed807Entity", cascade = CascadeType.ALL, orphanRemoval=true, fetch = FetchType.EAGER)
     private List<BICDirectoryEntry> bicDirectoryEntries = new ArrayList<>();
+
+    public PartInfoEntity getPartInfoEntity() {
+        return partInfoEntity;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    @Override
+    public String toString() {
+        return "ED807Entity{" +
+                "Id=" + Id +
+                ", name='" + name + '\'' +
+                ", filePath='" + filePath + '\'' +
+                ", CreationDate=" + CreationDate +
+                ", Edno=" + Edno +
+                ", EDDate=" + EDDate +
+                ", EDAuthor='" + EDAuthor + '\'' +
+                ", EDReceiver=" + EDReceiver +
+                ", CreationReason='" + CreationReason + '\'' +
+                ", CreationDateTime=" + CreationDateTime +
+                ", InfoTypeCode='" + InfoTypeCode + '\'' +
+                ", BusinessDay=" + BusinessDay +
+                ", DirectoryVersion=" + DirectoryVersion +
+                ", partInfoEntity=" + partInfoEntity +
+                ", initialED=" + initialED +
+                ", bicDirectoryEntries=" + bicDirectoryEntries +
+                '}';
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public void setPartInfoEntity(PartInfoEntity partInfoEntity) {
+        this.partInfoEntity = partInfoEntity;
+    }
+
+    public Date getCreationDate() {
+        return CreationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        CreationDate = creationDate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BigInteger getId() {
+        return Id;
+    }
+
+    public void setId(BigInteger id) {
+        Id = id;
+    }
 
     public BigInteger getEdno() {
         return Edno;
@@ -147,21 +219,4 @@ public class ED807Entity {
         this.bicDirectoryEntries = bicDirectoryEntries;
     }
 
-    @Override
-    public String toString() {
-        return "ED807Entity{" +
-                "Edno=" + Edno +
-                ", EDDate=" + EDDate +
-                ", EDAuthor='" + EDAuthor + '\'' +
-                ", EDReceiver=" + EDReceiver +
-                ", CreationReason='" + CreationReason + '\'' +
-                ", CreationDateTime=" + CreationDateTime +
-                ", InfoTypeCode='" + InfoTypeCode + '\'' +
-                ", BusinessDay=" + BusinessDay +
-                ", DirectoryVersion=" + DirectoryVersion +
-                ", partInfo=" + partInfoEntity +
-                ", initialED=" + initialED +
-                ", bicDirectoryEntries=" + bicDirectoryEntries +
-                '}';
-    }
 }

@@ -7,6 +7,7 @@ import com.bank.Repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -51,6 +52,11 @@ public class ED807Service {
     public void saveED807(ED807 ed807){
         ED807Entity ed807Entity = new ED807Entity();
         ed807Entity.setEdno(ed807.getEDNo());
+        ed807Entity.setName(ed807.getName());
+
+        ed807Entity.setFilePath(ed807.getFilePath());
+
+        ed807Entity.setCreationDate(ed807.getCreationDate());
         ed807Entity.setEDDate(ed807.getEDDate().toGregorianCalendar().getTime());
         ed807Entity.setEDAuthor(ed807.getEDAuthor());
         if (ed807.getEDReceiver() != null) {
@@ -272,14 +278,11 @@ public class ED807Service {
     }
 
 
-    public ED807 getED807ById(BigInteger id) {
-        ED807Entity ed807Entity = ed807EntityRepository.findById(id).orElse(null);
-        if (ed807Entity != null) {
-            return convertToDTO(ed807Entity);
-        } else {
-            return null;
-        }
-
+    public List<ED807> getAllED807ByName(@PathVariable String name){
+        List<ED807Entity> ed807Entities = ed807EntityRepository.findByName(name);
+        return ed807Entities.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     public List<ED807> getAllED807() {
@@ -290,6 +293,37 @@ public class ED807Service {
     }
 
 
+    private ED807 convertDTO(ED807Entity ed807Entity){
+        ED807 dto = new ED807();
+        // Установка основных полей
+
+        dto.setEDNo(ed807Entity.getEdno());
+        dto.setEDDate(toXMLGregorianCalendar(ed807Entity.getEDDate()));
+        dto.setEDAuthor(ed807Entity.getEDAuthor());
+        if(ed807Entity.getEDReceiver() != null){
+            dto.setEDReceiver(ed807Entity.getEDReceiver().toString());
+        }else {
+            dto.setEDReceiver(null);
+        }
+
+        dto.setCreationReason(ReasonCodeType.fromValue(ed807Entity.getCreationReason()));
+        dto.setCreationDateTime(toXMLGregorianCalendar(ed807Entity.getCreationDateTime()));
+        dto.setInfoTypeCode(RequestCodeType.fromValue(ed807Entity.getInfoTypeCode()));
+        dto.setBusinessDay(toXMLGregorianCalendar(ed807Entity.getBusinessDay()));
+        if(ed807Entity.getDirectoryVersion() != null) {
+            dto.setDirectoryVersion(ed807Entity.getDirectoryVersion());
+        }else {
+            dto.setDirectoryVersion(null);
+        }
+        if(ed807Entity.getPartInfo() != null){
+            dto.getPartInfo().setPartAggregateID(ed807Entity.getPartInfo().getPartAggregateID());
+            dto.getPartInfo().setPartNo(ed807Entity.getPartInfo().getPartNo());
+            dto.getPartInfo().setPartQuantity(ed807Entity.getPartInfo().getPartQuantity());
+        }else {
+            dto.setPartInfo(null);
+        }
+        return dto;
+    }
     private ED807 convertToDTO(ED807Entity ed807Entity) {
         ED807 dto = new ED807();
         // Установка основных полей

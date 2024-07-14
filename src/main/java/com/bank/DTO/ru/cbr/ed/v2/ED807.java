@@ -10,13 +10,12 @@ package com.bank.DTO.ru.cbr.ed.v2;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.xml.datatype.XMLGregorianCalendar;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlAttribute;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlType;
+
+import jakarta.persistence.Column;
+import jakarta.xml.bind.annotation.*;
 import com.bank.DTO.ru.cbr.ed.leaftypes.v2.ReasonCodeType;
 import com.bank.DTO.ru.cbr.ed.leaftypes.v2.RequestCodeType;
 
@@ -67,7 +66,12 @@ public class ED807
     protected XMLGregorianCalendar businessDay;
     @XmlAttribute(name = "DirectoryVersion")
     protected BigInteger directoryVersion;
-
+    @XmlTransient
+    protected String name;
+    @XmlTransient
+    protected String filePath;
+    @XmlTransient
+    protected Date CreationDate;
     /**
      * Gets the value of the bicDirectoryEntry property.
      * 
@@ -217,4 +221,35 @@ public class ED807
         this.directoryVersion = value;
     }
 
+    public List<BICDirectoryEntryType> getBicDirectoryEntry() {
+        return bicDirectoryEntry;
+    }
+
+    public void setBicDirectoryEntry(List<BICDirectoryEntryType> bicDirectoryEntry) {
+        this.bicDirectoryEntry = bicDirectoryEntry;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public Date getCreationDate() {
+        return CreationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        CreationDate = creationDate;
+    }
 }

@@ -7,12 +7,13 @@ import com.bank.Repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -302,7 +303,45 @@ public class ED807Service {
     }
 
 
+    public boolean deletByid(BigInteger id){
+        Optional<ED807Entity> ed807EntityOptional = ed807EntityRepository.findById(id);
+        if (ed807EntityOptional.isPresent()) {
+            ED807Entity ed807Entity = ed807EntityOptional.get();
+            try {
+                Files.deleteIfExists(Paths.get(ed807Entity.getFilePath()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            ed807EntityRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
+    public boolean deleteAll() {
+        List<ED807Entity> ed807Entities = ed807EntityRepository.findAll();
+        boolean allDeleted = true;
+
+        for (ED807Entity ed807Entity : ed807Entities) {
+            try {
+                Files.deleteIfExists(Paths.get(ed807Entity.getFilePath()));
+            } catch (Exception e) {
+                e.printStackTrace();
+                allDeleted = false;
+            }
+        }
+
+        try {
+            ed807EntityRepository.deleteAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+            allDeleted = false;
+        }
+
+        return allDeleted;
+    }
 
     private ED807 convertDTOPreview(ED807Entity ed807Entity){
         ED807 dto = new ED807();

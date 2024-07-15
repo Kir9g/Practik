@@ -13,10 +13,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -278,23 +275,43 @@ public class ED807Service {
     }
 
 
-    public List<ED807> getAllED807ByName(@PathVariable String name){
+    public List<ED807> getAllED807ByName(String name){
         List<ED807Entity> ed807Entities = ed807EntityRepository.findByName(name);
         return ed807Entities.stream()
-                .map(this::convertToDTO)
+                .map(this::convertDTOPreview)
+                .collect(Collectors.toList());
+    }
+
+    public List<ED807> getAllBetwenDate(Date startDate, Date endDate){
+        List<ED807Entity> ed807Entities = ed807EntityRepository.findAllByCreationDateBetween(startDate,endDate);
+        return ed807Entities.stream()
+                .map(this::convertDTOPreview)
                 .collect(Collectors.toList());
     }
 
     public List<ED807> getAllED807() {
         List<ED807Entity> ed807Entities = ed807EntityRepository.findAll();
         return ed807Entities.stream()
-                .map(this::convertToDTO)
+                .map(this::convertDTOPreview)
                 .collect(Collectors.toList());
     }
 
+    public ED807 getById(BigInteger id){
+        Optional<ED807Entity> ed807Entity = ed807EntityRepository.findById(id);
+        return ed807Entity.map(this::convertToDTO).orElse(null);
+    }
 
-    private ED807 convertDTO(ED807Entity ed807Entity){
+
+
+
+    private ED807 convertDTOPreview(ED807Entity ed807Entity){
         ED807 dto = new ED807();
+        // Установка основных полей
+
+        dto.setName(ed807Entity.getName());
+        dto.setFilePath(ed807Entity.getFilePath());
+        dto.setCreationDate(ed807Entity.getCreationDate());
+
         // Установка основных полей
 
         dto.setEDNo(ed807Entity.getEdno());

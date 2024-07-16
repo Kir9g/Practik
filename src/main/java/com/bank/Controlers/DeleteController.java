@@ -40,4 +40,13 @@ public class DeleteController {
             return ResponseEntity.status(500).build();
         }
     }
+    @DeleteMapping("/bic")
+    public ResponseEntity<Void> deleteBICbyBIC(@RequestParam String BIC, @RequestParam BigInteger EDID){
+        boolean isDeleted = ed807Service.deleteBicByBic(BIC,EDID);
+        if (isDeleted) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(500).build();
+        }
+    }
 }

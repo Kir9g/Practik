@@ -343,6 +343,38 @@ public class ED807Service {
 
         return allDeleted;
     }
+    @Transactional
+    public boolean deleteBicByBic(String bic, BigInteger EDID) {
+        // Найдите ED807Entity по ID
+        Optional<ED807Entity> ed807EntityOptional = ed807EntityRepository.findById(EDID);
+
+        if (!ed807EntityOptional.isPresent()) {
+            // Если ED807Entity не найден, верните false
+            return false;
+        }
+
+        ED807Entity ed807Entity = ed807EntityOptional.get();
+        List<BICDirectoryEntry> bicDirectoryEntries = ed807Entity.getBicDirectoryEntries();
+
+        // Найдите BICDirectoryEntry по BIC
+        BICDirectoryEntry entryToDelete = null;
+        for (BICDirectoryEntry entry : bicDirectoryEntries) {
+            if (entry.getBIC().equals(bic)) {
+                entryToDelete = entry;
+                break;
+            }
+        }
+
+        if (entryToDelete == null) {
+            return false;
+        }
+
+
+        // Удалите запись BICDirectoryEntry из базы данных
+        bicDirectoryEntries.remove(entryToDelete);
+
+        return true;
+    }
 
     private ED807 convertDTOPreview(ED807Entity ed807Entity){
         ED807 dto = new ED807();
@@ -367,23 +399,36 @@ public class ED807Service {
         dto.setCreationDateTime(toXMLGregorianCalendar(ed807Entity.getCreationDateTime()));
         dto.setInfoTypeCode(RequestCodeType.fromValue(ed807Entity.getInfoTypeCode()));
         dto.setBusinessDay(toXMLGregorianCalendar(ed807Entity.getBusinessDay()));
+
         if(ed807Entity.getDirectoryVersion() != null) {
             dto.setDirectoryVersion(ed807Entity.getDirectoryVersion());
         }else {
             dto.setDirectoryVersion(null);
         }
-        if(ed807Entity.getPartInfoEntity() != null){
-            dto.getPartInfo().setPartAggregateID(ed807Entity.getPartInfoEntity().getPartAggregateID());
-            dto.getPartInfo().setPartNo(ed807Entity.getPartInfoEntity().getPartNo());
-            dto.getPartInfo().setPartQuantity(ed807Entity.getPartInfoEntity().getPartQuantity());
-        }else {
+        if (ed807Entity.getPartInfoEntity() != null) {
+            PartInfoEntity partInfoEntity= ed807Entity.getPartInfoEntity();
+            PartInfo partInfoDTO =new PartInfo();
+
+            partInfoDTO.setPartQuantity(partInfoEntity.getPartQuantity());
+            partInfoDTO.setPartNo(partInfoEntity.getPartNo());
+            partInfoDTO.setPartAggregateID(partInfoEntity.getPartAggregateID());
+            dto.setPartInfo(partInfoDTO);
+
+        }
+        else {
             dto.setPartInfo(null);
         }
+
         return dto;
     }
     private ED807 convertToDTO(ED807Entity ed807Entity) {
         ED807 dto = new ED807();
         // Установка основных полей
+
+        dto.setName(ed807Entity.getName());
+        dto.setCreationDate(ed807Entity.getCreationDate());
+        dto.setFilePath(ed807Entity.getFilePath());
+
 
         dto.setEDNo(ed807Entity.getEdno());
         dto.setEDDate(toXMLGregorianCalendar(ed807Entity.getEDDate()));
@@ -403,10 +448,30 @@ public class ED807Service {
         }else {
             dto.setDirectoryVersion(null);
         }
-        if(ed807Entity.getPartInfoEntity() != null){
-            dto.getPartInfo().setPartAggregateID(ed807Entity.getPartInfoEntity().getPartAggregateID());
-            dto.getPartInfo().setPartNo(ed807Entity.getPartInfoEntity().getPartNo());
-            dto.getPartInfo().setPartQuantity(ed807Entity.getPartInfoEntity().getPartQuantity());
+        if (ed807Entity.getPartInfoEntity() != null) {
+            PartInfoEntity partInfoEntity= ed807Entity.getPartInfoEntity();
+            PartInfo partInfoDTO =new PartInfo();
+
+            partInfoDTO.setPartQuantity(partInfoEntity.getPartQuantity());
+            partInfoDTO.setPartNo(partInfoEntity.getPartNo());
+            partInfoDTO.setPartAggregateID(partInfoEntity.getPartAggregateID());
+            dto.setPartInfo(partInfoDTO);
+        }else {
+            dto.setPartInfo(null);
+        }
+        if (ed807Entity.getInitialED() != null) {
+            InitialED initialED = ed807Entity.getInitialED();
+            InitialEDInfo initialEDInfoDTO = new InitialEDInfo();
+            EDRefID edRefID = new EDRefID();
+
+
+            edRefID.setEDAuthor(initialED.getEDAuthor());
+            edRefID.setEDDate(toXMLGregorianCalendar(initialED.getEDDate()));
+            edRefID.setEDNo(initialED.getEDNo());
+
+            initialEDInfoDTO.setEDRefID(edRefID);
+
+            dto.setInitialED(initialEDInfoDTO.getEDRefID());
         }else {
             dto.setPartInfo(null);
         }

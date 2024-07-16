@@ -81,8 +81,9 @@ public class ED807Service {
             partInfoEntity.setPartAggregateID(ed807.getPartInfo().getPartAggregateID());
 
             partInfoRepository.save(partInfoEntity);
+            ed807Entity.setPartInfoEntity(partInfoEntity);
         }else {
-            ed807Entity.setPartInfo(null);
+            ed807Entity.setPartInfoEntity(null);
         }
 
         if(ed807.getInitialED() != null) {
@@ -92,6 +93,7 @@ public class ED807Service {
             initialED.setEDNo(ed807.getInitialED().getEDNo());
 
             initialEDRepository.save(initialED);
+            ed807Entity.setInitialED(initialED);
         }else {
             ed807Entity.setInitialED(null);
         }
@@ -302,7 +304,7 @@ public class ED807Service {
         return ed807Entity.map(this::convertToDTO).orElse(null);
     }
 
-
+    @Transactional
     public boolean deletByid(BigInteger id){
         Optional<ED807Entity> ed807EntityOptional = ed807EntityRepository.findById(id);
         if (ed807EntityOptional.isPresent()) {
@@ -319,22 +321,21 @@ public class ED807Service {
             return false;
         }
     }
-
+    @Transactional
     public boolean deleteAll() {
         List<ED807Entity> ed807Entities = ed807EntityRepository.findAll();
         boolean allDeleted = true;
 
-        for (ED807Entity ed807Entity : ed807Entities) {
-            try {
-                Files.deleteIfExists(Paths.get(ed807Entity.getFilePath()));
-            } catch (Exception e) {
-                e.printStackTrace();
-                allDeleted = false;
-            }
-        }
-
         try {
             ed807EntityRepository.deleteAll();
+            for (ED807Entity ed807Entity : ed807Entities) {
+                try {
+                    Files.deleteIfExists(Paths.get(ed807Entity.getFilePath()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    allDeleted = false;
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             allDeleted = false;
@@ -371,10 +372,10 @@ public class ED807Service {
         }else {
             dto.setDirectoryVersion(null);
         }
-        if(ed807Entity.getPartInfo() != null){
-            dto.getPartInfo().setPartAggregateID(ed807Entity.getPartInfo().getPartAggregateID());
-            dto.getPartInfo().setPartNo(ed807Entity.getPartInfo().getPartNo());
-            dto.getPartInfo().setPartQuantity(ed807Entity.getPartInfo().getPartQuantity());
+        if(ed807Entity.getPartInfoEntity() != null){
+            dto.getPartInfo().setPartAggregateID(ed807Entity.getPartInfoEntity().getPartAggregateID());
+            dto.getPartInfo().setPartNo(ed807Entity.getPartInfoEntity().getPartNo());
+            dto.getPartInfo().setPartQuantity(ed807Entity.getPartInfoEntity().getPartQuantity());
         }else {
             dto.setPartInfo(null);
         }
@@ -402,10 +403,10 @@ public class ED807Service {
         }else {
             dto.setDirectoryVersion(null);
         }
-        if(ed807Entity.getPartInfo() != null){
-            dto.getPartInfo().setPartAggregateID(ed807Entity.getPartInfo().getPartAggregateID());
-            dto.getPartInfo().setPartNo(ed807Entity.getPartInfo().getPartNo());
-            dto.getPartInfo().setPartQuantity(ed807Entity.getPartInfo().getPartQuantity());
+        if(ed807Entity.getPartInfoEntity() != null){
+            dto.getPartInfo().setPartAggregateID(ed807Entity.getPartInfoEntity().getPartAggregateID());
+            dto.getPartInfo().setPartNo(ed807Entity.getPartInfoEntity().getPartNo());
+            dto.getPartInfo().setPartQuantity(ed807Entity.getPartInfoEntity().getPartQuantity());
         }else {
             dto.setPartInfo(null);
         }

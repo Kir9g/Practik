@@ -41,7 +41,7 @@ public class Accounts {
     @OneToMany(cascade = CascadeType.ALL)
     private List<AccRstrListEntity> accRstrListEntity;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "BIC")
     private BICDirectoryEntry bicDirectoryEntry;
 

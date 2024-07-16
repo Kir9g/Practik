@@ -18,7 +18,7 @@ public class SWBICSEntity {
     @Column(name = "DefaultSWBIC", nullable = false)
     private boolean DefaultSWBIC;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "BIC")
     private BICDirectoryEntry bicDirectoryEntry;
 

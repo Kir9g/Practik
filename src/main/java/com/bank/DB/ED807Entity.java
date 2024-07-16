@@ -61,14 +61,6 @@ public class ED807Entity {
     @OneToMany(mappedBy = "ed807Entity", cascade = CascadeType.ALL, orphanRemoval=true, fetch = FetchType.EAGER)
     private List<BICDirectoryEntry> bicDirectoryEntries = new ArrayList<>();
 
-    public PartInfoEntity getPartInfoEntity() {
-        return partInfoEntity;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
     @Override
     public String toString() {
         return "ED807Entity{" +
@@ -91,20 +83,12 @@ public class ED807Entity {
                 '}';
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public BigInteger getId() {
+        return Id;
     }
 
-    public void setPartInfoEntity(PartInfoEntity partInfoEntity) {
-        this.partInfoEntity = partInfoEntity;
-    }
-
-    public Date getCreationDate() {
-        return CreationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        CreationDate = creationDate;
+    public void setId(BigInteger id) {
+        Id = id;
     }
 
     public String getName() {
@@ -115,12 +99,20 @@ public class ED807Entity {
         this.name = name;
     }
 
-    public BigInteger getId() {
-        return Id;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setId(BigInteger id) {
-        Id = id;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public Date getCreationDate() {
+        return CreationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        CreationDate = creationDate;
     }
 
     public BigInteger getEdno() {
@@ -195,11 +187,11 @@ public class ED807Entity {
         DirectoryVersion = directoryVersion;
     }
 
-    public PartInfoEntity getPartInfo() {
+    public PartInfoEntity getPartInfoEntity() {
         return partInfoEntity;
     }
 
-    public void setPartInfo(PartInfoEntity partInfoEntity) {
+    public void setPartInfoEntity(PartInfoEntity partInfoEntity) {
         this.partInfoEntity = partInfoEntity;
     }
 
@@ -218,5 +210,4 @@ public class ED807Entity {
     public void setBicDirectoryEntries(List<BICDirectoryEntry> bicDirectoryEntries) {
         this.bicDirectoryEntries = bicDirectoryEntries;
     }
-
 }

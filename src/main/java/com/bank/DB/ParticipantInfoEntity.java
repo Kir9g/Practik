@@ -69,10 +69,10 @@ public class ParticipantInfoEntity {
     @Column(name = "ParticipantStatus", length = 4)
     private String ParticipantStatus;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "participantInfoEntity")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "participantInfoEntity",cascade = CascadeType.ALL)
     private List<RstrListEntity> rstrListEntity;
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "BIC")
     private BICDirectoryEntry bicDirectoryEntry;
 

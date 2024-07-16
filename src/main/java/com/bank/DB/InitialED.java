@@ -22,7 +22,7 @@ public class InitialED {
     @Column(name = "EDAuthor", unique = true, length = 10,nullable = false)
     private String EDAuthor;
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ed807Entity")
     private ED807Entity ed807Entity;
 

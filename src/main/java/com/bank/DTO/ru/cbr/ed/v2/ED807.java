@@ -221,9 +221,6 @@ public class ED807
         this.directoryVersion = value;
     }
 
-    public List<BICDirectoryEntryType> getBicDirectoryEntry() {
-        return bicDirectoryEntry;
-    }
 
     public void setBicDirectoryEntry(List<BICDirectoryEntryType> bicDirectoryEntry) {
         this.bicDirectoryEntry = bicDirectoryEntry;

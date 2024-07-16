@@ -21,7 +21,7 @@ public class AccRstrListEntity {
     @Column(name = "SuccessorBIC", length = 9, nullable = true)
     private String SuccessorBIC;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Account")
     private Accounts accounts;
 

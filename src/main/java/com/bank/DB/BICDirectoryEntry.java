@@ -30,7 +30,7 @@ public class BICDirectoryEntry {
     @OneToMany(cascade = CascadeType.ALL)
     private List<SWBICSEntity> swbics;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "ED_id")
     private ED807Entity ed807Entity;
 

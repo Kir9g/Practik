@@ -418,6 +418,20 @@ public class ED807Service {
         else {
             dto.setPartInfo(null);
         }
+        if (ed807Entity.getInitialED() != null){
+            InitialED initialED = ed807Entity.getInitialED();
+
+            EDRefID edRefID = new EDRefID();
+
+
+            edRefID.setEDNo(initialED.getEDNo());
+            edRefID.setEDDate(toXMLGregorianCalendar(initialED.getEDDate()));
+            edRefID.setEDAuthor(initialED.getEDAuthor());
+
+            dto.setInitialED(edRefID);
+        }else {
+
+        }
 
         return dto;
     }

@@ -17,6 +17,7 @@ public class Accounts {
     @Id
     @GeneratedValue
     private BigInteger id;
+
     @Column(name = "Account", nullable = false)
     private String Account;
 
@@ -130,5 +131,13 @@ public class Accounts {
 
     public void setBicDirectoryEntry(BICDirectoryEntry bicDirectoryEntry) {
         this.bicDirectoryEntry = bicDirectoryEntry;
+    }
+
+    public BigInteger getId() {
+        return id;
+    }
+
+    public void setId(BigInteger id) {
+        this.id = id;
     }
 }

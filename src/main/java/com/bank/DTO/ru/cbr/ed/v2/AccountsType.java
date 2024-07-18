@@ -8,14 +8,12 @@
 
 package com.bank.DTO.ru.cbr.ed.v2;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.datatype.XMLGregorianCalendar;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlAttribute;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlType;
+
+import jakarta.xml.bind.annotation.*;
 import com.bank.DTO.ru.cbr.ed.leaftypes.v2.AccountStatusType;
 import com.bank.DTO.ru.cbr.ed.leaftypes.v2.AccountType;
 
@@ -70,6 +68,16 @@ public class AccountsType {
     protected XMLGregorianCalendar dateOut;
     @XmlAttribute(name = "AccountStatus")
     protected AccountStatusType accountStatus;
+    @XmlTransient
+    protected BigInteger id;
+
+    public BigInteger getId() {
+        return id;
+    }
+
+    public void setId(BigInteger id) {
+        this.id = id;
+    }
 
     /**
      * Gets the value of the accRstrList property.

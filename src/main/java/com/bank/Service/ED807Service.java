@@ -375,10 +375,30 @@ public class ED807Service {
 
         return true;
     }
+    @Transactional
+    public ED807Entity updateED807(BigInteger id, ED807Entity ed807EntityDetails) {
+        Optional<ED807Entity> ed807Entitys = ed807EntityRepository.findById(id);
+        ED807Entity ed807Entity = ed807Entitys.get();
+        if (ed807EntityDetails.getEdno() != null) {
+            ed807Entity.setEdno(ed807EntityDetails.getEdno());
+        }
+        if (ed807EntityDetails.getEDDate() != null) {
+            ed807Entity.setEDDate(ed807EntityDetails.getEDDate());
+        }
+        if (ed807EntityDetails.getEDAuthor() != null) {
+            ed807Entity.setEDAuthor(ed807EntityDetails.getEDAuthor());
+        }
+        if (ed807EntityDetails.getEDReceiver() != null) {
+            ed807Entity.setEDReceiver(ed807EntityDetails.getEDReceiver());
+        }
+        return ed807EntityRepository.save(ed807Entity);
+    }
+
 
     private ED807 convertDTOPreview(ED807Entity ed807Entity){
         ED807 dto = new ED807();
         // Установка основных полей
+        dto.setId(ed807Entity.getId());
 
         dto.setName(ed807Entity.getName());
         dto.setFilePath(ed807Entity.getFilePath());
@@ -438,6 +458,7 @@ public class ED807Service {
     private ED807 convertToDTO(ED807Entity ed807Entity) {
         ED807 dto = new ED807();
         // Установка основных полей
+        dto.setId(ed807Entity.getId());
 
         dto.setName(ed807Entity.getName());
         dto.setCreationDate(ed807Entity.getCreationDate());
@@ -502,6 +523,7 @@ public class ED807Service {
 
     private BICDirectoryEntryType convertToDTO(BICDirectoryEntry bicDirectoryEntry) {
         BICDirectoryEntryType dto = new BICDirectoryEntryType();
+        dto.setId(bicDirectoryEntry.getId());
         dto.setBIC(bicDirectoryEntry.getBIC());
         if (bicDirectoryEntry.getChangeType() != null) {
             dto.setChangeType(ChangeType.valueOf(bicDirectoryEntry.getChangeType()));
@@ -573,6 +595,7 @@ public class ED807Service {
             return null;
         }
         RstrListType dto = new RstrListType();
+        dto.setId(entity.getId());
         dto.setRstr(entity.getRstr());
         dto.setRstrDate(toXMLGregorianCalendar(entity.getRstrDate()));
         return dto;
@@ -583,6 +606,7 @@ public class ED807Service {
             return null;
         }
         AccountsType dto = new AccountsType();
+        dto.setId(entity.getId());
         dto.setAccount(entity.getAccount());
         dto.setRegulationAccountType(AccountType.fromValue(entity.getRegulationAccountType()));
         dto.setCK(entity.getCk());
@@ -612,7 +636,10 @@ public class ED807Service {
      if(entity == null){
          return null;
      }
+
+
      AccRstrListType dto = new AccRstrListType();
+     dto.setId(entity.getId());
      dto.setAccRstr(RstrType.fromValue(entity.getAccRstr()));
      dto.setAccRstrDate(toXMLGregorianCalendar(entity.getAccRstrDate()));
      if(entity.getSuccessorBIC() != null){
@@ -628,6 +655,7 @@ public class ED807Service {
             return null;
         }
         SWBICList dto = new SWBICList();
+        dto.setId(entity.getId());
         dto.setSWBIC(entity.getSWBIC());
         dto.setDefaultSWBIC(entity.isDefaultSWBIC());
 

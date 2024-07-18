@@ -60,7 +60,8 @@ public class RstrListEntity {
     @Override
     public String toString() {
         return "RstrListEntity{" +
-                "Rstr='" + Rstr + '\'' +
+                "id=" + id +
+                ", Rstr=" + Rstr +
                 ", RstrDate=" + RstrDate +
                 ", participantInfoEntity=" + participantInfoEntity +
                 '}';

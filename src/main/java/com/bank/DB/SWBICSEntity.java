@@ -26,6 +26,24 @@ public class SWBICSEntity {
         return SWBIC;
     }
 
+    public BigInteger getId() {
+        return Id;
+    }
+
+    @Override
+    public String toString() {
+        return "SWBICSEntity{" +
+                "Id=" + Id +
+                ", SWBIC='" + SWBIC + '\'' +
+                ", DefaultSWBIC=" + DefaultSWBIC +
+                ", bicDirectoryEntry=" + bicDirectoryEntry +
+                '}';
+    }
+
+    public void setId(BigInteger id) {
+        Id = id;
+    }
+
     public void setSWBIC(String SWBIC) {
         this.SWBIC = SWBIC;
     }
@@ -46,12 +64,4 @@ public class SWBICSEntity {
         this.bicDirectoryEntry = bicDirectoryEntry;
     }
 
-    @Override
-    public String toString() {
-        return "SWBICSEntity{" +
-                "SWBIC='" + SWBIC + '\'' +
-                ", DefaultSWBIC=" + DefaultSWBIC +
-                ", bicDirectoryEntry=" + bicDirectoryEntry +
-                '}';
-    }
 }

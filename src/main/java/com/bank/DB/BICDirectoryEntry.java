@@ -15,6 +15,7 @@ public class BICDirectoryEntry {
     @Id
     @GeneratedValue
     private BigInteger id;
+
     @Column(name = "BIC", length = 9,nullable = false)
     private String BIC;
 
@@ -82,11 +83,19 @@ public class BICDirectoryEntry {
         this.BIC = BIC;
     }
 
+    public BigInteger getId() {
+        return id;
+    }
+
+    public void setId(BigInteger id) {
+        this.id = id;
+    }
 
     @Override
     public String toString() {
         return "BICDirectoryEntry{" +
-                "BIC='" + BIC + '\'' +
+                "id=" + id +
+                ", BIC='" + BIC + '\'' +
                 ", ChangeType='" + ChangeType + '\'' +
                 ", participantInfo=" + participantInfo +
                 ", accounts=" + accounts +

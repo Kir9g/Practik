@@ -11,10 +11,9 @@ package com.bank.DTO.ru.cbr.ed.v2;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.bank.DTO.ru.cbr.ed.leaftypes.v2.RstrType;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlAttribute;
-import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.*;
+
+import java.math.BigInteger;
 
 
 /**
@@ -45,6 +44,16 @@ public class RstrListType {
     protected RstrType rstr;
     @XmlAttribute(name = "RstrDate", required = true)
     protected XMLGregorianCalendar rstrDate;
+    @XmlTransient
+    protected BigInteger id;
+
+    public BigInteger getId() {
+        return id;
+    }
+
+    public void setId(BigInteger id) {
+        this.id = id;
+    }
 
     /**
      * Gets the value of the rstr property.

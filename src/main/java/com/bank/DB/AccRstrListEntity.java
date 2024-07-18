@@ -12,6 +12,7 @@ public class AccRstrListEntity {
     @Id
     @GeneratedValue
     private BigInteger id;
+
     @Column(name = "AccRstr", length = 4,nullable = false)
     private String AccRstr;
 
@@ -24,6 +25,25 @@ public class AccRstrListEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Account")
     private Accounts accounts;
+
+    public BigInteger getId() {
+        return id;
+    }
+
+    public void setId(BigInteger id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "AccRstrListEntity{" +
+                "id=" + id +
+                ", AccRstr='" + AccRstr + '\'' +
+                ", AccRstrDate=" + AccRstrDate +
+                ", SuccessorBIC='" + SuccessorBIC + '\'' +
+                ", accounts=" + accounts +
+                '}';
+    }
 
     public String getAccRstr() {
         return AccRstr;
@@ -57,13 +77,4 @@ public class AccRstrListEntity {
         this.accounts = accounts;
     }
 
-    @Override
-    public String toString() {
-        return "AccRstrListEntity{" +
-                "AccRstr='" + AccRstr + '\'' +
-                ", AccRstrDate=" + AccRstrDate +
-                ", SuccessorBIC='" + SuccessorBIC + '\'' +
-                ", accounts=" + accounts +
-                '}';
-    }
 }

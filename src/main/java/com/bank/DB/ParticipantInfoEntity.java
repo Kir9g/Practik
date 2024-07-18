@@ -228,10 +228,19 @@ public class ParticipantInfoEntity {
         this.bicDirectoryEntry = bicDirectoryEntry;
     }
 
+    public BigInteger getId() {
+        return id;
+    }
+
+    public void setId(BigInteger id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "ParticipantInfoEntity{" +
-                "NameP='" + NameP + '\'' +
+                "id=" + id +
+                ", NameP='" + NameP + '\'' +
                 ", EnglName='" + EnglName + '\'' +
                 ", RegN='" + RegN + '\'' +
                 ", CntrCd='" + CntrCd + '\'' +

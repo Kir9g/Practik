@@ -72,6 +72,8 @@ public class ED807
     protected String filePath;
     @XmlTransient
     protected Date CreationDate;
+    @XmlTransient
+    protected BigInteger id;
     /**
      * Gets the value of the bicDirectoryEntry property.
      * 
@@ -248,5 +250,13 @@ public class ED807
 
     public void setCreationDate(Date creationDate) {
         CreationDate = creationDate;
+    }
+
+    public BigInteger getId() {
+        return id;
+    }
+
+    public void setId(BigInteger id) {
+        this.id = id;
     }
 }

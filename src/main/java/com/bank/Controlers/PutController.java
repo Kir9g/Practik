@@ -6,6 +6,7 @@ import com.bank.Repository.AccountRepository;
 import com.bank.Repository.ED807EntityRepository;
 import com.bank.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,8 @@ public class PutController {
     private InitialEDService initialEDService;
     @Autowired
     private ParticipantInfoService participantInfoService;
+    @Autowired
+    private PartInfoSerivce partInfoSerivce;
 
     @PutMapping("ed807/{id}")
     public ResponseEntity<ED807Entity> updateED807(@PathVariable(value = "id") BigInteger id,
@@ -61,13 +64,24 @@ public class PutController {
         return ResponseEntity.ok(initialED1);
     }
     @PutMapping("ParticipantInfo/{id}")
-    public ResponseEntity<Void> updateParticipant(@PathVariable(value = "id") BigInteger id,
+    public ResponseEntity<?> updateParticipant(@PathVariable(value = "id") BigInteger id,
                                                    @RequestBody ParticipantInfoType participantInfoType){
         ParticipantInfoEntity participantInfoEntity = participantInfoService.updateParticipant(id, participantInfoType);
         if(participantInfoEntity != null) {
-            return (ResponseEntity<Void>) ResponseEntity.ok();
+            return new ResponseEntity<>(participantInfoEntity, HttpStatus.OK);
         }else {
-            return (ResponseEntity<Void>) ResponseEntity.badRequest();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PutMapping("PartInfo/{id}")
+    public ResponseEntity<PartInfoEntity> updatePartInfo(@PathVariable(value = "id") BigInteger id,
+                                                   @RequestBody PartInfo partInfo){
+        PartInfoEntity partInfo1 = partInfoSerivce.updatePartInfo(id,partInfo);
+        if(partInfo1!=null) {
+            return ResponseEntity.ok(partInfo1);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -9,7 +9,8 @@ import java.math.BigInteger;
 public class PartInfoEntity {
     @Id
     @GeneratedValue
-    private Long id;
+    private BigInteger id;
+
     @Column(name = "PartAggregateID",nullable = false,length = 27)
     private String PartAggregateID;
 
@@ -25,6 +26,25 @@ public class PartInfoEntity {
 
     public ED807Entity getEd807Entity() {
         return ed807EntityPartInfo;
+    }
+
+    @Override
+    public String toString() {
+        return "PartInfoEntity{" +
+                "id=" + id +
+                ", PartAggregateID='" + PartAggregateID + '\'' +
+                ", PartNo=" + PartNo +
+                ", PartQuantity=" + PartQuantity +
+                ", ed807EntityPartInfo=" + ed807EntityPartInfo +
+                '}';
+    }
+
+    public BigInteger getId() {
+        return id;
+    }
+
+    public void setId(BigInteger id) {
+        this.id = id;
     }
 
     public void setEd807Entity(ED807Entity ed807Entity) {
@@ -43,6 +63,14 @@ public class PartInfoEntity {
         return PartQuantity;
     }
 
+    public ED807Entity getEd807EntityPartInfo() {
+        return ed807EntityPartInfo;
+    }
+
+    public void setEd807EntityPartInfo(ED807Entity ed807EntityPartInfo) {
+        this.ed807EntityPartInfo = ed807EntityPartInfo;
+    }
+
     public void setPartQuantity(BigInteger partQuantity) {
         PartQuantity = partQuantity;
     }
@@ -55,13 +83,4 @@ public class PartInfoEntity {
         PartAggregateID = partAggregateID;
     }
 
-    @Override
-    public String toString() {
-        return "PartInfo{" +
-                "PartAggregateID='" + PartAggregateID + '\'' +
-                ", PartNo=" + PartNo +
-                ", PartQuantity=" + PartQuantity +
-                ", ed807Entity=" + ed807EntityPartInfo +
-                '}';
-    }
 }

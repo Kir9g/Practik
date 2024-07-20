@@ -11,7 +11,8 @@ import java.util.Date;
 public class InitialED {
     @Id
     @GeneratedValue
-    private Long ID;
+    private BigInteger ID;
+
     @Column(name = "EDNo", nullable = false, length = 9)
     private BigInteger EDNo;
 
@@ -25,6 +26,14 @@ public class InitialED {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ed807Entity")
     private ED807Entity ed807Entity;
+
+    public BigInteger getID() {
+        return ID;
+    }
+
+    public void setID(BigInteger ID) {
+        this.ID = ID;
+    }
 
     public BigInteger getEDNo() {
         return EDNo;

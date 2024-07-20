@@ -376,20 +376,20 @@ public class ED807Service {
         return true;
     }
     @Transactional
-    public ED807Entity updateED807(BigInteger id, ED807Entity ed807EntityDetails) {
+    public ED807Entity updateED807(BigInteger id, ED807 ed807) {
         Optional<ED807Entity> ed807Entitys = ed807EntityRepository.findById(id);
         ED807Entity ed807Entity = ed807Entitys.get();
-        if (ed807EntityDetails.getEdno() != null) {
-            ed807Entity.setEdno(ed807EntityDetails.getEdno());
+        if (ed807.getEDNo() != null) {
+            ed807Entity.setEdno(ed807.getEDNo());
         }
-        if (ed807EntityDetails.getEDDate() != null) {
-            ed807Entity.setEDDate(ed807EntityDetails.getEDDate());
+        if (ed807.getEDDate() != null) {
+            ed807Entity.setEDDate(ed807.getEDDate().toGregorianCalendar().getTime());
         }
-        if (ed807EntityDetails.getEDAuthor() != null) {
-            ed807Entity.setEDAuthor(ed807EntityDetails.getEDAuthor());
+        if (ed807.getEDAuthor() != null) {
+            ed807Entity.setEDAuthor(ed807.getEDAuthor());
         }
-        if (ed807EntityDetails.getEDReceiver() != null) {
-            ed807Entity.setEDReceiver(ed807EntityDetails.getEDReceiver());
+        if (ed807.getEDReceiver() != null) {
+            ed807Entity.setEDReceiver(BigInteger.valueOf(Long.parseLong(ed807.getEDReceiver())));
         }
         return ed807EntityRepository.save(ed807Entity);
     }

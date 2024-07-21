@@ -40,7 +40,7 @@ public class SWBICList {
     @XmlAttribute(name = "SWBIC", required = true)
     protected String swbic;
     @XmlAttribute(name = "DefaultSWBIC", required = true)
-    protected boolean defaultSWBIC;
+    protected Boolean defaultSWBIC;
 
     @XmlTransient
     protected BigInteger id;
@@ -81,7 +81,7 @@ public class SWBICList {
      * Gets the value of the defaultSWBIC property.
      * 
      */
-    public boolean isDefaultSWBIC() {
+    public Boolean isDefaultSWBIC() {
         return defaultSWBIC;
     }
 
@@ -89,7 +89,7 @@ public class SWBICList {
      * Sets the value of the defaultSWBIC property.
      * 
      */
-    public void setDefaultSWBIC(boolean value) {
+    public void setDefaultSWBIC(Boolean value) {
         this.defaultSWBIC = value;
     }
 

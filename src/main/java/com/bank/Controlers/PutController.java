@@ -30,58 +30,99 @@ public class PutController {
     private ParticipantInfoService participantInfoService;
     @Autowired
     private PartInfoSerivce partInfoSerivce;
+    @Autowired
+    private SWBICSService swbicsService;
+    @Autowired
+    private RstrListService rstrListService;
+    @Autowired
+    private ED807EntityRepository ed807EntityRepository;
+
 
     @PutMapping("ed807/{id}")
-    public ResponseEntity<ED807Entity> updateED807(@PathVariable(value = "id") BigInteger id,
+    public ResponseEntity<ED807> updateED807(@PathVariable(value = "id") BigInteger id,
                                                    @RequestBody ED807 ed807) {
-        ED807Entity updatedED807Entity = ed807Service.updateED807(id, ed807);
-        return ResponseEntity.ok(updatedED807Entity);
+        ED807 ed807Entity = ed807Service.updateED807(id, ed807);
+
+        return ResponseEntity.ok(ed807Entity);
     }
 
     @PutMapping("bic/{id}")
-    public ResponseEntity<ED807Entity> updateBIC(@PathVariable(value = "id") BigInteger id,
+    public ResponseEntity<BICDirectoryEntryType> updateBIC(@PathVariable(value = "id") BigInteger id,
                                                  @RequestBody BICDirectoryEntryType bicDirectoryEntry) {
         BICDirectoryEntry bicDirectoryEntry1 = bicDirectoryService.updateBIC(id, bicDirectoryEntry);
-        return ResponseEntity.ok(bicDirectoryEntry1.getEd807Entity());
+        BICDirectoryEntryType bicDirectoryEntryType = ed807Service.convertToDTO(bicDirectoryEntry1);
+        return ResponseEntity.ok(bicDirectoryEntryType);
     }
 
-    @PutMapping("Account/{id}/{bic}")
-    public ResponseEntity<ED807Entity> updateAccount(@PathVariable(value = "id") BigInteger id,
+    @PutMapping("Account/{id}")
+    public ResponseEntity<AccountsType> updateAccount(@PathVariable(value = "id") BigInteger id,
                                                      @RequestBody AccountsType accounts) {
         Accounts account = accountsService.updateAccount(id,accounts);
-        return ResponseEntity.ok(account.getBicDirectoryEntry().getEd807Entity());
+        AccountsType accountsType = ed807Service.convertToDTO(account);
+        return ResponseEntity.ok(accountsType);
     }
     @PutMapping("AccRstrList/{id}")
-    public ResponseEntity<ED807Entity> updateAccRstrList(@PathVariable(value = "id") BigInteger id,
+    public ResponseEntity<AccRstrListType> updateAccRstrList(@PathVariable(value = "id") BigInteger id,
                                                          @RequestBody AccRstrListType accRstrListEntity) {
         AccRstrListEntity accRstrList = accRstrListService.updateAccount(id,accRstrListEntity);
-        return ResponseEntity.ok(accRstrList.getAccounts().getBicDirectoryEntry().getEd807Entity());
+        AccRstrListType AccRstrListType = ed807Service.convertToDTO(accRstrList);
+        return ResponseEntity.ok(AccRstrListType);
     }
     @PutMapping("InitialED/{id}")
-    public ResponseEntity<InitialED> updateInitial(@PathVariable(value = "id") BigInteger id,
+    public ResponseEntity<ED807> updateInitial(@PathVariable(value = "id") BigInteger id,
                                                    @RequestBody EDRefID edRefID){
         InitialED initialED1 = initialEDService.updateInitial(id, edRefID);
-        return ResponseEntity.ok(initialED1);
+        Optional<ED807Entity> ed807Entity = ed807EntityRepository.findByInitialED(initialED1);
+        if(ed807Entity.isPresent()){
+            ED807Entity entity = ed807Entity.get();
+            ED807 ed807 = ed807Service.convertToDTO(entity);
+            return ResponseEntity.ok(ed807);
+        }
+        return ResponseEntity.notFound().build();
     }
     @PutMapping("ParticipantInfo/{id}")
-    public ResponseEntity<?> updateParticipant(@PathVariable(value = "id") BigInteger id,
+    public ResponseEntity<ParticipantInfoType> updateParticipant(@PathVariable(value = "id") BigInteger id,
                                                    @RequestBody ParticipantInfoType participantInfoType){
         ParticipantInfoEntity participantInfoEntity = participantInfoService.updateParticipant(id, participantInfoType);
         if(participantInfoEntity != null) {
-            return new ResponseEntity<>(participantInfoEntity, HttpStatus.OK);
+            ParticipantInfoType participantInfoType1 = ed807Service.convertToDTO(participantInfoEntity);
+            return ResponseEntity.ok(participantInfoType1);
         }else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.notFound().build();
         }
     }
     @PutMapping("PartInfo/{id}")
-    public ResponseEntity<PartInfoEntity> updatePartInfo(@PathVariable(value = "id") BigInteger id,
+    public ResponseEntity<ED807> updatePartInfo(@PathVariable(value = "id") BigInteger id,
                                                    @RequestBody PartInfo partInfo){
-        PartInfoEntity partInfo1 = partInfoSerivce.updatePartInfo(id,partInfo);
-        if(partInfo1!=null) {
-            return ResponseEntity.ok(partInfo1);
+        ED807Entity entity = partInfoSerivce.updatePartInfo(id,partInfo);
+        if(entity!=null) {
+            ED807 ed807 = ed807Service.convertToDTO(entity);
+            return ResponseEntity.ok(ed807);
         }
         else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @PutMapping("SWIC/{id}")
+    public ResponseEntity<SWBICList> partialUpdateSWBIC(@PathVariable BigInteger id, @RequestBody SWBICList updateDTO) {
+        SWBICSEntity updatedEntity = swbicsService.updateSwbic(id,updateDTO);
+        if (updatedEntity != null) {
+            SWBICList swbicList = ed807Service.convertToDTO(updatedEntity);
+            return ResponseEntity.ok(swbicList);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @PutMapping("RstrList/{id}")
+    public ResponseEntity<RstrListType> updateRstr(@PathVariable(value = "id") BigInteger id,
+                                                         @RequestBody RstrListType rstrListType){
+        RstrListEntity rstrListEntity = rstrListService.updateRstr(id,rstrListType);
+        if(rstrListEntity!=null) {
+            RstrListType rstrListType1 = ed807Service.convertToDTO(rstrListEntity);
+            return ResponseEntity.ok(rstrListType1);
+        }
+        else {
+            return ResponseEntity.notFound().build();
         }
     }
 }

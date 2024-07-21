@@ -1,5 +1,6 @@
 package com.bank.Service;
 
+import com.bank.DB.ED807Entity;
 import com.bank.DB.PartInfoEntity;
 import com.bank.DTO.ru.cbr.ed.v2.PartInfo;
 import com.bank.Repository.PartInfoRepository;
@@ -13,7 +14,7 @@ import java.util.Optional;
 public class PartInfoSerivce {
     @Autowired
     private PartInfoRepository partInfoRepository;
-    public PartInfoEntity updatePartInfo(BigInteger id,PartInfo partInfo){
+    public ED807Entity updatePartInfo(BigInteger id, PartInfo partInfo){
         Optional<PartInfoEntity> partInfoEntity = partInfoRepository.findById(id);
         if(partInfoEntity!=null){
             PartInfoEntity partInfoEntity1 = partInfoEntity.get();
@@ -26,7 +27,8 @@ public class PartInfoSerivce {
             if(partInfo.getPartAggregateID()!=null) {
                 partInfoEntity1.setPartAggregateID(partInfo.getPartAggregateID());
             }
-            return partInfoRepository.save(partInfoEntity1);
+            partInfoRepository.save(partInfoEntity1);
+            return partInfoEntity1.getEd807Entity();
         }else {
             return null;
         }

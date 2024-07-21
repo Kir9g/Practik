@@ -1,6 +1,7 @@
 package com.bank.Repository;
 
 import com.bank.DB.ED807Entity;
+import com.bank.DB.InitialED;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,5 +20,7 @@ public interface ED807EntityRepository extends JpaRepository<ED807Entity, BigInt
 
     @Query("SELECT e FROM ED807Entity e WHERE e.CreationDate BETWEEN :startDate AND :endDate")
     List<ED807Entity> findAllByCreationDateBetween(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+    Optional<ED807Entity> findByInitialED(InitialED initialED);
 }
 

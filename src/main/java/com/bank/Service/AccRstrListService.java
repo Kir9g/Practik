@@ -7,26 +7,31 @@ import com.bank.Repository.AccRstrListRepository;
 import com.bank.Repository.AccountRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.Optional;
-
+@Service
 public class AccRstrListService {
     @Autowired
     private AccRstrListRepository accRstrListRepository;
     @Transactional
     public AccRstrListEntity updateAccount(BigInteger id, AccRstrListType accRstrListType) {
-    Optional<AccRstrListEntity> accRstrList = accRstrListRepository.findById(id);
-    AccRstrListEntity updateAccRstr = accRstrList.get();
-    if(accRstrListType.getAccRstr() != null){
-        updateAccRstr.setAccRstr(accRstrListType.getAccRstr().value());
-    }
-    if(accRstrListType.getAccRstrDate()!=null){
-        updateAccRstr.setAccRstrDate(accRstrListType.getAccRstrDate().toGregorianCalendar().getTime());
-    }
-    if(accRstrListType.getSuccessorBIC()!= null){
-        updateAccRstr.setSuccessorBIC(accRstrListType.getSuccessorBIC());
-    }
-    return accRstrListRepository.save(updateAccRstr);
+        Optional<AccRstrListEntity> accRstrList = accRstrListRepository.findById(id);
+        if (accRstrList.isPresent()) {
+            AccRstrListEntity updateAccRstr = accRstrList.get();
+            if (accRstrListType.getAccRstr() != null) {
+                updateAccRstr.setAccRstr(accRstrListType.getAccRstr().value());
+            }
+            if (accRstrListType.getAccRstrDate() != null) {
+                updateAccRstr.setAccRstrDate(accRstrListType.getAccRstrDate().toGregorianCalendar().getTime());
+            }
+            if (accRstrListType.getSuccessorBIC() != null) {
+                updateAccRstr.setSuccessorBIC(accRstrListType.getSuccessorBIC());
+            }
+            return accRstrListRepository.save(updateAccRstr);
+        }else {
+            return null;
+        }
     }
 }

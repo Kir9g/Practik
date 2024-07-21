@@ -376,9 +376,14 @@ public class ED807Service {
         return true;
     }
     @Transactional
-    public ED807Entity updateED807(BigInteger id, ED807 ed807) {
-        Optional<ED807Entity> ed807Entitys = ed807EntityRepository.findById(id);
-        ED807Entity ed807Entity = ed807Entitys.get();
+    public ED807 updateED807(BigInteger id, ED807 ed807) {
+        Optional<ED807Entity> ed807EntityOptional = ed807EntityRepository.findById(id);
+        if (!ed807EntityOptional.isPresent()) {
+            throw new RuntimeException("ED807 entity not found with id " + id);
+        }
+
+        ED807Entity ed807Entity = ed807EntityOptional.get();
+
         if (ed807.getEDNo() != null) {
             ed807Entity.setEdno(ed807.getEDNo());
         }
@@ -391,11 +396,15 @@ public class ED807Service {
         if (ed807.getEDReceiver() != null) {
             ed807Entity.setEDReceiver(BigInteger.valueOf(Long.parseLong(ed807.getEDReceiver())));
         }
-        return ed807EntityRepository.save(ed807Entity);
+
+        ed807EntityRepository.save(ed807Entity);
+        ED807 coverted = convertToDTO(ed807Entity);
+        return coverted;
     }
 
 
-    private ED807 convertDTOPreview(ED807Entity ed807Entity){
+
+    public ED807 convertDTOPreview(ED807Entity ed807Entity){
         ED807 dto = new ED807();
         // Установка основных полей
         dto.setId(ed807Entity.getId());
@@ -455,7 +464,7 @@ public class ED807Service {
 
         return dto;
     }
-    private ED807 convertToDTO(ED807Entity ed807Entity) {
+    public ED807 convertToDTO(ED807Entity ed807Entity) {
         ED807 dto = new ED807();
         // Установка основных полей
         dto.setId(ed807Entity.getId());
@@ -521,7 +530,7 @@ public class ED807Service {
         return dto;
     }
 
-    private BICDirectoryEntryType convertToDTO(BICDirectoryEntry bicDirectoryEntry) {
+    public BICDirectoryEntryType convertToDTO(BICDirectoryEntry bicDirectoryEntry) {
         BICDirectoryEntryType dto = new BICDirectoryEntryType();
         dto.setId(bicDirectoryEntry.getId());
         dto.setBIC(bicDirectoryEntry.getBIC());
@@ -558,7 +567,7 @@ public class ED807Service {
 
 
 
-    private ParticipantInfoType convertToDTO(ParticipantInfoEntity participantInfoEntity) {
+    public ParticipantInfoType convertToDTO(ParticipantInfoEntity participantInfoEntity) {
         ParticipantInfoType dto = new ParticipantInfoType();
         dto.setNameP(participantInfoEntity.getNameP());
         dto.setEnglName(participantInfoEntity.getEnglName());
@@ -590,7 +599,7 @@ public class ED807Service {
         return dto;
     }
 
-    private RstrListType convertToDTO(RstrListEntity entity) {
+    public RstrListType convertToDTO(RstrListEntity entity) {
         if (entity == null) {
             return null;
         }
@@ -601,7 +610,7 @@ public class ED807Service {
         return dto;
     }
 
-    private AccountsType convertToDTO(Accounts entity){
+    public AccountsType convertToDTO(Accounts entity){
         if(entity == null){
             return null;
         }
@@ -632,7 +641,7 @@ public class ED807Service {
         return dto;
     }
 
-    private AccRstrListType convertToDTO(AccRstrListEntity entity){
+    public AccRstrListType convertToDTO(AccRstrListEntity entity){
      if(entity == null){
          return null;
      }
@@ -650,7 +659,7 @@ public class ED807Service {
 
      return dto;
     }
-    private SWBICList convertToDTO(SWBICSEntity entity){
+    public SWBICList convertToDTO(SWBICSEntity entity){
         if(entity == null){
             return null;
         }

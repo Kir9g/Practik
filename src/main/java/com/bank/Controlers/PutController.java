@@ -56,7 +56,7 @@ public class PutController {
 
     @PutMapping("Account/{id}")
     public ResponseEntity<AccountsType> updateAccount(@PathVariable(value = "id") BigInteger id,
-                                                     @RequestBody AccountsType accounts) {
+                                                     @RequestBody AccountsType accounts) throws Exception {
         Accounts account = accountsService.updateAccount(id,accounts);
         AccountsType accountsType = ed807Service.convertToDTO(account);
         return ResponseEntity.ok(accountsType);

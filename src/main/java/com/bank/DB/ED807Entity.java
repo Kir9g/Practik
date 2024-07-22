@@ -210,4 +210,7 @@ public class ED807Entity {
     public void setBicDirectoryEntries(List<BICDirectoryEntry> bicDirectoryEntries) {
         this.bicDirectoryEntries = bicDirectoryEntries;
     }
+    public void addBicDirectoryEntries(BICDirectoryEntry bicDirectoryEntries) {
+        this.bicDirectoryEntries.add(bicDirectoryEntries);
+    }
 }

@@ -20,11 +20,11 @@ import com.bank.DTO.ru.cbr.ed.leaftypes.v2.AccountType;
 
 /**
  * Participant’s Accounts information.
- * 
+ *
  * <p>Java class for AccountsType complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="AccountsType"&gt;
  *   &lt;complexContent&gt;
@@ -43,12 +43,12 @@ import com.bank.DTO.ru.cbr.ed.leaftypes.v2.AccountType;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "AccountsType", propOrder = {
-    "accRstrList"
+        "accRstrList"
 })
 public class AccountsType {
 
@@ -81,25 +81,25 @@ public class AccountsType {
 
     /**
      * Gets the value of the accRstrList property.
-     * 
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the Jakarta XML Binding object.
      * This is why there is not a <CODE>set</CODE> method for the accRstrList property.
-     * 
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getAccRstrList().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link AccRstrListType }
-     * 
-     * 
+     *
+     *
      */
     public List<AccRstrListType> getAccRstrList() {
         if (accRstrList == null) {
@@ -110,11 +110,11 @@ public class AccountsType {
 
     /**
      * Gets the value of the account property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getAccount() {
         return account;
@@ -122,11 +122,11 @@ public class AccountsType {
 
     /**
      * Sets the value of the account property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setAccount(String value) {
         this.account = value;
@@ -134,11 +134,11 @@ public class AccountsType {
 
     /**
      * Gets the value of the regulationAccountType property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link AccountType }
-     *     
+     *
      */
     public AccountType getRegulationAccountType() {
         return regulationAccountType;
@@ -146,11 +146,11 @@ public class AccountsType {
 
     /**
      * Sets the value of the regulationAccountType property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link AccountType }
-     *     
+     *
      */
     public void setRegulationAccountType(AccountType value) {
         this.regulationAccountType = value;
@@ -158,11 +158,11 @@ public class AccountsType {
 
     /**
      * Gets the value of the ck property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getCK() {
         return ck;
@@ -170,11 +170,11 @@ public class AccountsType {
 
     /**
      * Sets the value of the ck property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setCK(String value) {
         this.ck = value;
@@ -182,11 +182,11 @@ public class AccountsType {
 
     /**
      * Gets the value of the accountCBRBIC property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getAccountCBRBIC() {
         return accountCBRBIC;
@@ -194,11 +194,11 @@ public class AccountsType {
 
     /**
      * Sets the value of the accountCBRBIC property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setAccountCBRBIC(String value) {
         this.accountCBRBIC = value;
@@ -206,11 +206,11 @@ public class AccountsType {
 
     /**
      * Gets the value of the dateIn property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public XMLGregorianCalendar getDateIn() {
         return dateIn;
@@ -218,11 +218,11 @@ public class AccountsType {
 
     /**
      * Sets the value of the dateIn property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public void setDateIn(XMLGregorianCalendar value) {
         this.dateIn = value;
@@ -230,11 +230,11 @@ public class AccountsType {
 
     /**
      * Gets the value of the dateOut property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public XMLGregorianCalendar getDateOut() {
         return dateOut;
@@ -242,11 +242,11 @@ public class AccountsType {
 
     /**
      * Sets the value of the dateOut property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link XMLGregorianCalendar }
-     *     
+     *
      */
     public void setDateOut(XMLGregorianCalendar value) {
         this.dateOut = value;
@@ -254,11 +254,11 @@ public class AccountsType {
 
     /**
      * Gets the value of the accountStatus property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link AccountStatusType }
-     *     
+     *
      */
     public AccountStatusType getAccountStatus() {
         return accountStatus;
@@ -266,11 +266,11 @@ public class AccountsType {
 
     /**
      * Sets the value of the accountStatus property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link AccountStatusType }
-     *     
+     *
      */
     public void setAccountStatus(AccountStatusType value) {
         this.accountStatus = value;

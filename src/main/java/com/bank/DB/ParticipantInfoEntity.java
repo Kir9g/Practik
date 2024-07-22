@@ -219,6 +219,9 @@ public class ParticipantInfoEntity {
     public void setRstrListEntity(List<RstrListEntity> rstrListEntity) {
         this.rstrListEntity = rstrListEntity;
     }
+    public void addRstrListEntity(RstrListEntity rstrListEntity){
+        this.rstrListEntity.add(rstrListEntity);
+    }
 
     public BICDirectoryEntry getBicDirectoryEntry() {
         return bicDirectoryEntry;

@@ -46,8 +46,9 @@ public class ED807Service {
     @Autowired
     private SWBICSRepository swbicsRepository;
 
+
     @Transactional
-    public void saveED807(ED807 ed807){
+    public void saveED807(ED807 ed807) throws Exception {
         ED807Entity ed807Entity = new ED807Entity();
         ed807Entity.setEdno(ed807.getEDNo());
         ed807Entity.setName(ed807.getName());
@@ -97,7 +98,7 @@ public class ED807Service {
         }else {
             ed807Entity.setInitialED(null);
         }
-        if( ed807.getBICDirectoryEntry() != null) {
+        if(ed807.getBICDirectoryEntry() != null) {
             List<BICDirectoryEntryType> bicDirectoryEntryTypes = ed807.getBICDirectoryEntry();
             List<BICDirectoryEntry> bicDirectoryEntries = new ArrayList<>();
             for (BICDirectoryEntryType bicDirectoryEntryType: bicDirectoryEntryTypes){
@@ -242,7 +243,9 @@ public class ED807Service {
                             }else {accountsEntity.setDateOut(null);}
                             if(accountsType.getAccountStatus() != null){
                                 accountsEntity.setAccountStatus(accountsType.getAccountStatus().value());
-                            }else {accountsEntity.setAccountStatus(null);}
+                            }else {
+                                accountsEntity.setAccountStatus(null);
+                            }
                             accountsEntity.setBicDirectoryEntry(bicDirectoryEntry);
                             if (accountsType.getAccRstrList()!= null){
                                 List<AccRstrListType> accRstrListTypeList = accountsType.getAccRstrList();
@@ -258,8 +261,10 @@ public class ED807Service {
                                     accRstrListEntities.add(accRstrListEntity);
                                 }
                                 accountsEntity.setAccRstrListEntity(accRstrListEntities);
+                                accountRepository.save(accountsEntity);
                             }
                             accounts.add(accountsEntity);
+
                         }
                         bicDirectoryEntry.setAccounts(accounts);
                     }
@@ -267,11 +272,10 @@ public class ED807Service {
                 bicDirectoryEntry.setEd807Entity(ed807Entity);
                 bicDirectoryEntries.add(bicDirectoryEntry);
 
-
-                bicDirectoryEntity.save(bicDirectoryEntry);
                 ed807Entity.setBicDirectoryEntries(bicDirectoryEntries);
-
                 ed807EntityRepository.save(ed807Entity);
+                bicDirectoryEntity.save(bicDirectoryEntry);
+
             }
         }
 
@@ -671,7 +675,7 @@ public class ED807Service {
         return dto;
     }
 
-    private XMLGregorianCalendar toXMLGregorianCalendar(Date date) {
+    public XMLGregorianCalendar toXMLGregorianCalendar(Date date) {
         if (date == null) {
             return null;
         }

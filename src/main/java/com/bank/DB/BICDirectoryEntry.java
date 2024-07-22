@@ -7,6 +7,7 @@ import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,10 +27,10 @@ public class BICDirectoryEntry {
     private ParticipantInfoEntity participantInfo;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Accounts> accounts;
+    private List<Accounts> accounts = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<SWBICSEntity> swbics;
+    private List<SWBICSEntity> swbics = new ArrayList<>();
 
     @ManyToOne()
     @JoinColumn(name = "ED_id")
@@ -50,6 +51,9 @@ public class BICDirectoryEntry {
     public void setSwbics(List<SWBICSEntity> swbics) {
         this.swbics = swbics;
     }
+    public void addSwbics(SWBICSEntity swbics){
+        this.swbics.add(swbics);
+    }
 
     public List<Accounts> getAccounts() {
         return accounts;
@@ -57,6 +61,9 @@ public class BICDirectoryEntry {
 
     public void setAccounts(List<Accounts> accounts) {
         this.accounts = accounts;
+    }
+    public void addAccount(Accounts accounts){
+        this.accounts.add(accounts);
     }
 
     public ParticipantInfoEntity getParticipantInfo() {

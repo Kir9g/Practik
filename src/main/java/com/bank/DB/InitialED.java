@@ -27,6 +27,14 @@ public class InitialED {
     @JoinColumn(name = "ed807Entity")
     private ED807Entity ed807Entity;
 
+    public ED807Entity getEd807Entity() {
+        return ed807Entity;
+    }
+
+    public void setEd807Entity(ED807Entity ed807Entity) {
+        this.ed807Entity = ed807Entity;
+    }
+
     public BigInteger getID() {
         return ID;
     }

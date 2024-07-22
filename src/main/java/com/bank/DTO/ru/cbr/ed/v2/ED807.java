@@ -66,6 +66,7 @@ public class ED807
     protected XMLGregorianCalendar businessDay;
     @XmlAttribute(name = "DirectoryVersion")
     protected BigInteger directoryVersion;
+
     @XmlTransient
     protected String name;
     @XmlTransient

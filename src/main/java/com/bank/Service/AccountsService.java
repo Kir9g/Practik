@@ -4,6 +4,7 @@ import com.bank.DB.Accounts;
 import com.bank.DB.BICDirectoryEntry;
 import com.bank.DB.ED807Entity;
 import com.bank.DTO.ru.cbr.ed.v2.AccountsType;
+import com.bank.DTO.ru.cbr.ed.v2.BICDirectoryEntryType;
 import com.bank.DTO.ru.cbr.ed.v2.ED807;
 import com.bank.Repository.AccountRepository;
 import com.bank.Repository.BICDirectoryEntity;
@@ -26,9 +27,10 @@ public class AccountsService {
 
     @Autowired
     private AccountRepository accountsRepository;
-
+    @Autowired
+    private BICDirectoryEntity bicDirectoryEntity;
     @Transactional
-    public Accounts updateAccount(BigInteger id, AccountsType accountsType) {
+    public Accounts updateAccount(BigInteger id, AccountsType accountsType) throws Exception {
         Optional<Accounts> accounts = accountsRepository.findById(id);
         Accounts accounts1 = accounts.get();
         if(accountsType.getAccountStatus()!=null){
@@ -56,4 +58,26 @@ public class AccountsService {
         return accountsRepository.save(accounts1);
     }
 
+    @Transactional
+    public Accounts createAcc(BICDirectoryEntry bicDirectoryEntry, AccountsType accountsType) throws Exception {
+        Accounts accountsEntity = new Accounts();
+        accountsEntity.setAccount(accountsType.getAccount());
+        accountsEntity.setRegulationAccountType(accountsType.getRegulationAccountType().value());
+        if(accountsType.getAccount() != null) {
+            accountsEntity.setCk(accountsType.getCK());
+        }else {accountsEntity.setCk(null);}
+        accountsEntity.setAccountCBRBIC(accountsType.getAccountCBRBIC());
+        accountsEntity.setDateIn(accountsType.getDateIn().toGregorianCalendar().getTime());
+        if(accountsType.getDateOut() != null) {
+            accountsEntity.setDateOut(accountsType.getDateOut().toGregorianCalendar().getTime());
+        }else {accountsEntity.setDateOut(null);}
+        if(accountsType.getAccountStatus() != null){
+            accountsEntity.setAccountStatus(String.valueOf(accountsType.getAccountStatus()));
+        }else {accountsEntity.setAccountStatus(null);}
+        accountsEntity.setBicDirectoryEntry(bicDirectoryEntry);
+        bicDirectoryEntry.addAccount(accountsEntity);
+        bicDirectoryEntity.save(bicDirectoryEntry);
+
+        return accountsRepository.save(accountsEntity);
+    }
 }

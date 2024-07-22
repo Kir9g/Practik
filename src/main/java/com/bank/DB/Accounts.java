@@ -1,12 +1,9 @@
 package com.bank.DB;
 
-import com.bank.DTO.ru.cbr.ed.leaftypes.v2.AccountStatusType;
-import com.bank.DTO.ru.cbr.ed.leaftypes.v2.AccountType;
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlAttribute;
 
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,11 +33,11 @@ public class Accounts {
     @Column(name = "DateOut")
     private Date dateOut;
 
-    @Column(name = "AccountStatus", length = 4)
+    @Column(name = "accountStatus", length = 4)
     private String accountStatus;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<AccRstrListEntity> accRstrListEntity;
+    private List<AccRstrListEntity> accRstrListEntity = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "BIC")
@@ -49,7 +46,8 @@ public class Accounts {
     @Override
     public String toString() {
         return "Accounts{" +
-                "Account='" + Account + '\'' +
+                "id=" + id +
+                ", Account='" + Account + '\'' +
                 ", regulationAccountType='" + regulationAccountType + '\'' +
                 ", ck='" + ck + '\'' +
                 ", accountCBRBIC='" + accountCBRBIC + '\'' +
@@ -123,6 +121,9 @@ public class Accounts {
 
     public void setAccRstrListEntity(List<AccRstrListEntity> accRstrListEntity) {
         this.accRstrListEntity = accRstrListEntity;
+    }
+    public void addAccRstrListEntity(AccRstrListEntity accRstrList){
+        this.accRstrListEntity.add(accRstrList);
     }
 
     public BICDirectoryEntry getBicDirectoryEntry() {

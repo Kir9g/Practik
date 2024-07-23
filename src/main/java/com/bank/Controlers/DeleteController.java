@@ -5,6 +5,7 @@ import com.bank.Repository.ED807EntityRepository;
 import com.bank.Service.ED807Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
@@ -12,6 +13,7 @@ import java.math.BigInteger;
 
 
 @RestController
+@PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping("/Delete")
 public class DeleteController {
 

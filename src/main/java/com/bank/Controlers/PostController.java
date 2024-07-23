@@ -11,7 +11,9 @@ import jakarta.xml.bind.Unmarshaller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -62,8 +64,8 @@ public class PostController {
 
     @Value("${file.upload-dir}")
     private String uploadDir;
-
-    @PostMapping("/upload")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,
                                         @RequestParam(required = false) String name) {
         if (file.isEmpty()) {
@@ -101,8 +103,8 @@ public class PostController {
         }
     }
 
-
-    @PostMapping("Create/BIC")
+    @PreAuthorize("hasAuthority('USER')")
+    @PostMapping("Create/BIC/{id}")
     public ResponseEntity<BICDirectoryEntryType> createBic(@PathVariable(value = "id") BigInteger id,
                                                            @RequestBody BICDirectoryEntryType bicDirectoryEntryType){
         Optional<ED807Entity> entity = entityRepository.findById(id);//id от ed807
@@ -114,7 +116,8 @@ public class PostController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PostMapping("Create/Account")
+    @PreAuthorize("hasAuthority('USER')")
+    @PostMapping("Create/Account/{id}")
     public ResponseEntity<AccountsType> createAccount(@PathVariable(value = "id") BigInteger id,
                                                            @RequestBody AccountsType accountsType) throws Exception {
         Optional<BICDirectoryEntry> entity = bicDirectoryEntity.findById(id);//id от BIC
@@ -126,7 +129,8 @@ public class PostController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PostMapping("Create/AccRstr")
+    @PreAuthorize("hasAuthority('USER')")
+    @PostMapping("Create/AccRstr/{id}")
     public ResponseEntity<AccRstrListType> createAccRstr(@PathVariable(value = "id") BigInteger id,
                                                       @RequestBody AccRstrListType accRstrListType){
         Optional<Accounts> entity = accountRepository.findById(id);//id от BIC
@@ -138,7 +142,8 @@ public class PostController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PostMapping("Create/InitialED")
+    @PreAuthorize("hasAuthority('USER')")
+    @PostMapping("Create/InitialED/{id}")
     public ResponseEntity<ED807> createInitial(@PathVariable(value = "id") BigInteger id,
                                                          @RequestBody InitialEDInfo initialEDInfo){
         Optional<ED807Entity> entity = ed807EntityRepository.findById(id);//id от BIC
@@ -150,7 +155,8 @@ public class PostController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PostMapping("Create/PartInfo")
+    @PreAuthorize("hasAuthority('USER')")
+    @PostMapping("Create/PartInfo/{id}")
     public ResponseEntity<ED807> createPartInfo(@PathVariable(value = "id") BigInteger id,
                                                @RequestBody PartInfo partInfo){
         Optional<ED807Entity> entity = ed807EntityRepository.findById(id);//id от BIC
@@ -162,7 +168,8 @@ public class PostController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PostMapping("Create/ParticipantInfo")
+    @PreAuthorize("hasAuthority('USER')")
+    @PostMapping("Create/ParticipantInfo/{id}")
     public ResponseEntity<BICDirectoryEntryType> createPartInfo(@PathVariable(value = "id") BigInteger id,
                                                 @RequestBody ParticipantInfoType participantInfoType){
         Optional<BICDirectoryEntry> entity = bicDirectoryEntity.findById(id);//id от BIC
@@ -174,7 +181,8 @@ public class PostController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PostMapping("Create/Rstr")
+    @PreAuthorize("hasAuthority('USER')")
+    @PostMapping("Create/Rstr/{id}")
     public ResponseEntity<RstrListType> createRstr(@PathVariable(value = "id") BigInteger id,
                                                                 @RequestBody RstrListType rstrListType){
         Optional<ParticipantInfoEntity> entity = participantInfoRepository.findById(id);
@@ -186,7 +194,8 @@ public class PostController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PostMapping("Create/SWBIC")
+    @PreAuthorize("hasAuthority('USER')")
+    @PostMapping("Create/SWBIC/{id}")
     public ResponseEntity<SWBICList> createSWBIC(@PathVariable(value = "id") BigInteger id,
                                                                 @RequestBody SWBICList swbicList){
         Optional<BICDirectoryEntry> entity = bicDirectoryEntity.findById(id);//id от BIC

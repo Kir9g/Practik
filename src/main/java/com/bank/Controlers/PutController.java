@@ -8,6 +8,7 @@ import com.bank.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/Edit")
+@PreAuthorize("hasAuthority('USER')")
 public class PutController {
     @Autowired
     private AccountsService accountsService;

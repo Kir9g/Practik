@@ -32,7 +32,7 @@ public class DeleteController {
             return ResponseEntity.notFound().build();
         }
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/all")
     public ResponseEntity<Void> deleteAll() {
         boolean isDeleted = ed807Service.deleteAll();

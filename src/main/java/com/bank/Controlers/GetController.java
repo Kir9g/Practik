@@ -3,6 +3,7 @@ package com.bank.Controlers;
 import com.bank.DB.ED807Entity;
 import com.bank.DTO.ru.cbr.ed.v2.ED807;
 import com.bank.Service.ED807Service;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/get")
+@Tag(name = "GetController", description = "Контроллер для  получении информации о сущностях хранящихся в бд")
 public class GetController {
     @Autowired
     private ED807Service ed807Service;

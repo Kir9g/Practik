@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()  // Разрешить доступ к H2-консоли
                         .requestMatchers("/get/all", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/index.html#/").permitAll()
-                        .requestMatchers("/api/ED807/**").authenticated()
+                        .requestMatchers("/api/ED807/**","/Delete/**","/Edit/**").authenticated()
                         .anyRequest().permitAll())
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))  // Разрешить загрузку фреймов для H2-консоли
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)

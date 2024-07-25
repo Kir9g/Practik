@@ -17,7 +17,7 @@ public class User  {
     @Column(name = "password")
     private String password;
     @Column(name = "ROLE")
-    private String ROLE;
+    private RoleEnum ROLE;
 
     public BigInteger getID() {
         return ID;
@@ -43,19 +43,18 @@ public class User  {
         this.password = password;
     }
 
-    public String getROLE() {
+    public RoleEnum getROLE() {
         return ROLE;
     }
 
-    public void setROLE(String ROLE) {
+    public void setROLE(RoleEnum ROLE) {
         this.ROLE = ROLE;
     }
-
 
     public User() {
     }
 
-    public User(BigInteger ID, String name, String password, String ROLE) {
+    public User(BigInteger ID, String name, String password, RoleEnum ROLE) {
         this.ID = ID;
         this.name = name;
         this.password = password;
@@ -68,7 +67,7 @@ public class User  {
                 "ID=" + ID +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
-                ", ROLE='" + ROLE + '\'' +
+                ", ROLE=" + ROLE +
                 '}';
     }
 }

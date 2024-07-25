@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.persistence.Column;
 import jakarta.xml.bind.annotation.*;
 import com.bank.DTO.ru.cbr.ed.leaftypes.v2.ReasonCodeType;
@@ -74,6 +75,7 @@ public class ED807
     @XmlTransient
     protected Date CreationDate;
     @XmlTransient
+
     protected BigInteger id;
     /**
      * Gets the value of the bicDirectoryEntry property.

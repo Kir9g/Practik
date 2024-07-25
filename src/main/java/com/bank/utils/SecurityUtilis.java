@@ -1,5 +1,6 @@
 package com.bank.utils;
 
+import com.bank.DB.RoleEnum;
 import com.bank.DB.User;
 import com.bank.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +23,14 @@ public class SecurityUtilis implements CommandLineRunner {
         User user1 = new User();
         user1.setName("User");
         user1.setPassword((encoder.encode("12345")));
-        user1.setROLE("USER");
+        user1.setROLE(RoleEnum.USER);
 
         userRepository.save(user1);
 
         User admin = new User();
         admin.setName("admin");
         admin.setPassword(encoder.encode("12345"));
-        admin.setROLE("ADMIN");
+        admin.setROLE(RoleEnum.ADMIN);
 
         userRepository.save(admin);
     }

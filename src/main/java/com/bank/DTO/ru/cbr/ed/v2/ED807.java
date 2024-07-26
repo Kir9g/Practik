@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.persistence.Column;
 import jakarta.xml.bind.annotation.*;
@@ -51,12 +52,14 @@ import com.bank.DTO.ru.cbr.ed.leaftypes.v2.RequestCodeType;
 @XmlType(name = "ED807", propOrder = {
     "bicDirectoryEntry"
 })
+@Schema(description = "сущность ed807")
 public class ED807
     extends ESIDWithPartInfo
 {
-
     @XmlElement(name = "BICDirectoryEntry")
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     protected List<BICDirectoryEntryType> bicDirectoryEntry;
+    @Schema(description = "Код причины формирования ЭСИС", example = "ACCH", maximum = "4")
     @XmlAttribute(name = "CreationReason", required = true)
     protected ReasonCodeType creationReason;
     @XmlAttribute(name = "CreationDateTime", required = true)
@@ -75,7 +78,7 @@ public class ED807
     @XmlTransient
     protected Date CreationDate;
     @XmlTransient
-
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY, example = "1")
     protected BigInteger id;
     /**
      * Gets the value of the bicDirectoryEntry property.

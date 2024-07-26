@@ -7,6 +7,7 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -41,20 +42,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()  // Разрешить доступ к H2-консоли
                         .requestMatchers("/get/all", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/index.html#/").permitAll()
-                        .requestMatchers("/api/ED807/**","/Delete/**","/Edit/**").authenticated()
-                        .anyRequest().permitAll())
+                        .anyRequest().authenticated())
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))  // Разрешить загрузку фреймов для H2-консоли
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+                .httpBasic(Customizer.withDefaults())
                 .build();
     }
     @Bean //Ставим степень кодировки, с которой кодировали пароль в базе
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder(5);
     }
-    @Bean
-    static RoleHierarchy roleHierarchy() {
-        return RoleHierarchyImpl.withDefaultRolePrefix()
-                .role("ADMIN").implies("USER")
-                .build();
-    }
+
 }

@@ -21,14 +21,14 @@ public class SecurityUtilis implements CommandLineRunner {
     public void run(String... args) throws Exception {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(5);
         User user1 = new User();
-        user1.setName("User");
+        user1.setUsername("User");
         user1.setPassword((encoder.encode("12345")));
         user1.setROLE(RoleEnum.USER);
 
         userRepository.save(user1);
 
         User admin = new User();
-        admin.setName("admin");
+        admin.setUsername("admin");
         admin.setPassword(encoder.encode("12345"));
         admin.setROLE(RoleEnum.ADMIN);
 

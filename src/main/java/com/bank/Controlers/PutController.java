@@ -5,6 +5,10 @@ import com.bank.DTO.ru.cbr.ed.v2.*;
 import com.bank.Repository.AccountRepository;
 import com.bank.Repository.ED807EntityRepository;
 import com.bank.Service.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +21,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/Edit")
 @PreAuthorize("hasAuthority('USER')")
+@Tag(name = "PutController", description = "Контроллер для обновленния уже созданных сущностей в бд")
+@SecurityRequirement(name = "basicAuth")
 public class PutController {
     @Autowired
     private AccountsService accountsService;
@@ -41,38 +47,56 @@ public class PutController {
 
 
     @PutMapping("ed807/{id}")
-    public ResponseEntity<ED807> updateED807(@PathVariable(value = "id") BigInteger id,
-                                                   @RequestBody ED807 ed807) {
+    @Operation(
+            summary = "Обновление ed807",
+            description = "Позволяет обновлять ed807 по id который передается, и по полям который передал пользователь"
+    )
+    public ResponseEntity<ED807> updateED807(@Parameter(description = "Идентификатор ED807, который надо обновить")@PathVariable(value = "id") BigInteger id,
+                                             @Parameter(description = "Поля которые надо обновить")@RequestBody ED807 ed807) {
         ED807 ed807Entity = ed807Service.updateED807(id, ed807);
 
         return ResponseEntity.ok(ed807Entity);
     }
-
+    @Operation(
+            summary = "Обновление bic",
+            description = "Позволяет обновлять bic по id который передается, и по полям который передал пользователь"
+    )
     @PutMapping("bic/{id}")
-    public ResponseEntity<BICDirectoryEntryType> updateBIC(@PathVariable(value = "id") BigInteger id,
-                                                 @RequestBody BICDirectoryEntryType bicDirectoryEntry) {
+    public ResponseEntity<BICDirectoryEntryType> updateBIC(@Parameter(description = "Идентификатор bic, который надо обновить")@PathVariable(value = "id") BigInteger id,
+                                                           @Parameter(description = "Поля которые надо обновить")@RequestBody BICDirectoryEntryType bicDirectoryEntry) {
         BICDirectoryEntry bicDirectoryEntry1 = bicDirectoryService.updateBIC(id, bicDirectoryEntry);
         BICDirectoryEntryType bicDirectoryEntryType = ed807Service.convertToDTO(bicDirectoryEntry1);
         return ResponseEntity.ok(bicDirectoryEntryType);
     }
-
+    @Operation(
+            summary = "Обновление Account",
+            description = "Позволяет обновлять Account по id который передается, и по полям который передал пользователь"
+    )
     @PutMapping("Account/{id}")
-    public ResponseEntity<AccountsType> updateAccount(@PathVariable(value = "id") BigInteger id,
-                                                     @RequestBody AccountsType accounts) throws Exception {
+    public ResponseEntity<AccountsType> updateAccount(@Parameter(description = "Идентификатор Account, который надо обновить")@PathVariable(value = "id") BigInteger id,
+                                                      @Parameter(description = "Поля которые надо обновить")@RequestBody AccountsType accounts) throws Exception {
         Accounts account = accountsService.updateAccount(id,accounts);
         AccountsType accountsType = ed807Service.convertToDTO(account);
         return ResponseEntity.ok(accountsType);
     }
     @PutMapping("AccRstrList/{id}")
-    public ResponseEntity<AccRstrListType> updateAccRstrList(@PathVariable(value = "id") BigInteger id,
-                                                         @RequestBody AccRstrListType accRstrListEntity) {
+    @Operation(
+            summary = "Обновление AccRstrLis",
+            description = "Позволяет обновлять AccRstrLis по id который передается, и по полям который передал пользователь"
+    )
+    public ResponseEntity<AccRstrListType> updateAccRstrList(@Parameter(description = "Идентификатор AccRstrLis, который надо обновить")@PathVariable(value = "id") BigInteger id,
+                                                             @Parameter(description = "Поля которые надо обновить")@RequestBody AccRstrListType accRstrListEntity) {
         AccRstrListEntity accRstrList = accRstrListService.updateAccount(id,accRstrListEntity);
         AccRstrListType AccRstrListType = ed807Service.convertToDTO(accRstrList);
         return ResponseEntity.ok(AccRstrListType);
     }
     @PutMapping("InitialED/{id}")
-    public ResponseEntity<ED807> updateInitial(@PathVariable(value = "id") BigInteger id,
-                                                   @RequestBody EDRefID edRefID){
+    @Operation(
+            summary = "Обновление InitialED",
+            description = "Позволяет обновлять InitialED по id который передается, и по полям который передал пользователь"
+    )
+    public ResponseEntity<ED807> updateInitial(@Parameter(description = "Идентификатор InitialED, который надо обновить")@PathVariable(value = "id") BigInteger id,
+                                               @Parameter(description = "Поля которые надо обновить")@RequestBody EDRefID edRefID){
         InitialED initialED1 = initialEDService.updateInitial(id, edRefID);
         Optional<ED807Entity> ed807Entity = ed807EntityRepository.findByInitialED(initialED1);
         if(ed807Entity.isPresent()){
@@ -83,8 +107,12 @@ public class PutController {
         return ResponseEntity.notFound().build();
     }
     @PutMapping("ParticipantInfo/{id}")
-    public ResponseEntity<ParticipantInfoType> updateParticipant(@PathVariable(value = "id") BigInteger id,
-                                                   @RequestBody ParticipantInfoType participantInfoType){
+    @Operation(
+            summary = "Обновление ParticipantInfo",
+            description = "Позволяет обновлять ParticipantInfo по id который передается, и по полям который передал пользователь"
+    )
+    public ResponseEntity<ParticipantInfoType> updateParticipant(@Parameter(description = "Идентификатор ParticipantInfo, который надо обновить")@PathVariable(value = "id") BigInteger id,
+                                                                 @Parameter(description = "Поля которые надо обновить")@RequestBody ParticipantInfoType participantInfoType){
         ParticipantInfoEntity participantInfoEntity = participantInfoService.updateParticipant(id, participantInfoType);
         if(participantInfoEntity != null) {
             ParticipantInfoType participantInfoType1 = ed807Service.convertToDTO(participantInfoEntity);
@@ -94,8 +122,12 @@ public class PutController {
         }
     }
     @PutMapping("PartInfo/{id}")
-    public ResponseEntity<ED807> updatePartInfo(@PathVariable(value = "id") BigInteger id,
-                                                   @RequestBody PartInfo partInfo){
+    @Operation(
+            summary = "Обновление PartInfo",
+            description = "Позволяет обновлять PartInfo по id который передается, и по полям который передал пользователь"
+    )
+    public ResponseEntity<ED807> updatePartInfo(@Parameter(description = "Идентификатор PartInfo, который надо обновить")@PathVariable(value = "id") BigInteger id,
+                                                @Parameter(description = "Поля которые надо обновить")@RequestBody PartInfo partInfo){
         ED807Entity entity = partInfoSerivce.updatePartInfo(id,partInfo);
         if(entity!=null) {
             ED807 ed807 = ed807Service.convertToDTO(entity);
@@ -106,7 +138,12 @@ public class PutController {
         }
     }
     @PutMapping("SWIC/{id}")
-    public ResponseEntity<SWBICList> partialUpdateSWBIC(@PathVariable BigInteger id, @RequestBody SWBICList updateDTO) {
+    @Operation(
+            summary = "Обновление SWBIC",
+            description = "Позволяет обновлять SWBIC по id который передается, и по полям который передал пользователь"
+    )
+    public ResponseEntity<SWBICList> partialUpdateSWBIC(@Parameter(description = "Идентификатор SWBIC, который надо обновить")@PathVariable BigInteger id,
+                                                        @Parameter(description = "Поля которые надо обновить")@RequestBody SWBICList updateDTO) {
         SWBICSEntity updatedEntity = swbicsService.updateSwbic(id,updateDTO);
         if (updatedEntity != null) {
             SWBICList swbicList = ed807Service.convertToDTO(updatedEntity);
@@ -116,8 +153,12 @@ public class PutController {
         }
     }
     @PutMapping("RstrList/{id}")
-    public ResponseEntity<RstrListType> updateRstr(@PathVariable(value = "id") BigInteger id,
-                                                         @RequestBody RstrListType rstrListType){
+    @Operation(
+            summary = "Обновление RstrList",
+            description = "Позволяет обновлять RstrList по id который передается, и по полям который передал пользователь"
+    )
+    public ResponseEntity<RstrListType> updateRstr(@Parameter(description = "Идентификатор RstrList, который надо обновить")@PathVariable(value = "id") BigInteger id,
+                                                   @Parameter(description = "Поля которые надо обновить")@RequestBody RstrListType rstrListType){
         RstrListEntity rstrListEntity = rstrListService.updateRstr(id,rstrListType);
         if(rstrListEntity!=null) {
             RstrListType rstrListType1 = ed807Service.convertToDTO(rstrListEntity);

@@ -1,79 +1,63 @@
-package com.bank.DB;
+package com.bank.DTO.Models;
 
+import com.bank.DB.BICDirectoryEntry;
+import com.bank.DB.InitialED;
+import com.bank.DB.PartInfoEntity;
+import com.bank.DTO.ru.cbr.ed.v2.PartInfo;
 import jakarta.persistence.*;
 
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-@Entity
-@Table(name = "ED807")
-public class ED807Entity {
-    @Id
-    @GeneratedValue()
+public class ED807DTO {
     private BigInteger Id;
 
-    @Column(name = "name")
+
     private String name;
 
-    @Column(name = "file_path")
+
     private String filePath;
 
-    @Column(name = "CreationDate")
+    @Temporal(TemporalType.DATE)
     private Date CreationDate;
 
-    @Column(name = "EDNo", length = 9, nullable = false, unique = true)
+
     private BigInteger Edno;
 
-    @Column(name = "EDDate", nullable = false)
+
     private Date EDDate;
 
-    @Column(name = "EDAuthor", nullable = false, length = 10)
+
     private String EDAuthor;
 
-    @Column(name = "EDReceiver", nullable = true, length = 10)
     private BigInteger EDReceiver;
 
-    @Column(name = "CreationReason", nullable = false, length = 4)
+
     private String CreationReason;
 
-    @Column(name = "CreationDateTime", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date CreationDateTime;
 
-    @Column(name = "InfoTypeCode", nullable = false,length = 4)
+
     private String InfoTypeCode;
 
-    @Column(name = "BusinessDay", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date BusinessDay;
 
-    @Column(name = "DirectoryVersion", nullable = true, length = 2)
     private BigInteger DirectoryVersion;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ed807EntityPartInfo", referencedColumnName = "id", nullable = true)
-    private PartInfoEntity partInfoEntity;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ed807Entity", unique = true, nullable = true)
-    private InitialED initialED;
+    private PartInfoDTO partInfoDTO;
 
-    @OneToMany(mappedBy = "ed807Entity", cascade = CascadeType.ALL, orphanRemoval=true, fetch = FetchType.EAGER)
-    private Set<BICDirectoryEntry> bicDirectoryEntries = new HashSet<>();
+    private InitialEDDTO initialEDDTO;
 
-    public BigInteger getId() {
-        return Id;
-    }
-
-    public void setId(BigInteger id) {
-        Id = id;
-    }
-
-    public void setBicDirectoryEntries(Set<BICDirectoryEntry> bicDirectoryEntries) {
-        this.bicDirectoryEntries = bicDirectoryEntries;
-    }
+    private Set<BicDirectoryDTO> bicDirectoryDTOS = new HashSet<>();
 
     @Override
     public String toString() {
-        return "ED807Entity{" +
+        return "ED807DTO{" +
                 "Id=" + Id +
                 ", name='" + name + '\'' +
                 ", filePath='" + filePath + '\'' +
@@ -87,10 +71,18 @@ public class ED807Entity {
                 ", InfoTypeCode='" + InfoTypeCode + '\'' +
                 ", BusinessDay=" + BusinessDay +
                 ", DirectoryVersion=" + DirectoryVersion +
-                ", partInfoEntity=" + partInfoEntity +
-                ", initialED=" + initialED +
-                ", bicDirectoryEntries=" + bicDirectoryEntries +
+                ", partInfoDTO=" + partInfoDTO +
+                ", initialEDDTO=" + initialEDDTO +
+                ", bicDirectoryDTOS=" + bicDirectoryDTOS +
                 '}';
+    }
+
+    public BigInteger getId() {
+        return Id;
+    }
+
+    public void setId(BigInteger id) {
+        Id = id;
     }
 
     public String getName() {
@@ -189,27 +181,27 @@ public class ED807Entity {
         DirectoryVersion = directoryVersion;
     }
 
-    public PartInfoEntity getPartInfoEntity() {
-        return partInfoEntity;
+    public PartInfoDTO getPartInfoDTO() {
+        return partInfoDTO;
     }
 
-    public void setPartInfoEntity(PartInfoEntity partInfoEntity) {
-        this.partInfoEntity = partInfoEntity;
+    public void setPartInfoDTO(PartInfoDTO partInfoDTO) {
+        this.partInfoDTO = partInfoDTO;
     }
 
-    public InitialED getInitialED() {
-        return initialED;
+    public InitialEDDTO getInitialEDDTO() {
+        return initialEDDTO;
     }
 
-    public void setInitialED(InitialED initialED) {
-        this.initialED = initialED;
+    public void setInitialEDDTO(InitialEDDTO initialEDDTO) {
+        this.initialEDDTO = initialEDDTO;
     }
 
-    public Set<BICDirectoryEntry> getBicDirectoryEntries() {
-        return bicDirectoryEntries;
+    public Set<BicDirectoryDTO> getBicDirectoryDTOS() {
+        return bicDirectoryDTOS;
     }
 
-    public void addBicDirectoryEntries(BICDirectoryEntry bicDirectoryEntries) {
-        this.bicDirectoryEntries.add(bicDirectoryEntries);
+    public void setBicDirectoryDTOS(Set<BicDirectoryDTO> bicDirectoryDTOS) {
+        this.bicDirectoryDTOS = bicDirectoryDTOS;
     }
 }

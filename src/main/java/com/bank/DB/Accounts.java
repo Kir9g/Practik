@@ -3,9 +3,7 @@ package com.bank.DB;
 import jakarta.persistence.*;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "Accounts")
@@ -28,16 +26,18 @@ public class Accounts {
     private String accountCBRBIC;
 
     @Column(name = "DateIn", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date dateIn;
 
     @Column(name = "DateOut")
+    @Temporal(TemporalType.DATE)
     private Date dateOut;
 
     @Column(name = "accountStatus", length = 4)
     private String accountStatus;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<AccRstrListEntity> accRstrListEntity = new ArrayList<>();
+    private Set<AccRstrListEntity> accRstrListEntity = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "BIC")
@@ -115,13 +115,14 @@ public class Accounts {
         this.accountStatus = accountStatus;
     }
 
-    public List<AccRstrListEntity> getAccRstrListEntity() {
+    public Set<AccRstrListEntity> getAccRstrListEntity() {
         return accRstrListEntity;
     }
 
-    public void setAccRstrListEntity(List<AccRstrListEntity> accRstrListEntity) {
+    public void setAccRstrListEntity(Set<AccRstrListEntity> accRstrListEntity) {
         this.accRstrListEntity = accRstrListEntity;
     }
+
     public void addAccRstrListEntity(AccRstrListEntity accRstrList){
         this.accRstrListEntity.add(accRstrList);
     }

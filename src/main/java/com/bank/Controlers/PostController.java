@@ -1,6 +1,7 @@
 package com.bank.Controlers;
 
 import com.bank.DB.*;
+import com.bank.DTO.Models.*;
 import com.bank.DTO.ru.cbr.ed.v2.*;
 import com.bank.Repository.*;
 import com.bank.Service.*;
@@ -70,7 +71,6 @@ public class PostController {
 
     @Value("${file.upload-dir}")
     private String uploadDir;
-    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
             summary = "Загрузка xml файла ed807",
@@ -113,137 +113,129 @@ public class PostController {
         }
     }
 
-    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("Create/BIC/{id}")
     @Operation(
             summary = "Создание bic",
             description = "Позволяет создавать бик для ed807, id которого передается в данный метод, создается без связанных сущностей"
     )
-    public ResponseEntity<BICDirectoryEntryType> createBic(@Parameter(description = "Идентификатор ed807")@PathVariable(value = "id") BigInteger id,
+    public ResponseEntity<BicDirectoryDTO> createBic(@Parameter(description = "Идентификатор ed807")@PathVariable(value = "id") BigInteger id,
                                                            @Parameter(description = "Поля для создания")@RequestBody BICDirectoryEntryType bicDirectoryEntryType){
         Optional<ED807Entity> entity = entityRepository.findById(id);//id от ed807
         if(entity.isPresent()){
             BICDirectoryEntry bicDirectoryEntry = bicDirectoryService.createBIC(entity.get(),bicDirectoryEntryType);
-            BICDirectoryEntryType bicDirectoryEntryType1 = ed807Service.convertToDTO(bicDirectoryEntry);
+            BicDirectoryDTO bicDirectoryEntryType1 = ed807Service.convertToDTO(bicDirectoryEntry);
             return ResponseEntity.ok(bicDirectoryEntryType1);
         }else {
             return ResponseEntity.notFound().build();
         }
     }
-    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("Create/Account/{id}")
     @Operation(
             summary = "Создание Account",
             description = "Позволяет создавать Account для bic, id которого передается в данный метод, создается без связанных сущностей"
     )
-    public ResponseEntity<AccountsType> createAccount(@Parameter(description = "Идентификатор BIC")@PathVariable(value = "id") BigInteger id,
-                                                      @Parameter(description = "Поля для создания")@RequestBody AccountsType accountsType) throws Exception {
+    public ResponseEntity<AccountsDTO> createAccount(@Parameter(description = "Идентификатор BIC")@PathVariable(value = "id") BigInteger id,
+                                                      @Parameter(description = "Поля для создания")@RequestBody AccountsDTO accountsType) throws Exception {
         Optional<BICDirectoryEntry> entity = bicDirectoryEntity.findById(id);//id от BIC
         if(entity.isPresent()){
             Accounts accounts = accountsService.createAcc(entity.get(),accountsType);
-            AccountsType accounts1 = ed807Service.convertToDTO(accounts);
+            AccountsDTO accounts1 = ed807Service.convertToDTO(accounts);
             return ResponseEntity.ok(accounts1);
         }else {
             return ResponseEntity.notFound().build();
         }
     }
-    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("Create/AccRstr/{id}")
     @Operation(
             summary = "Создание AccRstr",
             description = "Позволяет создавать AccRstr для Account, id которого передается в данный метод, создается без связанных сущностей"
     )
-    public ResponseEntity<AccRstrListType> createAccRstr(@Parameter(description = "Идентификатор Аккаунта")@PathVariable(value = "id") BigInteger id,
+    public ResponseEntity<AccRstrListDTO> createAccRstr(@Parameter(description = "Идентификатор Аккаунта")@PathVariable(value = "id") BigInteger id,
                                                          @Parameter(description = "Поля для создания")@RequestBody AccRstrListType accRstrListType){
         Optional<Accounts> entity = accountRepository.findById(id);//id от BIC
         if(entity.isPresent()){
             AccRstrListEntity accounts = accRstrListService.createAcc(entity.get(),accRstrListType);
-            AccRstrListType accounts1 = ed807Service.convertToDTO(accounts);
+            AccRstrListDTO accounts1 = ed807Service.convertToDTO(accounts);
             return ResponseEntity.ok(accounts1);
         }else {
             return ResponseEntity.notFound().build();
         }
     }
-    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("Create/InitialED/{id}")
     @Operation(
             summary = "Создание InitialED",
             description = "Позволяет создавать InitialED для ed807, id которого передается в данный метод, создается без связанных сущностей"
     )
-    public ResponseEntity<ED807> createInitial(@Parameter(description = "Идентификатор ed807")@PathVariable(value = "id") BigInteger id,
-                                               @Parameter(description = "Поля для создания")@RequestBody InitialEDInfo initialEDInfo){
+    public ResponseEntity<ED807DTO> createInitial(@Parameter(description = "Идентификатор ed807")@PathVariable(value = "id") BigInteger id,
+                                                  @Parameter(description = "Поля для создания")@RequestBody InitialEDInfo initialEDInfo){
         Optional<ED807Entity> entity = ed807EntityRepository.findById(id);//id от BIC
         if(entity.isPresent()){
             InitialED accounts = initialEDService.createInitial(entity.get(),initialEDInfo);
-            ED807 ed807 = ed807Service.convertToDTO(entity.get());
+            ED807DTO ed807 = ed807Service.convertToDTO(entity.get());
             return ResponseEntity.ok(ed807);
         }else {
             return ResponseEntity.notFound().build();
         }
     }
-    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("Create/PartInfo/{id}")
     @Operation(
             summary = "Создание PartInfo",
             description = "Позволяет создавать PartInfo для ed807, id которого передается в данный метод, создается без связанных сущностей"
     )
-    public ResponseEntity<ED807> createPartInfo(@Parameter(description = "Идентификатор ED807")@PathVariable(value = "id") BigInteger id,
+    public ResponseEntity<ED807DTO> createPartInfo(@Parameter(description = "Идентификатор ED807")@PathVariable(value = "id") BigInteger id,
                                                 @Parameter(description = "Поля для создания")@RequestBody PartInfo partInfo){
         Optional<ED807Entity> entity = ed807EntityRepository.findById(id);
         if(entity.isPresent()){
             PartInfoEntity partInfoEntity = partInfoSerivce.createPart(entity.get(),partInfo);
-            ED807 ed807 = ed807Service.convertToDTO(entity.get());
+            ED807DTO ed807 = ed807Service.convertToDTO(entity.get());
             return ResponseEntity.ok(ed807);
         }else {
             return ResponseEntity.notFound().build();
         }
     }
-    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("Create/ParticipantInfo/{id}")
     @Operation(
             summary = "Создание ParticipantInfo",
             description = "Позволяет создавать ParticipantInfo для BIC, id которого передается в данный метод, создается без связанных сущностей"
     )
-    public ResponseEntity<BICDirectoryEntryType> createPartInfo(@Parameter(description = "Идентификатор ED807")@PathVariable(value = "id") BigInteger id,
-                                                                @Parameter(description = "Поля для создания")@RequestBody ParticipantInfoType participantInfoType){
+    public ResponseEntity<BicDirectoryDTO> createPartInfo(@Parameter(description = "Идентификатор ED807")@PathVariable(value = "id") BigInteger id,
+                                                          @Parameter(description = "Поля для создания")@RequestBody ParticipantInfoType participantInfoType){
         Optional<BICDirectoryEntry> entity = bicDirectoryEntity.findById(id);//id от BIC
         if(entity.isPresent()){
             ParticipantInfoType participantInfoType1 = participantInfoService.createPart(entity.get(),participantInfoType);
-            BICDirectoryEntryType bicDirectoryEntryType = ed807Service.convertToDTO(entity.get());
+            BicDirectoryDTO bicDirectoryEntryType = ed807Service.convertToDTO(entity.get());
             return ResponseEntity.ok(bicDirectoryEntryType);
         }else {
             return ResponseEntity.notFound().build();
         }
     }
-    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("Create/Rstr/{id}")
     @Operation(
             summary = "Создание RstrList",
             description = "Позволяет создавать RstrList для ParticipantInfo, id которого передается в данный метод, создается без связанных сущностей"
     )
-    public ResponseEntity<RstrListType> createRstr(@Parameter(description = "Идентификатор ParticipantInfo")@PathVariable(value = "id") BigInteger id,
+    public ResponseEntity<RstrListDTO> createRstr(@Parameter(description = "Идентификатор ParticipantInfo")@PathVariable(value = "id") BigInteger id,
                                                    @Parameter(description = "Поля для создания")@RequestBody RstrListType rstrListType){
         Optional<ParticipantInfoEntity> entity = participantInfoRepository.findById(id);
         if(entity.isPresent()){
             RstrListEntity rstrListEntity = rstrListService.createRstr(entity.get(),rstrListType);
-            RstrListType rstrListType1 = ed807Service.convertToDTO(rstrListEntity);
+            RstrListDTO rstrListType1 = ed807Service.convertToDTO(rstrListEntity);
             return ResponseEntity.ok(rstrListType1);
         }else {
             return ResponseEntity.notFound().build();
         }
     }
-    @PreAuthorize("hasAuthority('USER')")
     @PostMapping("Create/SWBIC/{id}")
     @Operation(
             summary = "Создание SWBIC",
             description = "Позволяет создавать SWBIC для BIC, id которого передается в данный метод, создается без связанных сущностей"
     )
-    public ResponseEntity<SWBICList> createSWBIC(@Parameter(description = "Идентификатор BIC")@PathVariable(value = "id") BigInteger id,
+    public ResponseEntity<SWBICSDTO> createSWBIC(@Parameter(description = "Идентификатор BIC")@PathVariable(value = "id") BigInteger id,
                                                  @Parameter(description = "Поля для создания")@RequestBody SWBICList swbicList){
         Optional<BICDirectoryEntry> entity = bicDirectoryEntity.findById(id);//id от BIC
         if(entity.isPresent()){
             SWBICSEntity swbicsEntity = swbicsService.createSwbic(entity.get(),swbicList);
-            SWBICList swbicList1 = ed807Service.convertToDTO(swbicsEntity);
+            SWBICSDTO swbicList1 = ed807Service.convertToDTO(swbicsEntity);
             return ResponseEntity.ok(swbicList1);
         }else {
             return ResponseEntity.notFound().build();

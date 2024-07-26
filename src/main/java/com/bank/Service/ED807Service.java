@@ -1,6 +1,7 @@
 package com.bank.Service;
 
 import com.bank.DB.*;
+import com.bank.DTO.Models.*;
 import com.bank.DTO.ru.cbr.ed.leaftypes.v2.*;
 import com.bank.DTO.ru.cbr.ed.v2.*;
 import com.bank.Repository.*;
@@ -100,7 +101,7 @@ public class ED807Service {
         }
         if(ed807.getBICDirectoryEntry() != null) {
             List<BICDirectoryEntryType> bicDirectoryEntryTypes = ed807.getBICDirectoryEntry();
-            List<BICDirectoryEntry> bicDirectoryEntries = new ArrayList<>();
+            Set<BICDirectoryEntry> bicDirectoryEntries = new HashSet<>();
             for (BICDirectoryEntryType bicDirectoryEntryType: bicDirectoryEntryTypes){
                 BICDirectoryEntry bicDirectoryEntry = new BICDirectoryEntry();
                 bicDirectoryEntry.setEd807Entity(ed807Entity);
@@ -182,7 +183,7 @@ public class ED807Service {
 
                     List<RstrListType> rstrList = bicDirectoryEntryType.getParticipantInfo().getRstrList();
                     if (rstrList != null) {
-                        List<RstrListEntity> rstrListEntities = new ArrayList<>();
+                        Set<RstrListEntity> rstrListEntities = new HashSet<>();
                         for (RstrListType rstr : rstrList) {
 
                             RstrListEntity rstrListEntity = new RstrListEntity();
@@ -208,7 +209,7 @@ public class ED807Service {
 
                     List<SWBICList> swbicLists = bicDirectoryEntryType.getSWBICS();
                     if (swbicLists != null) {
-                        List<SWBICSEntity> swbicsEntities = new ArrayList<>();
+                        Set<SWBICSEntity> swbicsEntities = new HashSet<>();
                         for (SWBICList swbicList : swbicLists) {
 
                             SWBICSEntity swbicsEntity = new SWBICSEntity();
@@ -227,7 +228,7 @@ public class ED807Service {
                 if(bicDirectoryEntryType.getAccounts() != null){
                     List<AccountsType> accountsTypes = bicDirectoryEntryType.getAccounts();
                     if(accountsTypes != null){
-                        List<Accounts> accounts = new ArrayList<>();
+                        Set<Accounts> accounts = new HashSet<>();
                         for (AccountsType accountsType: accountsTypes){
                             Accounts accountsEntity = new Accounts();
 
@@ -249,7 +250,7 @@ public class ED807Service {
                             accountsEntity.setBicDirectoryEntry(bicDirectoryEntry);
                             if (accountsType.getAccRstrList()!= null){
                                 List<AccRstrListType> accRstrListTypeList = accountsType.getAccRstrList();
-                                List<AccRstrListEntity> accRstrListEntities = new ArrayList<>();
+                                Set<AccRstrListEntity> accRstrListEntities = new HashSet<>();
                                 for (AccRstrListType accRstrListType: accRstrListTypeList){
                                     AccRstrListEntity accRstrListEntity = new AccRstrListEntity();
                                     accRstrListEntity.setAccounts(accountsEntity);
@@ -282,28 +283,28 @@ public class ED807Service {
     }
 
 
-    public List<ED807> getAllED807ByName(String name){
+    public List<ED807DTO> getAllED807ByName(String name){
         List<ED807Entity> ed807Entities = ed807EntityRepository.findByName(name);
         return ed807Entities.stream()
                 .map(this::convertDTOPreview)
                 .collect(Collectors.toList());
     }
 
-    public List<ED807> getAllBetwenDate(Date startDate, Date endDate){
+    public List<ED807DTO> getAllBetwenDate(Date startDate, Date endDate){
         List<ED807Entity> ed807Entities = ed807EntityRepository.findAllByCreationDateBetween(startDate,endDate);
         return ed807Entities.stream()
                 .map(this::convertDTOPreview)
                 .collect(Collectors.toList());
     }
 
-    public List<ED807> getAllED807() {
+    public List<ED807DTO> getAllED807() {
         List<ED807Entity> ed807Entities = ed807EntityRepository.findAll();
         return ed807Entities.stream()
                 .map(this::convertDTOPreview)
                 .collect(Collectors.toList());
     }
 
-    public ED807 getById(BigInteger id){
+    public ED807DTO getById(BigInteger id){
         Optional<ED807Entity> ed807Entity = ed807EntityRepository.findById(id);
         return ed807Entity.map(this::convertToDTO).orElse(null);
     }
@@ -358,7 +359,7 @@ public class ED807Service {
         }
 
         ED807Entity ed807Entity = ed807EntityOptional.get();
-        List<BICDirectoryEntry> bicDirectoryEntries = ed807Entity.getBicDirectoryEntries();
+        Set<BICDirectoryEntry> bicDirectoryEntries = ed807Entity.getBicDirectoryEntries();
 
         // Найдите BICDirectoryEntry по BIC
         BICDirectoryEntry entryToDelete = null;
@@ -380,7 +381,7 @@ public class ED807Service {
         return true;
     }
     @Transactional
-    public ED807 updateED807(BigInteger id, ED807 ed807) {
+    public ED807DTO updateED807(BigInteger id, ED807 ed807) {
         Optional<ED807Entity> ed807EntityOptional = ed807EntityRepository.findById(id);
         if (!ed807EntityOptional.isPresent()) {
             throw new RuntimeException("ED807 entity not found with id " + id);
@@ -402,14 +403,14 @@ public class ED807Service {
         }
 
         ed807EntityRepository.save(ed807Entity);
-        ED807 coverted = convertToDTO(ed807Entity);
+        ED807DTO coverted = convertToDTO(ed807Entity);
         return coverted;
     }
 
 
 
-    public ED807 convertDTOPreview(ED807Entity ed807Entity){
-        ED807 dto = new ED807();
+    public ED807DTO convertDTOPreview(ED807Entity ed807Entity){
+        ED807DTO dto = new ED807DTO();
         // Установка основных полей
         dto.setId(ed807Entity.getId());
 
@@ -419,19 +420,19 @@ public class ED807Service {
 
         // Установка основных полей
 
-        dto.setEDNo(ed807Entity.getEdno());
-        dto.setEDDate(toXMLGregorianCalendar(ed807Entity.getEDDate()));
+        dto.setEdno(ed807Entity.getEdno());
+        dto.setEDDate(ed807Entity.getEDDate());
         dto.setEDAuthor(ed807Entity.getEDAuthor());
         if(ed807Entity.getEDReceiver() != null){
-            dto.setEDReceiver(ed807Entity.getEDReceiver().toString());
+            dto.setEDReceiver(ed807Entity.getEDReceiver());
         }else {
             dto.setEDReceiver(null);
         }
 
-        dto.setCreationReason(ReasonCodeType.fromValue(ed807Entity.getCreationReason()));
-        dto.setCreationDateTime(toXMLGregorianCalendar(ed807Entity.getCreationDateTime()));
-        dto.setInfoTypeCode(RequestCodeType.fromValue(ed807Entity.getInfoTypeCode()));
-        dto.setBusinessDay(toXMLGregorianCalendar(ed807Entity.getBusinessDay()));
+        dto.setCreationReason(ed807Entity.getCreationReason());
+        dto.setCreationDateTime(ed807Entity.getCreationDateTime());
+        dto.setInfoTypeCode(ed807Entity.getInfoTypeCode());
+        dto.setBusinessDay(ed807Entity.getBusinessDay());
 
         if(ed807Entity.getDirectoryVersion() != null) {
             dto.setDirectoryVersion(ed807Entity.getDirectoryVersion());
@@ -440,36 +441,37 @@ public class ED807Service {
         }
         if (ed807Entity.getPartInfoEntity() != null) {
             PartInfoEntity partInfoEntity= ed807Entity.getPartInfoEntity();
-            PartInfo partInfoDTO =new PartInfo();
+            PartInfoDTO partInfoDTO =new PartInfoDTO();
 
+            partInfoDTO.setId(partInfoEntity.getId());
             partInfoDTO.setPartQuantity(partInfoEntity.getPartQuantity());
             partInfoDTO.setPartNo(partInfoEntity.getPartNo());
             partInfoDTO.setPartAggregateID(partInfoEntity.getPartAggregateID());
-            dto.setPartInfo(partInfoDTO);
+            dto.setPartInfoDTO(partInfoDTO);
 
         }
         else {
-            dto.setPartInfo(null);
+            dto.setPartInfoDTO(null);
         }
         if (ed807Entity.getInitialED() != null){
             InitialED initialED = ed807Entity.getInitialED();
 
-            EDRefID edRefID = new EDRefID();
+            InitialEDDTO edRefID = new InitialEDDTO();
 
-
+            edRefID.setID(initialED.getID());
             edRefID.setEDNo(initialED.getEDNo());
-            edRefID.setEDDate(toXMLGregorianCalendar(initialED.getEDDate()));
+            edRefID.setEDDate(initialED.getEDDate());
             edRefID.setEDAuthor(initialED.getEDAuthor());
 
-            dto.setInitialED(edRefID);
+            dto.setInitialEDDTO(edRefID);
         }else {
 
         }
 
         return dto;
     }
-    public ED807 convertToDTO(ED807Entity ed807Entity) {
-        ED807 dto = new ED807();
+    public ED807DTO convertToDTO(ED807Entity ed807Entity) {
+        ED807DTO dto = new ED807DTO();
         // Установка основных полей
         dto.setId(ed807Entity.getId());
 
@@ -478,19 +480,19 @@ public class ED807Service {
         dto.setFilePath(ed807Entity.getFilePath());
 
 
-        dto.setEDNo(ed807Entity.getEdno());
-        dto.setEDDate(toXMLGregorianCalendar(ed807Entity.getEDDate()));
+        dto.setEdno(ed807Entity.getEdno());
+        dto.setEDDate(ed807Entity.getEDDate());
         dto.setEDAuthor(ed807Entity.getEDAuthor());
         if(ed807Entity.getEDReceiver() != null){
-            dto.setEDReceiver(ed807Entity.getEDReceiver().toString());
+            dto.setEDReceiver(ed807Entity.getEDReceiver());
         }else {
             dto.setEDReceiver(null);
         }
 
-        dto.setCreationReason(ReasonCodeType.fromValue(ed807Entity.getCreationReason()));
-        dto.setCreationDateTime(toXMLGregorianCalendar(ed807Entity.getCreationDateTime()));
-        dto.setInfoTypeCode(RequestCodeType.fromValue(ed807Entity.getInfoTypeCode()));
-        dto.setBusinessDay(toXMLGregorianCalendar(ed807Entity.getBusinessDay()));
+        dto.setCreationReason(ed807Entity.getCreationReason());
+        dto.setCreationDateTime(ed807Entity.getCreationDateTime());
+        dto.setInfoTypeCode(ed807Entity.getInfoTypeCode());
+        dto.setBusinessDay(ed807Entity.getBusinessDay());
         if(ed807Entity.getDirectoryVersion() != null) {
             dto.setDirectoryVersion(ed807Entity.getDirectoryVersion());
         }else {
@@ -498,44 +500,43 @@ public class ED807Service {
         }
         if (ed807Entity.getPartInfoEntity() != null) {
             PartInfoEntity partInfoEntity= ed807Entity.getPartInfoEntity();
-            PartInfo partInfoDTO =new PartInfo();
+            PartInfoDTO partInfoDTO =new PartInfoDTO();
 
+            partInfoDTO.setId(partInfoEntity.getId());
             partInfoDTO.setPartQuantity(partInfoEntity.getPartQuantity());
             partInfoDTO.setPartNo(partInfoEntity.getPartNo());
             partInfoDTO.setPartAggregateID(partInfoEntity.getPartAggregateID());
-            dto.setPartInfo(partInfoDTO);
+            dto.setPartInfoDTO(partInfoDTO);
         }else {
-            dto.setPartInfo(null);
+            dto.setPartInfoDTO(null);
         }
         if (ed807Entity.getInitialED() != null) {
             InitialED initialED = ed807Entity.getInitialED();
-            InitialEDInfo initialEDInfoDTO = new InitialEDInfo();
-            EDRefID edRefID = new EDRefID();
+            InitialEDDTO initialEDInfoDTO = new InitialEDDTO();
+
+            initialEDInfoDTO.setID(initialED.getID());
+            initialEDInfoDTO.setEDAuthor(initialED.getEDAuthor());
+            initialEDInfoDTO.setEDDate(initialED.getEDDate());
+            initialEDInfoDTO.setEDNo(initialED.getEDNo());
 
 
-            edRefID.setEDAuthor(initialED.getEDAuthor());
-            edRefID.setEDDate(toXMLGregorianCalendar(initialED.getEDDate()));
-            edRefID.setEDNo(initialED.getEDNo());
-
-            initialEDInfoDTO.setEDRefID(edRefID);
-
-            dto.setInitialED(initialEDInfoDTO.getEDRefID());
+            dto.setInitialEDDTO(initialEDInfoDTO);
         }else {
-            dto.setPartInfo(null);
+            dto.setInitialEDDTO(null);
         }
 
 
         // Преобразование связанных сущностей
-            List<BICDirectoryEntryType> bicDirectoryEntryDTOs = ed807Entity.getBicDirectoryEntries().stream()
+            Set<BicDirectoryDTO> bicDirectoryEntryDTOs = ed807Entity.getBicDirectoryEntries().stream()
                     .map(this::convertToDTO)
-                    .collect(Collectors.toList());
-            dto.getBICDirectoryEntry().addAll(bicDirectoryEntryDTOs);
+                    .collect(Collectors.toSet());
+            dto.setBicDirectoryDTOS(bicDirectoryEntryDTOs);
 
         return dto;
     }
 
-    public BICDirectoryEntryType convertToDTO(BICDirectoryEntry bicDirectoryEntry) {
-        BICDirectoryEntryType dto = new BICDirectoryEntryType();
+    public BicDirectoryDTO convertToDTO(BICDirectoryEntry bicDirectoryEntry) {
+        BicDirectoryDTO dto = new BicDirectoryDTO();
         dto.setId(bicDirectoryEntry.getId());
         dto.setBIC(bicDirectoryEntry.getBIC());
         if (bicDirectoryEntry.getChangeType() != null) {
@@ -549,21 +550,21 @@ public class ED807Service {
             dto.setParticipantInfo(convertToDTO(bicDirectoryEntry.getParticipantInfo())); // Вызов метода для преобразования ParticipantInfoEntity
         }
         if(bicDirectoryEntry.getAccounts() != null){
-            List<AccountsType> accountsTypes = bicDirectoryEntry.getAccounts().stream()
+            Set<AccountsDTO> accountsDTOS = bicDirectoryEntry.getAccounts().stream()
                     .map(this::convertToDTO)
-                    .collect(Collectors.toList());
-            dto.getAccounts().addAll(accountsTypes);
+                    .collect(Collectors.toSet());
+            dto.setAccounts(accountsDTOS);
         }else {
-            dto.getAccounts().isEmpty();
+            dto.setAccounts(null);
         }
 
         if(bicDirectoryEntry.getSwbics() != null){
-            List<SWBICList> swbicLists = bicDirectoryEntry.getSwbics().stream()
+            Set<SWBICSDTO> swbicLists = bicDirectoryEntry.getSwbics().stream()
                     .map((this::convertToDTO))
-                    .collect(Collectors.toList());
-            dto.getSWBICS().addAll(swbicLists);
+                    .collect(Collectors.toSet());
+            dto.setSwbics(swbicLists);
         }else {
-            dto.getSWBICS().isEmpty();
+            dto.setSwbics(null);
         }
 
         return dto;
@@ -571,8 +572,9 @@ public class ED807Service {
 
 
 
-    public ParticipantInfoType convertToDTO(ParticipantInfoEntity participantInfoEntity) {
-        ParticipantInfoType dto = new ParticipantInfoType();
+    public ParticipantInfoDTO convertToDTO(ParticipantInfoEntity participantInfoEntity) {
+        ParticipantInfoDTO dto = new ParticipantInfoDTO();
+        dto.setId(participantInfoEntity.getId());
         dto.setNameP(participantInfoEntity.getNameP());
         dto.setEnglName(participantInfoEntity.getEnglName());
         dto.setRegN(participantInfoEntity.getRegN());
@@ -583,109 +585,95 @@ public class ED807Service {
         dto.setNnp(participantInfoEntity.getNnp());
         dto.setAdr(participantInfoEntity.getAdr());
         dto.setPrntBIC(participantInfoEntity.getPrntBIC());
-        dto.setDateIn(toXMLGregorianCalendar(participantInfoEntity.getDateIn()));
-        dto.setDateOut(toXMLGregorianCalendar(participantInfoEntity.getDateOut()));
+        dto.setDateIn(participantInfoEntity.getDateIn());
+        dto.setDateOut(participantInfoEntity.getDateOut());
         dto.setPtType(participantInfoEntity.getPtType());
         dto.setSrvcs(participantInfoEntity.getSrvcs());
         dto.setXchType(participantInfoEntity.getXchType());
         dto.setUID(participantInfoEntity.getUID());
-        dto.setParticipantStatus(ParticipantStatusType.fromValue(participantInfoEntity.getParticipantStatus()));
+        dto.setParticipantStatus(participantInfoEntity.getParticipantStatus());
 
         // Преобразование rstrListEntity в rstrListType
         if(participantInfoEntity.getRstrListEntity() != null) {
-            List<RstrListType> rstrList = participantInfoEntity.getRstrListEntity().stream()
+            Set<RstrListDTO> rstrList = participantInfoEntity.getRstrListEntity().stream()
                     .map(this::convertToDTO)
-                    .collect(Collectors.toList());
-            dto.getRstrList().addAll(rstrList);
+                    .collect(Collectors.toSet());
+            dto.setRstrListEntity(rstrList);
         }else {
-            dto.getRstrList().isEmpty();
+            dto.setRstrListEntity(null);
         }
         return dto;
     }
 
-    public RstrListType convertToDTO(RstrListEntity entity) {
+    public RstrListDTO convertToDTO(RstrListEntity entity) {
         if (entity == null) {
             return null;
         }
-        RstrListType dto = new RstrListType();
+        RstrListDTO dto = new RstrListDTO();
         dto.setId(entity.getId());
         dto.setRstr(entity.getRstr());
-        dto.setRstrDate(toXMLGregorianCalendar(entity.getRstrDate()));
+        dto.setRstrDate(entity.getRstrDate());
         return dto;
     }
 
-    public AccountsType convertToDTO(Accounts entity){
+    public AccountsDTO convertToDTO(Accounts entity){
         if(entity == null){
             return null;
         }
-        AccountsType dto = new AccountsType();
+        AccountsDTO dto = new AccountsDTO();
         dto.setId(entity.getId());
         dto.setAccount(entity.getAccount());
-        dto.setRegulationAccountType(AccountType.fromValue(entity.getRegulationAccountType()));
-        dto.setCK(entity.getCk());
+        dto.setRegulationAccountType(entity.getRegulationAccountType());
+        dto.setCk(entity.getCk());
         dto.setAccountCBRBIC(entity.getAccountCBRBIC());
-        dto.setDateIn(toXMLGregorianCalendar(entity.getDateIn()));
+        dto.setDateIn(entity.getDateIn());
         if(entity.getDateOut() != null){
-            dto.setDateOut(toXMLGregorianCalendar(entity.getDateOut()));
+            dto.setDateOut(entity.getDateOut());
         }else {
             dto.setDateOut(null);
         }
         if(entity.getAccountStatus() != null){
-            dto.setAccountStatus(AccountStatusType.valueOf(entity.getAccountStatus()));
+            dto.setAccountStatus(entity.getAccountStatus());
         }else {
             dto.setAccountStatus(null);
         }
 
         if(entity.getAccRstrListEntity() != null){
-            List<AccRstrListType> accRstrListTypeList = entity.getAccRstrListEntity().stream()
+            Set<AccRstrListDTO> accRstrListDTOList = entity.getAccRstrListEntity().stream()
                     .map(this::convertToDTO)
-                    .collect(Collectors.toList());
-            dto.getAccRstrList().addAll(accRstrListTypeList);
+                    .collect(Collectors.toSet());
+            dto.setAccRstrListDTOList(accRstrListDTOList);
         }
         return dto;
     }
 
-    public AccRstrListType convertToDTO(AccRstrListEntity entity){
+    public AccRstrListDTO convertToDTO(AccRstrListEntity entity){
      if(entity == null){
          return null;
      }
 
 
-     AccRstrListType dto = new AccRstrListType();
+     AccRstrListDTO dto = new AccRstrListDTO();
      dto.setId(entity.getId());
-     dto.setAccRstr(RstrType.fromValue(entity.getAccRstr()));
-     dto.setAccRstrDate(toXMLGregorianCalendar(entity.getAccRstrDate()));
+     dto.setAccRstr(entity.getAccRstr());
+     dto.setAccRstrDate(entity.getAccRstrDate());
      if(entity.getSuccessorBIC() != null){
          dto.setSuccessorBIC(entity.getSuccessorBIC());
      }else {
          dto.setSuccessorBIC(null);
      }
-
      return dto;
     }
-    public SWBICList convertToDTO(SWBICSEntity entity){
+    public SWBICSDTO convertToDTO(SWBICSEntity entity){
         if(entity == null){
             return null;
         }
-        SWBICList dto = new SWBICList();
+        SWBICSDTO dto = new SWBICSDTO();
         dto.setId(entity.getId());
         dto.setSWBIC(entity.getSWBIC());
         dto.setDefaultSWBIC(entity.isDefaultSWBIC());
 
         return dto;
-    }
-
-    public XMLGregorianCalendar toXMLGregorianCalendar(Date date) {
-        if (date == null) {
-            return null;
-        }
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        gregorianCalendar.setTime(date);
-        try {
-            return DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
-        } catch (DatatypeConfigurationException e) {
-            throw new RuntimeException("Error converting Date to XMLGregorianCalendar", e);
-        }
     }
 }
 

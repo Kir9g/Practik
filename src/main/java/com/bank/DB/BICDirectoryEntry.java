@@ -8,7 +8,9 @@ import jakarta.persistence.*;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "BICDirectoryEntry")
@@ -27,10 +29,10 @@ public class BICDirectoryEntry {
     private ParticipantInfoEntity participantInfo;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Accounts> accounts = new ArrayList<>();
+    private Set<Accounts> accounts = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<SWBICSEntity> swbics = new ArrayList<>();
+    private Set<SWBICSEntity> swbics = new HashSet<>();
 
     @ManyToOne()
     @JoinColumn(name = "ED_id")
@@ -44,50 +46,26 @@ public class BICDirectoryEntry {
         this.ed807Entity = ed807Entity;
     }
 
-    public List<SWBICSEntity> getSwbics() {
+    public Set<SWBICSEntity> getSwbics() {
         return swbics;
     }
 
-    public void setSwbics(List<SWBICSEntity> swbics) {
+    public void setSwbics(Set<SWBICSEntity> swbics) {
         this.swbics = swbics;
     }
     public void addSwbics(SWBICSEntity swbics){
         this.swbics.add(swbics);
     }
 
-    public List<Accounts> getAccounts() {
+    public Set<Accounts> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(List<Accounts> accounts) {
+    public void setAccounts(Set<Accounts> accounts) {
         this.accounts = accounts;
     }
-    public void addAccount(Accounts accounts){
-        this.accounts.add(accounts);
-    }
-
-    public ParticipantInfoEntity getParticipantInfo() {
-        return participantInfo;
-    }
-
-    public void setParticipantInfo(ParticipantInfoEntity participantInfo) {
-        this.participantInfo = participantInfo;
-    }
-
-    public String getChangeType() {
-        return ChangeType;
-    }
-
-    public void setChangeType(String changeType) {
-        ChangeType = changeType;
-    }
-
-    public String getBIC() {
-        return BIC;
-    }
-
-    public void setBIC(String BIC) {
-        this.BIC = BIC;
+    public void addAccount(Accounts accounts) {
+        this.accounts.add((Accounts) accounts);
     }
 
     public BigInteger getId() {
@@ -98,16 +76,29 @@ public class BICDirectoryEntry {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "BICDirectoryEntry{" +
-                "id=" + id +
-                ", BIC='" + BIC + '\'' +
-                ", ChangeType='" + ChangeType + '\'' +
-                ", participantInfo=" + participantInfo +
-                ", accounts=" + accounts +
-                ", swbics=" + swbics +
-                ", ed807Entity=" + ed807Entity +
-                '}';
+    public String getBIC() {
+        return BIC;
     }
+
+    public void setBIC(String BIC) {
+        this.BIC = BIC;
+    }
+
+    public String getChangeType() {
+        return ChangeType;
+    }
+
+    public void setChangeType(String changeType) {
+        ChangeType = changeType;
+    }
+
+    public ParticipantInfoEntity getParticipantInfo() {
+        return participantInfo;
+    }
+
+    public void setParticipantInfo(ParticipantInfoEntity participantInfo) {
+        this.participantInfo = participantInfo;
+    }
+
 }
+

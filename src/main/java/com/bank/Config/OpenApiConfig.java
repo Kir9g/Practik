@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Bank ED807 API",
-                description = "апи для ed807", version = "1.0.0",
+                description = "api для ed807", version = "1.0.0",
                 contact = @Contact(
                         name = "Четвергов Кирилл"
                 )

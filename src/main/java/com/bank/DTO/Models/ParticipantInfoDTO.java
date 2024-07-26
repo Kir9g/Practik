@@ -1,81 +1,65 @@
-package com.bank.DB;
+package com.bank.DTO.Models;
 
-import com.bank.DTO.ru.cbr.ed.leaftypes.v2.ParticipantStatusType;
+import com.bank.DB.BICDirectoryEntry;
+import com.bank.DB.RstrListEntity;
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlAttribute;
 
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
-@Entity
-@Table(name = "ParticipantInfo")
-public class ParticipantInfoEntity {
+public class ParticipantInfoDTO {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "id", nullable = false)
     private BigInteger id;
 
-    @Column(name = "NameP", length = 160, nullable = false)
+
     private String NameP;
 
-    @Column(name = "EnglName", length = 140, nullable = true)
+
     private String EnglName;
 
-    @Column(name = "RegN", length = 9, nullable = true)
+
     private String RegN;
 
-    @Column(name = "CntrCd", length = 2, nullable = true)
+
     private String CntrCd;
 
-    @Column(name = "Rgn",length = 2, nullable = false)
+
     private String Rgn;
 
-    @Column(name = "ind", length = 6,nullable = true)
     private String ind;
 
-    @Column(name = "Tnp",length = 5, nullable = true)
     private String Tnp;
 
-    @Column(name = "Nnp", length = 25, nullable = true)
     private String Nnp;
 
-    @Column(name = "Adr",length = 160)
     private String Adr;
 
-    @Column(name = "PrntBIC", length = 9)
     private String PrntBIC;
 
-    @Column(name = "DateIn", nullable = false)
     private Date DateIn;
 
-    @Column(name = "DateOut")
     private Date DateOut;
 
-    @Column(name = "PtType", nullable = false)
     private String PtType;
 
-    @Column(name = "Srvcs", nullable = false)
     private String Srvcs;
 
-    @Column(name = "XchType", nullable = false)
     private String XchType;
 
-    @Column(name = "UID", nullable = false)
     private String UID;
 
-    @Column(name = "ParticipantStatus", length = 4)
     private String ParticipantStatus;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "participantInfoEntity",cascade = CascadeType.ALL)
-    private Set<RstrListEntity> rstrListEntity;
+    private Set<RstrListDTO> rstrListEntity;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "BIC")
-    private BICDirectoryEntry bicDirectoryEntry;
+    public BigInteger getId() {
+        return id;
+    }
+
+    public void setId(BigInteger id) {
+        this.id = id;
+    }
 
     public String getNameP() {
         return NameP;
@@ -213,36 +197,17 @@ public class ParticipantInfoEntity {
         ParticipantStatus = participantStatus;
     }
 
-    public Set<RstrListEntity> getRstrListEntity() {
+    public Set<RstrListDTO> getRstrListEntity() {
         return rstrListEntity;
     }
 
-    public void setRstrListEntity(Set<RstrListEntity> rstrListEntity) {
+    public void setRstrListEntity(Set<RstrListDTO> rstrListEntity) {
         this.rstrListEntity = rstrListEntity;
-    }
-    public void addRstrListEntity(RstrListEntity rstrListEntity){
-        this.rstrListEntity.add(rstrListEntity);
-    }
-
-    public BICDirectoryEntry getBicDirectoryEntry() {
-        return bicDirectoryEntry;
-    }
-
-    public void setBicDirectoryEntry(BICDirectoryEntry bicDirectoryEntry) {
-        this.bicDirectoryEntry = bicDirectoryEntry;
-    }
-
-    public BigInteger getId() {
-        return id;
-    }
-
-    public void setId(BigInteger id) {
-        this.id = id;
     }
 
     @Override
     public String toString() {
-        return "ParticipantInfoEntity{" +
+        return "ParticipantInfoDTO{" +
                 "id=" + id +
                 ", NameP='" + NameP + '\'' +
                 ", EnglName='" + EnglName + '\'' +
@@ -262,7 +227,6 @@ public class ParticipantInfoEntity {
                 ", UID='" + UID + '\'' +
                 ", ParticipantStatus='" + ParticipantStatus + '\'' +
                 ", rstrListEntity=" + rstrListEntity +
-                ", bicDirectoryEntry=" + bicDirectoryEntry +
                 '}';
     }
 }

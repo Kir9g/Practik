@@ -3,6 +3,7 @@ package com.bank.Service;
 import com.bank.DB.AccRstrListEntity;
 import com.bank.DB.ED807Entity;
 import com.bank.DB.InitialED;
+import com.bank.DTO.Models.InitialEDDTO;
 import com.bank.DTO.ru.cbr.ed.v2.EDRefID;
 import com.bank.DTO.ru.cbr.ed.v2.InitialEDInfo;
 import com.bank.Repository.ED807EntityRepository;
@@ -20,8 +21,11 @@ public class InitialEDService {
     @Autowired
     private ED807EntityRepository ed807EntityRepository;
     @Transactional
-    public InitialED updateInitial(BigInteger id, EDRefID edRefID) {
+    public InitialED updateInitial(BigInteger id, InitialEDDTO edRefID) throws Exception {
         InitialED updateInitial = initialEDRepository.findById(id).get();
+        if(updateInitial == null){
+            throw new Exception("У данного ED807 нет InitialED");
+        }
         if(edRefID.getEDAuthor()!=null){
             updateInitial.setEDAuthor(edRefID.getEDAuthor());
         }
@@ -29,7 +33,7 @@ public class InitialEDService {
             updateInitial.setEDNo(edRefID.getEDNo());
         }
         if(edRefID.getEDDate()!=null){
-            updateInitial.setEDDate(edRefID.getEDDate().toGregorianCalendar().getTime());
+            updateInitial.setEDDate(edRefID.getEDDate());
         }
         return initialEDRepository.save(updateInitial);
     }
@@ -46,4 +50,5 @@ public class InitialEDService {
         ed807EntityRepository.save(ed807);
         return initialED;
     }
+
 }

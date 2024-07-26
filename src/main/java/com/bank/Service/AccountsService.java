@@ -3,6 +3,7 @@ package com.bank.Service;
 import com.bank.DB.Accounts;
 import com.bank.DB.BICDirectoryEntry;
 import com.bank.DB.ED807Entity;
+import com.bank.DTO.Models.AccountsDTO;
 import com.bank.DTO.ru.cbr.ed.v2.AccountsType;
 import com.bank.DTO.ru.cbr.ed.v2.BICDirectoryEntryType;
 import com.bank.DTO.ru.cbr.ed.v2.ED807;
@@ -30,7 +31,7 @@ public class AccountsService {
     @Autowired
     private BICDirectoryEntity bicDirectoryEntity;
     @Transactional
-    public Accounts updateAccount(BigInteger id, AccountsType accountsType) throws Exception {
+    public Accounts updateAccount(BigInteger id, AccountsDTO accountsType) throws Exception {
         Optional<Accounts> accounts = accountsRepository.findById(id);
         Accounts accounts1 = accounts.get();
         if(accountsType.getAccountStatus()!=null){
@@ -43,33 +44,33 @@ public class AccountsService {
             accounts1.setAccountCBRBIC(accountsType.getAccountCBRBIC());
         }
         if(accountsType.getDateOut()!=null){
-            accounts1.setDateOut(accountsType.getDateOut().toGregorianCalendar().getTime());
+            accounts1.setDateOut(accountsType.getDateOut());
         }
-        if(accountsType.getCK()!=null){
-            accounts1.setCk(accountsType.getCK());
+        if(accountsType.getCk()!=null){
+            accounts1.setCk(accountsType.getCk());
         }
         if(accountsType.getDateIn()!=null){
-            accounts1.setDateIn(accountsType.getDateIn().toGregorianCalendar().getTime());
+            accounts1.setDateIn(accountsType.getDateIn());
         }
         if(accountsType.getRegulationAccountType()!=null){
-            accounts1.setRegulationAccountType(accountsType.getRegulationAccountType().value());
+            accounts1.setRegulationAccountType(accountsType.getRegulationAccountType());
         }
 
         return accountsRepository.save(accounts1);
     }
 
     @Transactional
-    public Accounts createAcc(BICDirectoryEntry bicDirectoryEntry, AccountsType accountsType) throws Exception {
+    public Accounts createAcc(BICDirectoryEntry bicDirectoryEntry, AccountsDTO accountsType) throws Exception {
         Accounts accountsEntity = new Accounts();
         accountsEntity.setAccount(accountsType.getAccount());
-        accountsEntity.setRegulationAccountType(accountsType.getRegulationAccountType().value());
+        accountsEntity.setRegulationAccountType(accountsType.getRegulationAccountType());
         if(accountsType.getAccount() != null) {
-            accountsEntity.setCk(accountsType.getCK());
+            accountsEntity.setCk(accountsType.getCk());
         }else {accountsEntity.setCk(null);}
         accountsEntity.setAccountCBRBIC(accountsType.getAccountCBRBIC());
-        accountsEntity.setDateIn(accountsType.getDateIn().toGregorianCalendar().getTime());
+        accountsEntity.setDateIn(accountsType.getDateIn());
         if(accountsType.getDateOut() != null) {
-            accountsEntity.setDateOut(accountsType.getDateOut().toGregorianCalendar().getTime());
+            accountsEntity.setDateOut(accountsType.getDateOut());
         }else {accountsEntity.setDateOut(null);}
         if(accountsType.getAccountStatus() != null){
             accountsEntity.setAccountStatus(String.valueOf(accountsType.getAccountStatus()));

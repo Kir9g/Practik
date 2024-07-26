@@ -16,7 +16,6 @@ import java.math.BigInteger;
 
 
 @RestController
-@PreAuthorize("hasAnyAuthority")
 @RequestMapping("/Delete")
 @Tag(name = "DeleteController", description = "Контроллер для удаления сущностей в бд")
 @SecurityRequirement(name = "basicAuth")

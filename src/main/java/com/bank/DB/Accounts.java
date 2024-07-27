@@ -16,8 +16,9 @@ public class Accounts {
     @Column(name = "Account", nullable = false)
     private String Account;
 
-    @Column(name = "RegulationAccountType", length = 4, nullable = false)
-    private String regulationAccountType;
+    @ManyToOne
+    @JoinColumn(name = "regulationAccountTypeId",nullable = false)
+    private RegulationAccountTypeEntity regulationAccountType;
 
     @Column(name = "CK", length = 2)
     private String ck;
@@ -33,8 +34,9 @@ public class Accounts {
     @Temporal(TemporalType.DATE)
     private Date dateOut;
 
-    @Column(name = "accountStatus", length = 4)
-    private String accountStatus;
+    @ManyToOne
+    @JoinColumn(name = "accountStatusEntityId")
+    private AccountStatusEntity accountStatusEntity;
 
     @OneToMany(cascade = CascadeType.ALL)
     private Set<AccRstrListEntity> accRstrListEntity = new HashSet<>();
@@ -48,12 +50,12 @@ public class Accounts {
         return "Accounts{" +
                 "id=" + id +
                 ", Account='" + Account + '\'' +
-                ", regulationAccountType='" + regulationAccountType + '\'' +
+                ", regulationAccountType=" + regulationAccountType +
                 ", ck='" + ck + '\'' +
                 ", accountCBRBIC='" + accountCBRBIC + '\'' +
                 ", dateIn=" + dateIn +
                 ", dateOut=" + dateOut +
-                ", accountStatus='" + accountStatus + '\'' +
+                ", accountStatusEntity=" + accountStatusEntity +
                 ", accRstrListEntity=" + accRstrListEntity +
                 ", bicDirectoryEntry=" + bicDirectoryEntry +
                 '}';
@@ -67,11 +69,11 @@ public class Accounts {
         Account = account;
     }
 
-    public String getRegulationAccountType() {
+    public RegulationAccountTypeEntity getRegulationAccountType() {
         return regulationAccountType;
     }
 
-    public void setRegulationAccountType(String regulationAccountType) {
+    public void setRegulationAccountType(RegulationAccountTypeEntity regulationAccountType) {
         this.regulationAccountType = regulationAccountType;
     }
 
@@ -107,12 +109,12 @@ public class Accounts {
         this.dateOut = dateOut;
     }
 
-    public String getAccountStatus() {
-        return accountStatus;
+    public AccountStatusEntity getAccountStatusEntity() {
+        return accountStatusEntity;
     }
 
-    public void setAccountStatus(String accountStatus) {
-        this.accountStatus = accountStatus;
+    public void setAccountStatusEntity(AccountStatusEntity accountStatusEntity) {
+        this.accountStatusEntity = accountStatusEntity;
     }
 
     public Set<AccRstrListEntity> getAccRstrListEntity() {

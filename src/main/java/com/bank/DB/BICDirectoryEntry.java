@@ -22,8 +22,9 @@ public class BICDirectoryEntry {
     @Column(name = "BIC", length = 9,nullable = false)
     private String BIC;
 
-    @Column(name = "ChangeType", length = 4, nullable = true)
-    private String ChangeType;
+    @ManyToOne
+    @JoinColumn(name = "ChangeTypeId")
+    private ChangeTypeEntity changeType;
 
     @OneToOne(cascade = CascadeType.ALL)
     private ParticipantInfoEntity participantInfo;
@@ -84,12 +85,12 @@ public class BICDirectoryEntry {
         this.BIC = BIC;
     }
 
-    public String getChangeType() {
-        return ChangeType;
+    public ChangeTypeEntity getChangeType() {
+        return changeType;
     }
 
-    public void setChangeType(String changeType) {
-        ChangeType = changeType;
+    public void setChangeType(ChangeTypeEntity changeType) {
+        this.changeType = changeType;
     }
 
     public ParticipantInfoEntity getParticipantInfo() {
@@ -100,5 +101,17 @@ public class BICDirectoryEntry {
         this.participantInfo = participantInfo;
     }
 
+    @Override
+    public String toString() {
+        return "BICDirectoryEntry{" +
+                "id=" + id +
+                ", BIC='" + BIC + '\'' +
+                ", changeType=" + changeType +
+                ", participantInfo=" + participantInfo +
+                ", accounts=" + accounts +
+                ", swbics=" + swbics +
+                ", ed807Entity=" + ed807Entity +
+                '}';
+    }
 }
 

@@ -12,7 +12,7 @@ public class RstrListDTO {
     private BigInteger id;
 
 
-    private RstrType Rstr;
+    private String Rstr;
 
     @Temporal(TemporalType.DATE)
     private Date RstrDate;
@@ -25,11 +25,11 @@ public class RstrListDTO {
         this.id = id;
     }
 
-    public RstrType getRstr() {
+    public String getRstr() {
         return Rstr;
     }
 
-    public void setRstr(RstrType rstr) {
+    public void setRstr(String rstr) {
         Rstr = rstr;
     }
 
@@ -45,7 +45,7 @@ public class RstrListDTO {
     public String toString() {
         return "RstrListDTO{" +
                 "id=" + id +
-                ", Rstr=" + Rstr +
+                ", Rstr='" + Rstr + '\'' +
                 ", RstrDate=" + RstrDate +
                 '}';
     }

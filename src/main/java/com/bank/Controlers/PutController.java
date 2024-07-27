@@ -63,8 +63,8 @@ public class PutController {
     )
     @PutMapping("bic/{id}")
     public ResponseEntity<BicDirectoryDTO> updateBIC(@Parameter(description = "Идентификатор bic, который надо обновить")@PathVariable(value = "id") BigInteger id,
-                                                     @Parameter(description = "Поля которые надо обновить")@RequestBody BICDirectoryEntryType bicDirectoryEntry) {
-        BICDirectoryEntry bicDirectoryEntry1 = bicDirectoryService.updateBIC(id, bicDirectoryEntry);
+                                                     @Parameter(description = "Поля которые надо обновить")@RequestBody BicDirectoryDTO bicDirectoryDTO) {
+        BICDirectoryEntry bicDirectoryEntry1 = bicDirectoryService.updateBIC(id, bicDirectoryDTO);
         BicDirectoryDTO bicDirectoryEntryType = ed807Service.convertToDTO(bicDirectoryEntry1);
         return ResponseEntity.ok(bicDirectoryEntryType);
     }
@@ -85,8 +85,8 @@ public class PutController {
             description = "Позволяет обновлять AccRstrLis по id который передается, и по полям который передал пользователь"
     )
     public ResponseEntity<AccRstrListDTO> updateAccRstrList(@Parameter(description = "Идентификатор AccRstrLis, который надо обновить")@PathVariable(value = "id") BigInteger id,
-                                                             @Parameter(description = "Поля которые надо обновить")@RequestBody AccRstrListType accRstrListEntity) {
-        AccRstrListEntity accRstrList = accRstrListService.updateAccount(id,accRstrListEntity);
+                                                             @Parameter(description = "Поля которые надо обновить")@RequestBody AccRstrListDTO accRstrListDTO) {
+        AccRstrListEntity accRstrList = accRstrListService.updateAccount(id,accRstrListDTO);
         AccRstrListDTO AccRstrListType = ed807Service.convertToDTO(accRstrList);
         return ResponseEntity.ok(AccRstrListType);
     }
@@ -125,8 +125,8 @@ public class PutController {
             description = "Позволяет обновлять ParticipantInfo по id который передается, и по полям который передал пользователь"
     )
     public ResponseEntity<ParticipantInfoDTO> updateParticipant(@Parameter(description = "Идентификатор ParticipantInfo, который надо обновить")@PathVariable(value = "id") BigInteger id,
-                                                                 @Parameter(description = "Поля которые надо обновить")@RequestBody ParticipantInfoType participantInfoType){
-        ParticipantInfoEntity participantInfoEntity = participantInfoService.updateParticipant(id, participantInfoType);
+                                                                 @Parameter(description = "Поля которые надо обновить")@RequestBody ParticipantInfoDTO participantInfoDTO){
+        ParticipantInfoEntity participantInfoEntity = participantInfoService.updateParticipant(id, participantInfoDTO);
         if(participantInfoEntity != null) {
             ParticipantInfoDTO participantInfoType1 = ed807Service.convertToDTO(participantInfoEntity);
             return ResponseEntity.ok(participantInfoType1);
@@ -178,8 +178,8 @@ public class PutController {
             description = "Позволяет обновлять RstrList по id который передается, и по полям который передал пользователь"
     )
     public ResponseEntity<RstrListDTO> updateRstr(@Parameter(description = "Идентификатор RstrList, который надо обновить")@PathVariable(value = "id") BigInteger id,
-                                                   @Parameter(description = "Поля которые надо обновить")@RequestBody RstrListType rstrListType){
-        RstrListEntity rstrListEntity = rstrListService.updateRstr(id,rstrListType);
+                                                   @Parameter(description = "Поля которые надо обновить")@RequestBody RstrListDTO rstrListDTO){
+        RstrListEntity rstrListEntity = rstrListService.updateRstr(id,rstrListDTO);
         if(rstrListEntity!=null) {
             RstrListDTO rstrListType1 = ed807Service.convertToDTO(rstrListEntity);
             return ResponseEntity.ok(rstrListType1);

@@ -43,9 +43,9 @@ public class ParticipantInfoDTO {
 
     private String PtType;
 
-    private String Srvcs;
+    private Integer Srvcs;
 
-    private String XchType;
+    private Integer XchType;
 
     private String UID;
 
@@ -165,19 +165,19 @@ public class ParticipantInfoDTO {
         PtType = ptType;
     }
 
-    public String getSrvcs() {
+    public Integer getSrvcs() {
         return Srvcs;
     }
 
-    public void setSrvcs(String srvcs) {
+    public void setSrvcs(Integer srvcs) {
         Srvcs = srvcs;
     }
 
-    public String getXchType() {
+    public Integer getXchType() {
         return XchType;
     }
 
-    public void setXchType(String xchType) {
+    public void setXchType(Integer xchType) {
         XchType = xchType;
     }
 
@@ -222,8 +222,8 @@ public class ParticipantInfoDTO {
                 ", DateIn=" + DateIn +
                 ", DateOut=" + DateOut +
                 ", PtType='" + PtType + '\'' +
-                ", Srvcs='" + Srvcs + '\'' +
-                ", XchType='" + XchType + '\'' +
+                ", Srvcs=" + Srvcs +
+                ", XchType=" + XchType +
                 ", UID='" + UID + '\'' +
                 ", ParticipantStatus='" + ParticipantStatus + '\'' +
                 ", rstrListEntity=" + rstrListEntity +

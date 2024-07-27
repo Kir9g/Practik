@@ -1,12 +1,9 @@
 package com.bank.Service;
 
 import com.bank.DB.BICDirectoryEntry;
-import com.bank.DB.ED807Entity;
 import com.bank.DB.ParticipantInfoEntity;
-import com.bank.DTO.ru.cbr.ed.v2.BICDirectoryEntryType;
-import com.bank.DTO.ru.cbr.ed.v2.ParticipantInfoType;
-import com.bank.Repository.BICDirectoryEntity;
-import com.bank.Repository.ParticipantInfoRepository;
+import com.bank.DTO.Models.ParticipantInfoDTO;
+import com.bank.Repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,9 +16,17 @@ public class ParticipantInfoService {
     private ParticipantInfoRepository participantInfoRepository;
     @Autowired
     private BICDirectoryEntity bicDirectoryEntity;
+    @Autowired
+    private PtTypeRepository ptTypeRepository;
+    @Autowired
+    private SrvcsRepository srvcsRepository;
+    @Autowired
+    private XchTypeRepository xchTypeRepository;
+    @Autowired
+    private ParticipantStatusRepository participantStatusRepository;
 
     @Transactional
-    public ParticipantInfoEntity updateParticipant(BigInteger id, ParticipantInfoType updatedParticipantInfo) {
+    public ParticipantInfoEntity updateParticipant(BigInteger id, ParticipantInfoDTO updatedParticipantInfo) {
         Optional<ParticipantInfoEntity> participantInfoOptional = participantInfoRepository.findById(id);
 
         if (participantInfoOptional.isPresent()) {
@@ -59,25 +64,25 @@ public class ParticipantInfoService {
                 existingParticipantInfo.setPrntBIC(updatedParticipantInfo.getPrntBIC());
             }
             if (updatedParticipantInfo.getDateIn() != null) {
-                existingParticipantInfo.setDateIn(updatedParticipantInfo.getDateIn().toGregorianCalendar().getTime());
+                existingParticipantInfo.setDateIn(updatedParticipantInfo.getDateIn());
             }
             if (updatedParticipantInfo.getDateOut() != null) {
-                existingParticipantInfo.setDateOut(updatedParticipantInfo.getDateOut().toGregorianCalendar().getTime());
+                existingParticipantInfo.setDateOut(updatedParticipantInfo.getDateOut());
             }
             if (updatedParticipantInfo.getPtType() != null) {
-                existingParticipantInfo.setPtType(updatedParticipantInfo.getPtType());
+                existingParticipantInfo.setPtTypeEntity(ptTypeRepository.findByName(updatedParticipantInfo.getPtType()));
             }
             if (updatedParticipantInfo.getSrvcs() != null) {
-                existingParticipantInfo.setSrvcs(updatedParticipantInfo.getSrvcs());
+                existingParticipantInfo.setSrvcsEntity(srvcsRepository.findByName(updatedParticipantInfo.getSrvcs()));
             }
             if (updatedParticipantInfo.getXchType() != null) {
-                existingParticipantInfo.setXchType(updatedParticipantInfo.getXchType());
+                existingParticipantInfo.setXchTypeEntity(xchTypeRepository.findByName(updatedParticipantInfo.getXchType()));
             }
             if (updatedParticipantInfo.getUID() != null) {
                 existingParticipantInfo.setUID(updatedParticipantInfo.getUID());
             }
             if (updatedParticipantInfo.getParticipantStatus() != null) {
-                existingParticipantInfo.setParticipantStatus(updatedParticipantInfo.getParticipantStatus().value());
+                existingParticipantInfo.setParticipantStatus(participantStatusRepository.findByName(updatedParticipantInfo.getParticipantStatus()));
             }
             participantInfoRepository.save(existingParticipantInfo);
             return existingParticipantInfo;
@@ -85,8 +90,8 @@ public class ParticipantInfoService {
         return null;
     }
     @Transactional
-    public ParticipantInfoType createPart(BICDirectoryEntry bicDirectoryEntry,
-                                          ParticipantInfoType participantInfoType){
+    public void createPart(BICDirectoryEntry bicDirectoryEntry,
+                                          ParticipantInfoDTO participantInfoType){
         ParticipantInfoEntity participantInfoEntity = new ParticipantInfoEntity();
 
         bicDirectoryEntry.setParticipantInfo(participantInfoEntity);
@@ -138,27 +143,27 @@ public class ParticipantInfoService {
         } else {
             participantInfoEntity.setPrntBIC(null);
         }
-        participantInfoEntity.setDateIn(participantInfoType.getDateIn().toGregorianCalendar().getTime());
+        participantInfoEntity.setDateIn(participantInfoType.getDateIn());
         if (participantInfoType.getDateOut() != null) {
-            participantInfoEntity.setDateOut(participantInfoType.getDateOut().toGregorianCalendar().getTime());
+            participantInfoEntity.setDateOut(participantInfoType.getDateOut());
         } else {
             participantInfoEntity.setDateOut(null);
         }
-        participantInfoEntity.setPtType(participantInfoType.getPtType());
-        participantInfoEntity.setSrvcs(participantInfoType.getSrvcs());
-        participantInfoEntity.setXchType(participantInfoType.getXchType());
+        participantInfoEntity.setPtTypeEntity(ptTypeRepository.findByName(participantInfoType.getPtType()));
+        participantInfoEntity.setSrvcsEntity(srvcsRepository.findByName(participantInfoType.getSrvcs()));
+        participantInfoEntity.setXchTypeEntity(xchTypeRepository.findByName(participantInfoType.getXchType()));
         if (participantInfoType.getUID() != null) {
             participantInfoEntity.setUID(participantInfoType.getUID());
         } else {
             participantInfoEntity.setUID(null);
         }
         if (participantInfoType.getParticipantStatus() != null) {
-            participantInfoEntity.setParticipantStatus(participantInfoType.getParticipantStatus().value());
+            participantInfoEntity.setParticipantStatus(participantStatusRepository.findByName(participantInfoType.getParticipantStatus()));
         } else {
             participantInfoEntity.setParticipantStatus(null);
         }
         bicDirectoryEntity.save(bicDirectoryEntry);
         participantInfoRepository.save(participantInfoEntity);
-        return participantInfoType;
+
     }
 }

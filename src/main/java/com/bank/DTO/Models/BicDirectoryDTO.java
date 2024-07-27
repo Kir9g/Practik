@@ -18,7 +18,7 @@ public class BicDirectoryDTO {
     private String BIC;
 
     @Schema(description = "Тип изменения", example = "ADD")
-    private ChangeType changeType;
+    private String changeType;
 
     @Schema(description = "Информация об участнике")
     private ParticipantInfoDTO participantInfo;
@@ -48,11 +48,11 @@ public class BicDirectoryDTO {
         this.BIC = BIC;
     }
 
-    public ChangeType getChangeType() {
+    public String getChangeType() {
         return changeType;
     }
 
-    public void setChangeType(ChangeType changeType) {
+    public void setChangeType(String changeType) {
         this.changeType = changeType;
     }
 
@@ -85,7 +85,7 @@ public class BicDirectoryDTO {
         return "BicDirectoryDTO{" +
                 "id=" + id +
                 ", BIC='" + BIC + '\'' +
-                ", changeType=" + changeType +
+                ", changeType='" + changeType + '\'' +
                 ", participantInfo=" + participantInfo +
                 ", accounts=" + accounts +
                 ", swbics=" + swbics +

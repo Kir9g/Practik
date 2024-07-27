@@ -17,6 +17,7 @@ public class InitialED {
     private BigInteger EDNo;
 
     @Column(name = "EDDate",nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date EDDate;
 
 

@@ -19,12 +19,14 @@ public class ED807Entity {
     private String filePath;
 
     @Column(name = "CreationDate")
+    @Temporal(TemporalType.DATE)
     private Date CreationDate;
 
     @Column(name = "EDNo", length = 9, nullable = false, unique = true)
     private BigInteger Edno;
 
     @Column(name = "EDDate", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date EDDate;
 
     @Column(name = "EDAuthor", nullable = false, length = 10)
@@ -33,16 +35,20 @@ public class ED807Entity {
     @Column(name = "EDReceiver", nullable = true, length = 10)
     private BigInteger EDReceiver;
 
-    @Column(name = "CreationReason", nullable = false, length = 4)
-    private String CreationReason;
+    @ManyToOne
+    @JoinColumn(name = "creationReason_id", nullable = false)
+    private CreationReasonEntity creationReason;
 
     @Column(name = "CreationDateTime", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date CreationDateTime;
 
-    @Column(name = "InfoTypeCode", nullable = false,length = 4)
-    private String InfoTypeCode;
+    @ManyToOne
+    @JoinColumn(name = "InfoTypeCodeId", nullable = false)
+    private InfoTypeCodeEntity infoTypeCodeEntity;
 
     @Column(name = "BusinessDay", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date BusinessDay;
 
     @Column(name = "DirectoryVersion", nullable = true, length = 2)
@@ -71,6 +77,14 @@ public class ED807Entity {
         this.bicDirectoryEntries = bicDirectoryEntries;
     }
 
+    public CreationReasonEntity getCreationReason() {
+        return creationReason;
+    }
+
+    public void setCreationReason(CreationReasonEntity creationReason) {
+        this.creationReason = creationReason;
+    }
+
     @Override
     public String toString() {
         return "ED807Entity{" +
@@ -82,9 +96,9 @@ public class ED807Entity {
                 ", EDDate=" + EDDate +
                 ", EDAuthor='" + EDAuthor + '\'' +
                 ", EDReceiver=" + EDReceiver +
-                ", CreationReason='" + CreationReason + '\'' +
+                ", creationReason=" + creationReason +
                 ", CreationDateTime=" + CreationDateTime +
-                ", InfoTypeCode='" + InfoTypeCode + '\'' +
+                ", infoTypeCodeEntity=" + infoTypeCodeEntity +
                 ", BusinessDay=" + BusinessDay +
                 ", DirectoryVersion=" + DirectoryVersion +
                 ", partInfoEntity=" + partInfoEntity +
@@ -149,13 +163,6 @@ public class ED807Entity {
         this.EDReceiver = EDReceiver;
     }
 
-    public String getCreationReason() {
-        return CreationReason;
-    }
-
-    public void setCreationReason(String creationReason) {
-        CreationReason = creationReason;
-    }
 
     public Date getCreationDateTime() {
         return CreationDateTime;
@@ -165,12 +172,12 @@ public class ED807Entity {
         CreationDateTime = creationDateTime;
     }
 
-    public String getInfoTypeCode() {
-        return InfoTypeCode;
+    public InfoTypeCodeEntity getInfoTypeCodeEntity() {
+        return infoTypeCodeEntity;
     }
 
-    public void setInfoTypeCode(String infoTypeCode) {
-        InfoTypeCode = infoTypeCode;
+    public void setInfoTypeCodeEntity(InfoTypeCodeEntity infoTypeCodeEntity) {
+        this.infoTypeCodeEntity = infoTypeCodeEntity;
     }
 
     public Date getBusinessDay() {

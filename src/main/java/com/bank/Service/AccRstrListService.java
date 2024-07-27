@@ -3,9 +3,11 @@ package com.bank.Service;
 import com.bank.DB.AccRstrListEntity;
 import com.bank.DB.Accounts;
 import com.bank.DB.BICDirectoryEntry;
+import com.bank.DTO.Models.AccRstrListDTO;
 import com.bank.DTO.ru.cbr.ed.v2.AccRstrListType;
 import com.bank.DTO.ru.cbr.ed.v2.AccountsType;
 import com.bank.Repository.AccRstrListRepository;
+import com.bank.Repository.AccRstrRepository;
 import com.bank.Repository.AccountRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +21,21 @@ public class AccRstrListService {
     private AccRstrListRepository accRstrListRepository;
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private AccRstrRepository accRstrRepository;
     @Transactional
-    public AccRstrListEntity updateAccount(BigInteger id, AccRstrListType accRstrListType) {
+    public AccRstrListEntity updateAccount(BigInteger id, AccRstrListDTO accRstrListDTO) {
         Optional<AccRstrListEntity> accRstrList = accRstrListRepository.findById(id);
         if (accRstrList.isPresent()) {
             AccRstrListEntity updateAccRstr = accRstrList.get();
-            if (accRstrListType.getAccRstr() != null) {
-                updateAccRstr.setAccRstr(accRstrListType.getAccRstr().value());
+            if (accRstrListDTO.getAccRstr() != null) {
+                updateAccRstr.setAccRstrEntity(accRstrRepository.findByName(accRstrListDTO.getAccRstr()));
             }
-            if (accRstrListType.getAccRstrDate() != null) {
-                updateAccRstr.setAccRstrDate(accRstrListType.getAccRstrDate().toGregorianCalendar().getTime());
+            if (accRstrListDTO.getAccRstrDate() != null) {
+                updateAccRstr.setAccRstrDate(accRstrListDTO.getAccRstrDate());
             }
-            if (accRstrListType.getSuccessorBIC() != null) {
-                updateAccRstr.setSuccessorBIC(accRstrListType.getSuccessorBIC());
+            if (accRstrListDTO.getSuccessorBIC() != null) {
+                updateAccRstr.setSuccessorBIC(accRstrListDTO.getSuccessorBIC());
             }
             return accRstrListRepository.save(updateAccRstr);
         }else {
@@ -39,14 +43,14 @@ public class AccRstrListService {
         }
     }
     @Transactional
-    public AccRstrListEntity createAcc(Accounts accountsEntity, AccRstrListType accRstrListType){
+    public AccRstrListEntity createAcc(Accounts accountsEntity, AccRstrListDTO accRstrListDTO){
         AccRstrListEntity accRstrListEntity = new AccRstrListEntity();
         accountsEntity.addAccRstrListEntity(accRstrListEntity);
         accRstrListEntity.setAccounts(accountsEntity);
-        accRstrListEntity.setAccRstr(accRstrListType.getAccRstr().value());
-        accRstrListEntity.setAccRstrDate(accRstrListType.getAccRstrDate().toGregorianCalendar().getTime());
-        if(accRstrListType.getSuccessorBIC()!=null){
-            accRstrListEntity.setSuccessorBIC(accRstrListType.getSuccessorBIC());
+        accRstrListEntity.setAccRstrEntity(accRstrRepository.findByName(accRstrListDTO.getAccRstr()));
+        accRstrListEntity.setAccRstrDate(accRstrListDTO.getAccRstrDate());
+        if(accRstrListDTO.getSuccessorBIC()!=null){
+            accRstrListEntity.setSuccessorBIC(accRstrListDTO.getSuccessorBIC());
         }else {accRstrListEntity.setSuccessorBIC(null);}
         accountRepository.save(accountsEntity);
         return accRstrListRepository.save(accRstrListEntity);

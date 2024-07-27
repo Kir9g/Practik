@@ -102,9 +102,9 @@ public class PostController {
             ed807.setName(name);
             Date date = new Date();
             ed807.setCreationDate(date);
-            ed807Service.saveED807(ed807);
-
-            return new ResponseEntity<>(ed807, HttpStatus.OK);
+            ED807Entity entity= ed807Service.saveED807(ed807);
+            ED807DTO ed807DTO = ed807Service.convertToDTO(entity);
+            return ResponseEntity.ok(ed807DTO);
         } catch (IOException | JAXBException e) {
             e.printStackTrace();
             return new ResponseEntity<>("Error processing file", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -119,10 +119,10 @@ public class PostController {
             description = "Позволяет создавать бик для ed807, id которого передается в данный метод, создается без связанных сущностей"
     )
     public ResponseEntity<BicDirectoryDTO> createBic(@Parameter(description = "Идентификатор ed807")@PathVariable(value = "id") BigInteger id,
-                                                           @Parameter(description = "Поля для создания")@RequestBody BICDirectoryEntryType bicDirectoryEntryType){
+                                                           @Parameter(description = "Поля для создания")@RequestBody BicDirectoryDTO bicDirectoryDTO){
         Optional<ED807Entity> entity = entityRepository.findById(id);//id от ed807
         if(entity.isPresent()){
-            BICDirectoryEntry bicDirectoryEntry = bicDirectoryService.createBIC(entity.get(),bicDirectoryEntryType);
+            BICDirectoryEntry bicDirectoryEntry = bicDirectoryService.createBIC(entity.get(),bicDirectoryDTO);
             BicDirectoryDTO bicDirectoryEntryType1 = ed807Service.convertToDTO(bicDirectoryEntry);
             return ResponseEntity.ok(bicDirectoryEntryType1);
         }else {
@@ -151,10 +151,10 @@ public class PostController {
             description = "Позволяет создавать AccRstr для Account, id которого передается в данный метод, создается без связанных сущностей"
     )
     public ResponseEntity<AccRstrListDTO> createAccRstr(@Parameter(description = "Идентификатор Аккаунта")@PathVariable(value = "id") BigInteger id,
-                                                         @Parameter(description = "Поля для создания")@RequestBody AccRstrListType accRstrListType){
+                                                         @Parameter(description = "Поля для создания")@RequestBody AccRstrListDTO accRstrListDTO){
         Optional<Accounts> entity = accountRepository.findById(id);//id от BIC
         if(entity.isPresent()){
-            AccRstrListEntity accounts = accRstrListService.createAcc(entity.get(),accRstrListType);
+            AccRstrListEntity accounts = accRstrListService.createAcc(entity.get(),accRstrListDTO);
             AccRstrListDTO accounts1 = ed807Service.convertToDTO(accounts);
             return ResponseEntity.ok(accounts1);
         }else {
@@ -199,10 +199,10 @@ public class PostController {
             description = "Позволяет создавать ParticipantInfo для BIC, id которого передается в данный метод, создается без связанных сущностей"
     )
     public ResponseEntity<BicDirectoryDTO> createPartInfo(@Parameter(description = "Идентификатор ED807")@PathVariable(value = "id") BigInteger id,
-                                                          @Parameter(description = "Поля для создания")@RequestBody ParticipantInfoType participantInfoType){
+                                                          @Parameter(description = "Поля для создания")@RequestBody ParticipantInfoDTO participantInfoDTO){
         Optional<BICDirectoryEntry> entity = bicDirectoryEntity.findById(id);//id от BIC
         if(entity.isPresent()){
-            ParticipantInfoType participantInfoType1 = participantInfoService.createPart(entity.get(),participantInfoType);
+            participantInfoService.createPart(entity.get(),participantInfoDTO);
             BicDirectoryDTO bicDirectoryEntryType = ed807Service.convertToDTO(entity.get());
             return ResponseEntity.ok(bicDirectoryEntryType);
         }else {
@@ -215,10 +215,10 @@ public class PostController {
             description = "Позволяет создавать RstrList для ParticipantInfo, id которого передается в данный метод, создается без связанных сущностей"
     )
     public ResponseEntity<RstrListDTO> createRstr(@Parameter(description = "Идентификатор ParticipantInfo")@PathVariable(value = "id") BigInteger id,
-                                                   @Parameter(description = "Поля для создания")@RequestBody RstrListType rstrListType){
+                                                   @Parameter(description = "Поля для создания")@RequestBody RstrListDTO rstrListDTO){
         Optional<ParticipantInfoEntity> entity = participantInfoRepository.findById(id);
         if(entity.isPresent()){
-            RstrListEntity rstrListEntity = rstrListService.createRstr(entity.get(),rstrListType);
+            RstrListEntity rstrListEntity = rstrListService.createRstr(entity.get(),rstrListDTO);
             RstrListDTO rstrListType1 = ed807Service.convertToDTO(rstrListEntity);
             return ResponseEntity.ok(rstrListType1);
         }else {

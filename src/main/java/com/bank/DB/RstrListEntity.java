@@ -15,10 +15,13 @@ public class RstrListEntity {
     @Column(name = "id")
     private BigInteger id;
 
-    @Column(name = "Rstr", nullable = false, length = 4)
-    private RstrType Rstr;
+    @ManyToOne
+    @JoinColumn(name = "rstrId",nullable = false)
+    private RstrEntity rstrEntity;
+
 
     @Column(name = "RstrDate", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date RstrDate;
 
     @ManyToOne()
@@ -33,12 +36,12 @@ public class RstrListEntity {
         this.id = id;
     }
 
-    public RstrType getRstr() {
-        return Rstr;
+    public RstrEntity getRstrEntity() {
+        return rstrEntity;
     }
 
-    public void setRstr(String rstr) {
-        Rstr = RstrType.valueOf(rstr);
+    public void setRstrEntity(RstrEntity rstrEntity) {
+        this.rstrEntity = rstrEntity;
     }
 
     public Date getRstrDate() {
@@ -61,7 +64,7 @@ public class RstrListEntity {
     public String toString() {
         return "RstrListEntity{" +
                 "id=" + id +
-                ", Rstr=" + Rstr +
+                ", rstrEntity=" + rstrEntity +
                 ", RstrDate=" + RstrDate +
                 ", participantInfoEntity=" + participantInfoEntity +
                 '}';

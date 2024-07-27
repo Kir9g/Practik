@@ -4,11 +4,13 @@ import com.bank.DB.ED807Entity;
 import com.bank.DB.PartInfoEntity;
 import com.bank.DB.ParticipantInfoEntity;
 import com.bank.DB.RstrListEntity;
+import com.bank.DTO.Models.RstrListDTO;
 import com.bank.DTO.ru.cbr.ed.v2.PartInfo;
 import com.bank.DTO.ru.cbr.ed.v2.RstrListType;
 import com.bank.Repository.PartInfoRepository;
 import com.bank.Repository.ParticipantInfoRepository;
 import com.bank.Repository.RstrListRepository;
+import com.bank.Repository.RstrRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,17 +23,19 @@ public class RstrListService {
     private RstrListRepository rstrListRepository;
     @Autowired
     private ParticipantInfoRepository participantInfoRepository;
+    @Autowired
+    private RstrRepository rstrRepository;
 
     @Transactional
-    public RstrListEntity updateRstr(BigInteger id, RstrListType rstrListType){
+    public RstrListEntity updateRstr(BigInteger id, RstrListDTO rstrListDTO){
         Optional<RstrListEntity> rstrListEntity = rstrListRepository.findById(id);
         if(rstrListEntity!=null){
             RstrListEntity rstrListEntity1 = rstrListEntity.get();
-            if(rstrListType.getRstr() !=null) {
-                rstrListEntity1.setRstr(rstrListType.getRstr().value());
+            if(rstrListDTO.getRstr() !=null) {
+                rstrListEntity1.setRstrEntity(rstrRepository.findByName(rstrListDTO.getRstr()));
             }
-            if(rstrListType.getRstrDate()!=null) {
-                rstrListEntity1.setRstrDate(rstrListType.getRstrDate().toGregorianCalendar().getTime());
+            if(rstrListDTO.getRstrDate()!=null) {
+                rstrListEntity1.setRstrDate(rstrListDTO.getRstrDate());
             }
             return rstrListRepository.save(rstrListEntity1);
         }else {
@@ -39,13 +43,13 @@ public class RstrListService {
         }
     }
     @Transactional
-    public RstrListEntity createRstr(ParticipantInfoEntity participantInfoEntity, RstrListType rstrListType){
+    public RstrListEntity createRstr(ParticipantInfoEntity participantInfoEntity, RstrListDTO rstrListDTO){
         RstrListEntity rstrListEntity = new RstrListEntity();
-        if(rstrListType.getRstrDate()!= null){
-            rstrListEntity.setRstrDate(rstrListType.getRstrDate().toGregorianCalendar().getTime());
+        if(rstrListDTO.getRstrDate()!= null){
+            rstrListEntity.setRstrDate(rstrListDTO.getRstrDate());
         }
-        if(rstrListType.getRstr()!= null){
-            rstrListEntity.setRstr(rstrListType.getRstr().value());
+        if(rstrListDTO.getRstr()!= null){
+            rstrListEntity.setRstrEntity(rstrRepository.findByName(rstrListDTO.getRstr()));
         }
         rstrListEntity.setParticipantInfoEntity(participantInfoEntity);
         participantInfoEntity.addRstrListEntity(rstrListEntity);

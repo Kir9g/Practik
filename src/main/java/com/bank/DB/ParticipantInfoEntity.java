@@ -50,25 +50,31 @@ public class ParticipantInfoEntity {
     private String PrntBIC;
 
     @Column(name = "DateIn", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date DateIn;
 
     @Column(name = "DateOut")
+    @Temporal(TemporalType.DATE)
     private Date DateOut;
 
-    @Column(name = "PtType", nullable = false)
-    private String PtType;
+    @ManyToOne
+    @JoinColumn(name = "PaticioantId")
+    private PtTypeEntity ptTypeEntity;
 
-    @Column(name = "Srvcs", nullable = false)
-    private String Srvcs;
+    @ManyToOne
+    @JoinColumn(name = "SrvcsId")
+    private SrvcsEntity srvcsEntity;
 
-    @Column(name = "XchType", nullable = false)
-    private String XchType;
+    @ManyToOne
+    @JoinColumn(name = "xchTypeId",nullable = false)
+    private XchTypeEntity xchTypeEntity;
 
     @Column(name = "UID", nullable = false)
     private String UID;
 
-    @Column(name = "ParticipantStatus", length = 4)
-    private String ParticipantStatus;
+    @ManyToOne
+    @JoinColumn(name = "participantStatusId",nullable = false)
+    private ParticipantStatusEntity participantStatus;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "participantInfoEntity",cascade = CascadeType.ALL)
     private Set<RstrListEntity> rstrListEntity;
@@ -173,28 +179,28 @@ public class ParticipantInfoEntity {
         DateOut = dateOut;
     }
 
-    public String getPtType() {
-        return PtType;
+    public PtTypeEntity getPtTypeEntity() {
+        return ptTypeEntity;
     }
 
-    public void setPtType(String ptType) {
-        PtType = ptType;
+    public void setPtTypeEntity(PtTypeEntity ptTypeEntity) {
+        this.ptTypeEntity = ptTypeEntity;
     }
 
-    public String getSrvcs() {
-        return Srvcs;
+    public SrvcsEntity getSrvcsEntity() {
+        return srvcsEntity;
     }
 
-    public void setSrvcs(String srvcs) {
-        Srvcs = srvcs;
+    public void setSrvcsEntity(SrvcsEntity srvcsEntity) {
+        this.srvcsEntity = srvcsEntity;
     }
 
-    public String getXchType() {
-        return XchType;
+    public XchTypeEntity getXchTypeEntity() {
+        return xchTypeEntity;
     }
 
-    public void setXchType(String xchType) {
-        XchType = xchType;
+    public void setXchTypeEntity(XchTypeEntity xchTypeEntity) {
+        this.xchTypeEntity = xchTypeEntity;
     }
 
     public String getUID() {
@@ -205,12 +211,12 @@ public class ParticipantInfoEntity {
         this.UID = UID;
     }
 
-    public String getParticipantStatus() {
-        return ParticipantStatus;
+    public ParticipantStatusEntity getParticipantStatus() {
+        return participantStatus;
     }
 
-    public void setParticipantStatus(String participantStatus) {
-        ParticipantStatus = participantStatus;
+    public void setParticipantStatus(ParticipantStatusEntity participantStatus) {
+        this.participantStatus = participantStatus;
     }
 
     public Set<RstrListEntity> getRstrListEntity() {
@@ -256,11 +262,11 @@ public class ParticipantInfoEntity {
                 ", PrntBIC='" + PrntBIC + '\'' +
                 ", DateIn=" + DateIn +
                 ", DateOut=" + DateOut +
-                ", PtType='" + PtType + '\'' +
-                ", Srvcs='" + Srvcs + '\'' +
-                ", XchType='" + XchType + '\'' +
+                ", ptTypeEntity=" + ptTypeEntity +
+                ", srvcsEntity=" + srvcsEntity +
+                ", xchTypeEntity=" + xchTypeEntity +
                 ", UID='" + UID + '\'' +
-                ", ParticipantStatus='" + ParticipantStatus + '\'' +
+                ", participantStatus=" + participantStatus +
                 ", rstrListEntity=" + rstrListEntity +
                 ", bicDirectoryEntry=" + bicDirectoryEntry +
                 '}';

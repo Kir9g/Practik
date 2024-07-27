@@ -13,8 +13,9 @@ public class AccRstrListEntity {
     @GeneratedValue
     private BigInteger id;
 
-    @Column(name = "AccRstr", length = 4,nullable = false)
-    private String AccRstr;
+    @ManyToOne
+    @JoinColumn(name = "accRstrId",nullable = false)
+    private AccRstrEntity accRstrEntity;
 
     @Column(name = "AccRstrDate",nullable = false)
     private Date AccRstrDate;
@@ -38,19 +39,19 @@ public class AccRstrListEntity {
     public String toString() {
         return "AccRstrListEntity{" +
                 "id=" + id +
-                ", AccRstr='" + AccRstr + '\'' +
+                ", accRstrEntity=" + accRstrEntity +
                 ", AccRstrDate=" + AccRstrDate +
                 ", SuccessorBIC='" + SuccessorBIC + '\'' +
                 ", accounts=" + accounts +
                 '}';
     }
 
-    public String getAccRstr() {
-        return AccRstr;
+    public AccRstrEntity getAccRstrEntity() {
+        return accRstrEntity;
     }
 
-    public void setAccRstr(String accRstr) {
-        AccRstr = accRstr;
+    public void setAccRstrEntity(AccRstrEntity accRstrEntity) {
+        this.accRstrEntity = accRstrEntity;
     }
 
     public Date getAccRstrDate() {

@@ -2,16 +2,13 @@ package com.bank.Service;
 
 import com.bank.DB.*;
 import com.bank.DTO.Models.*;
-import com.bank.DTO.ru.cbr.ed.leaftypes.v2.*;
 import com.bank.DTO.ru.cbr.ed.v2.*;
 import com.bank.Repository.*;
+import com.bank.Repository.XchTypeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -46,10 +43,32 @@ public class ED807Service {
 
     @Autowired
     private SWBICSRepository swbicsRepository;
+    @Autowired
+    private CreationReasonRepository creationReasonRepository;
+    @Autowired
+    private InfoTypeCodeRepository infoTypeCodeRepository;
+    @Autowired
+    private ChangeTypeRepository changeTypeRepository;
+    @Autowired
+    private PtTypeRepository ptTypeRepository;
+    @Autowired
+    private SrvcsRepository srvcsRepository;
+    @Autowired
+    private XchTypeRepository xchTypeRepository;
+    @Autowired
+    private RstrRepository rstrRepository;
+    @Autowired
+    private ParticipantStatusRepository statusRepository;
+    @Autowired
+    private AccRstrRepository accRstrRepository;
+    @Autowired
+    private AccountStatusRepository accountStatusRepository;
+    @Autowired
+    private RegulationAccountTypeRepository regulationAccountTypeRepository;
 
 
     @Transactional
-    public void saveED807(ED807 ed807) throws Exception {
+    public ED807Entity saveED807(ED807 ed807) throws Exception {
         ED807Entity ed807Entity = new ED807Entity();
         ed807Entity.setEdno(ed807.getEDNo());
         ed807Entity.setName(ed807.getName());
@@ -64,9 +83,19 @@ public class ED807Service {
         } else {
             ed807Entity.setEDReceiver(null);
         }
-        ed807Entity.setCreationReason(ed807.getCreationReason().toString());
+        Optional<CreationReasonEntity> creationReason = creationReasonRepository.findByName(ed807.getCreationReason().name());
+        if(creationReason.get() !=null) {
+            ed807Entity.setCreationReason(creationReason.get());
+        }else {
+            ed807Entity.setCreationReason(null);
+        }
         ed807Entity.setCreationDateTime(ed807.getCreationDateTime().toGregorianCalendar().getTime());
-        ed807Entity.setInfoTypeCode(ed807.getInfoTypeCode().toString());
+        Optional<InfoTypeCodeEntity> infoTypeCodeEntity = infoTypeCodeRepository.findByName(ed807.getInfoTypeCode().name());
+        if(infoTypeCodeEntity.get() !=null) {
+            ed807Entity.setInfoTypeCodeEntity(infoTypeCodeEntity.get());
+        }else {
+            ed807Entity.setInfoTypeCodeEntity(null);
+        }
         ed807Entity.setBusinessDay(ed807.getBusinessDay().toGregorianCalendar().getTime());
         if(ed807.getDirectoryVersion() !=null) {
             ed807Entity.setDirectoryVersion(ed807.getDirectoryVersion());
@@ -99,6 +128,7 @@ public class ED807Service {
         }else {
             ed807Entity.setInitialED(null);
         }
+        ed807EntityRepository.save(ed807Entity);
         if(ed807.getBICDirectoryEntry() != null) {
             List<BICDirectoryEntryType> bicDirectoryEntryTypes = ed807.getBICDirectoryEntry();
             Set<BICDirectoryEntry> bicDirectoryEntries = new HashSet<>();
@@ -107,7 +137,8 @@ public class ED807Service {
                 bicDirectoryEntry.setEd807Entity(ed807Entity);
                 bicDirectoryEntry.setBIC(bicDirectoryEntryType.getBIC());
                 if (bicDirectoryEntryType.getChangeType() != null) {
-                    bicDirectoryEntry.setChangeType(bicDirectoryEntryType.getChangeType().value());
+                    ChangeTypeEntity changeTypeEntity = changeTypeRepository.findByName(bicDirectoryEntryType.getChangeType().name());
+                    bicDirectoryEntry.setChangeType(changeTypeEntity);
                 } else {
                     bicDirectoryEntry.setChangeType(null);
                 }
@@ -166,16 +197,16 @@ public class ED807Service {
                     } else {
                         participantInfoEntity.setDateOut(null);
                     }
-                    participantInfoEntity.setPtType(bicDirectoryEntryType.getParticipantInfo().getPtType());
-                    participantInfoEntity.setSrvcs(bicDirectoryEntryType.getParticipantInfo().getSrvcs());
-                    participantInfoEntity.setXchType(bicDirectoryEntryType.getParticipantInfo().getXchType());
+                    participantInfoEntity.setPtTypeEntity(ptTypeRepository.findByName(bicDirectoryEntryType.getParticipantInfo().getPtType()));
+                    participantInfoEntity.setSrvcsEntity(srvcsRepository.findByName(Integer.valueOf(bicDirectoryEntryType.getParticipantInfo().getSrvcs())));
+                    participantInfoEntity.setXchTypeEntity(xchTypeRepository.findByName(Integer.valueOf(bicDirectoryEntryType.getParticipantInfo().getXchType())));
                     if (bicDirectoryEntryType.getParticipantInfo().getUID() != null) {
                         participantInfoEntity.setUID(bicDirectoryEntryType.getParticipantInfo().getUID());
                     } else {
                         participantInfoEntity.setUID(null);
                     }
                     if (bicDirectoryEntryType.getParticipantInfo().getParticipantStatus() != null) {
-                        participantInfoEntity.setParticipantStatus(bicDirectoryEntryType.getParticipantInfo().getParticipantStatus().value());
+                        participantInfoEntity.setParticipantStatus(statusRepository.findByName(bicDirectoryEntryType.getParticipantInfo().getParticipantStatus().name()));
                     } else {
                         participantInfoEntity.setParticipantStatus(null);
                     }
@@ -187,7 +218,7 @@ public class ED807Service {
                         for (RstrListType rstr : rstrList) {
 
                             RstrListEntity rstrListEntity = new RstrListEntity();
-                            rstrListEntity.setRstr(rstr.getRstr().toString());
+                            rstrListEntity.setRstrEntity(rstrRepository.findByName(rstr.getRstr().name()));
                             rstrListEntity.setRstrDate(rstr.getRstrDate().toGregorianCalendar().getTime());
                             rstrListEntity.setParticipantInfoEntity(participantInfoEntity);
                             rstrListRepository.save(rstrListEntity);
@@ -233,7 +264,7 @@ public class ED807Service {
                             Accounts accountsEntity = new Accounts();
 
                             accountsEntity.setAccount(accountsType.getAccount());
-                            accountsEntity.setRegulationAccountType(accountsType.getRegulationAccountType().value());
+                            accountsEntity.setRegulationAccountType(regulationAccountTypeRepository.findByName(accountsType.getRegulationAccountType().name()));
                             if(accountsType.getAccount() != null) {
                                 accountsEntity.setCk(accountsType.getCK());
                             }else {accountsEntity.setCk(null);}
@@ -243,9 +274,9 @@ public class ED807Service {
                                 accountsEntity.setDateOut(accountsType.getDateOut().toGregorianCalendar().getTime());
                             }else {accountsEntity.setDateOut(null);}
                             if(accountsType.getAccountStatus() != null){
-                                accountsEntity.setAccountStatus(accountsType.getAccountStatus().value());
+                                accountsEntity.setAccountStatusEntity(accountStatusRepository.findByName(accountsType.getAccountStatus().name()));
                             }else {
-                                accountsEntity.setAccountStatus(null);
+                                accountsEntity.setAccountStatusEntity(null);
                             }
                             accountsEntity.setBicDirectoryEntry(bicDirectoryEntry);
                             if (accountsType.getAccRstrList()!= null){
@@ -254,7 +285,7 @@ public class ED807Service {
                                 for (AccRstrListType accRstrListType: accRstrListTypeList){
                                     AccRstrListEntity accRstrListEntity = new AccRstrListEntity();
                                     accRstrListEntity.setAccounts(accountsEntity);
-                                    accRstrListEntity.setAccRstr(accRstrListType.getAccRstr().value());
+                                    accRstrListEntity.setAccRstrEntity(accRstrRepository.findByName(accRstrListType.getAccRstr().name()));
                                     accRstrListEntity.setAccRstrDate(accRstrListType.getAccRstrDate().toGregorianCalendar().getTime());
                                     if(accRstrListType.getSuccessorBIC()!=null){
                                         accRstrListEntity.setSuccessorBIC(accRstrListType.getSuccessorBIC());
@@ -279,6 +310,7 @@ public class ED807Service {
 
             }
         }
+        return ed807Entity;
 
     }
 
@@ -429,9 +461,9 @@ public class ED807Service {
             dto.setEDReceiver(null);
         }
 
-        dto.setCreationReason(ed807Entity.getCreationReason());
+        dto.setCreationReason(ed807Entity.getCreationReason().getName());
         dto.setCreationDateTime(ed807Entity.getCreationDateTime());
-        dto.setInfoTypeCode(ed807Entity.getInfoTypeCode());
+        dto.setInfoTypeCode(ed807Entity.getInfoTypeCodeEntity().getName());
         dto.setBusinessDay(ed807Entity.getBusinessDay());
 
         if(ed807Entity.getDirectoryVersion() != null) {
@@ -489,9 +521,9 @@ public class ED807Service {
             dto.setEDReceiver(null);
         }
 
-        dto.setCreationReason(ed807Entity.getCreationReason());
+        dto.setCreationReason(ed807Entity.getCreationReason().getName());
         dto.setCreationDateTime(ed807Entity.getCreationDateTime());
-        dto.setInfoTypeCode(ed807Entity.getInfoTypeCode());
+        dto.setInfoTypeCode(ed807Entity.getInfoTypeCodeEntity().getName());
         dto.setBusinessDay(ed807Entity.getBusinessDay());
         if(ed807Entity.getDirectoryVersion() != null) {
             dto.setDirectoryVersion(ed807Entity.getDirectoryVersion());
@@ -540,7 +572,7 @@ public class ED807Service {
         dto.setId(bicDirectoryEntry.getId());
         dto.setBIC(bicDirectoryEntry.getBIC());
         if (bicDirectoryEntry.getChangeType() != null) {
-            dto.setChangeType(ChangeType.valueOf(bicDirectoryEntry.getChangeType()));
+            dto.setChangeType(bicDirectoryEntry.getChangeType().getName());
         } else {
             dto.setChangeType(null);
         }
@@ -587,11 +619,11 @@ public class ED807Service {
         dto.setPrntBIC(participantInfoEntity.getPrntBIC());
         dto.setDateIn(participantInfoEntity.getDateIn());
         dto.setDateOut(participantInfoEntity.getDateOut());
-        dto.setPtType(participantInfoEntity.getPtType());
-        dto.setSrvcs(participantInfoEntity.getSrvcs());
-        dto.setXchType(participantInfoEntity.getXchType());
+        dto.setPtType(participantInfoEntity.getPtTypeEntity().getName());
+        dto.setSrvcs(participantInfoEntity.getSrvcsEntity().getName());
+        dto.setXchType(Integer.valueOf(participantInfoEntity.getXchTypeEntity().getName()));
         dto.setUID(participantInfoEntity.getUID());
-        dto.setParticipantStatus(participantInfoEntity.getParticipantStatus());
+        dto.setParticipantStatus(participantInfoEntity.getParticipantStatus().getName());
 
         // Преобразование rstrListEntity в rstrListType
         if(participantInfoEntity.getRstrListEntity() != null) {
@@ -611,7 +643,7 @@ public class ED807Service {
         }
         RstrListDTO dto = new RstrListDTO();
         dto.setId(entity.getId());
-        dto.setRstr(entity.getRstr());
+        dto.setRstr(entity.getRstrEntity().getName());
         dto.setRstrDate(entity.getRstrDate());
         return dto;
     }
@@ -623,7 +655,7 @@ public class ED807Service {
         AccountsDTO dto = new AccountsDTO();
         dto.setId(entity.getId());
         dto.setAccount(entity.getAccount());
-        dto.setRegulationAccountType(entity.getRegulationAccountType());
+        dto.setRegulationAccountType(entity.getRegulationAccountType().getName());
         dto.setCk(entity.getCk());
         dto.setAccountCBRBIC(entity.getAccountCBRBIC());
         dto.setDateIn(entity.getDateIn());
@@ -632,8 +664,8 @@ public class ED807Service {
         }else {
             dto.setDateOut(null);
         }
-        if(entity.getAccountStatus() != null){
-            dto.setAccountStatus(entity.getAccountStatus());
+        if(entity.getAccountStatusEntity() != null){
+            dto.setAccountStatus(entity.getAccountStatusEntity().getName());
         }else {
             dto.setAccountStatus(null);
         }
@@ -655,7 +687,7 @@ public class ED807Service {
 
      AccRstrListDTO dto = new AccRstrListDTO();
      dto.setId(entity.getId());
-     dto.setAccRstr(entity.getAccRstr());
+     dto.setAccRstr(entity.getAccRstrEntity().getName());
      dto.setAccRstrDate(entity.getAccRstrDate());
      if(entity.getSuccessorBIC() != null){
          dto.setSuccessorBIC(entity.getSuccessorBIC());

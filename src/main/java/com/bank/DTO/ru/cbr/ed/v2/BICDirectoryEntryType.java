@@ -60,8 +60,6 @@ public class BICDirectoryEntryType {
     @XmlAttribute(name = "ChangeType")
     protected ChangeType changeType;
 
-    @XmlTransient
-    protected BigInteger id;
     /**
      * Gets the value of the participantInfo property.
      * 
@@ -192,11 +190,4 @@ public class BICDirectoryEntryType {
         this.changeType = value;
     }
 
-    public BigInteger getId() {
-        return id;
-    }
-
-    public void setId(BigInteger id) {
-        this.id = id;
-    }
 }

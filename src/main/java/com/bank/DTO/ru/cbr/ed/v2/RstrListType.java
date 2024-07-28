@@ -44,16 +44,8 @@ public class RstrListType {
     protected RstrType rstr;
     @XmlAttribute(name = "RstrDate", required = true)
     protected XMLGregorianCalendar rstrDate;
-    @XmlTransient
-    protected BigInteger id;
 
-    public BigInteger getId() {
-        return id;
-    }
 
-    public void setId(BigInteger id) {
-        this.id = id;
-    }
 
     /**
      * Gets the value of the rstr property.

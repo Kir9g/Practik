@@ -33,5 +33,12 @@ public class SecurityUtilis implements CommandLineRunner {
         admin.setROLE(RoleEnum.ADMIN);
 
         userRepository.save(admin);
+
+        User chel = new User();
+        chel.setUsername("chel");
+        chel.setPassword(encoder.encode("12345"));
+        chel.setROLE(RoleEnum.ADMIN);
+
+        userRepository.save(chel);
     }
 }

@@ -68,16 +68,8 @@ public class AccountsType {
     protected XMLGregorianCalendar dateOut;
     @XmlAttribute(name = "AccountStatus")
     protected AccountStatusType accountStatus;
-    @XmlTransient
-    protected BigInteger id;
 
-    public BigInteger getId() {
-        return id;
-    }
 
-    public void setId(BigInteger id) {
-        this.id = id;
-    }
 
     /**
      * Gets the value of the accRstrList property.

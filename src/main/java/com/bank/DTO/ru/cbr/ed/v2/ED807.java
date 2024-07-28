@@ -57,7 +57,6 @@ public class ED807
     extends ESIDWithPartInfo
 {
     @XmlElement(name = "BICDirectoryEntry")
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     protected List<BICDirectoryEntryType> bicDirectoryEntry;
     @Schema(description = "Код причины формирования ЭСИС", example = "ACCH", maximum = "4")
     @XmlAttribute(name = "CreationReason", required = true)
@@ -77,9 +76,6 @@ public class ED807
     protected String filePath;
     @XmlTransient
     protected Date CreationDate;
-    @XmlTransient
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY, example = "1")
-    protected BigInteger id;
     /**
      * Gets the value of the bicDirectoryEntry property.
      * 
@@ -258,11 +254,4 @@ public class ED807
         CreationDate = creationDate;
     }
 
-    public BigInteger getId() {
-        return id;
-    }
-
-    public void setId(BigInteger id) {
-        this.id = id;
-    }
 }

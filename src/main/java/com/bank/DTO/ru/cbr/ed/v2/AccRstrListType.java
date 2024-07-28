@@ -47,16 +47,7 @@ public class AccRstrListType {
     protected XMLGregorianCalendar accRstrDate;
     @XmlAttribute(name = "SuccessorBIC")
     protected String successorBIC;
-    @XmlTransient
-    protected BigInteger id;
 
-    public BigInteger getId() {
-        return id;
-    }
-
-    public void setId(BigInteger id) {
-        this.id = id;
-    }
 
     /**
      * Gets the value of the accRstr property.

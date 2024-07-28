@@ -42,17 +42,6 @@ public class SWBICList {
     @XmlAttribute(name = "DefaultSWBIC", required = true)
     protected Boolean defaultSWBIC;
 
-    @XmlTransient
-    protected BigInteger id;
-
-    public BigInteger getId() {
-        return id;
-    }
-
-    public void setId(BigInteger id) {
-        this.id = id;
-    }
-
     /**
      * Gets the value of the swbic property.
      * 

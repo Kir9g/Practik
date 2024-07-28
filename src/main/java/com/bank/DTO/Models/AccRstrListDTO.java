@@ -10,7 +10,7 @@ import java.util.Date;
 @Schema(description = "DTO для сущности AccRstrListEntity")
 public class AccRstrListDTO {
 
-    @Schema(description = "Идентификатор ограничения", example = "1")
+    @Schema(description = "Идентификатор ограничения", example = "1",accessMode = Schema.AccessMode.READ_ONLY)
     private BigInteger id;
 
     @Schema(description = "Код ограничения операций по счету", required = true, example = "1234")

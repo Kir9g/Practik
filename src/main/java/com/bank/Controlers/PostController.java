@@ -183,7 +183,7 @@ public class PostController {
             description = "Позволяет создавать PartInfo для ed807, id которого передается в данный метод, создается без связанных сущностей"
     )
     public ResponseEntity<ED807DTO> createPartInfo(@Parameter(description = "Идентификатор ED807")@PathVariable(value = "id") BigInteger id,
-                                                @Parameter(description = "Поля для создания")@RequestBody PartInfo partInfo){
+                                                @Parameter(description = "Поля для создания")@RequestBody PartInfoDTO partInfo){
         Optional<ED807Entity> entity = ed807EntityRepository.findById(id);
         if(entity.isPresent()){
             PartInfoEntity partInfoEntity = partInfoSerivce.createPart(entity.get(),partInfo);
@@ -231,7 +231,7 @@ public class PostController {
             description = "Позволяет создавать SWBIC для BIC, id которого передается в данный метод, создается без связанных сущностей"
     )
     public ResponseEntity<SWBICSDTO> createSWBIC(@Parameter(description = "Идентификатор BIC")@PathVariable(value = "id") BigInteger id,
-                                                 @Parameter(description = "Поля для создания")@RequestBody SWBICList swbicList){
+                                                 @Parameter(description = "Поля для создания")@RequestBody SWBICSDTO swbicList){
         Optional<BICDirectoryEntry> entity = bicDirectoryEntity.findById(id);//id от BIC
         if(entity.isPresent()){
             SWBICSEntity swbicsEntity = swbicsService.createSwbic(entity.get(),swbicList);

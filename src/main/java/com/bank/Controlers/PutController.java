@@ -52,7 +52,7 @@ public class PutController {
             description = "Позволяет обновлять ed807 по id который передается, и по полям который передал пользователь"
     )
     public ResponseEntity<ED807DTO> updateED807(@Parameter(description = "Идентификатор ED807, который надо обновить")@PathVariable(value = "id") BigInteger id,
-                                             @Parameter(description = "Поля которые надо обновить")@RequestBody ED807 ed807) {
+                                             @Parameter(description = "Поля которые надо обновить")@RequestBody ED807DTO ed807) {
         ED807DTO ed807Entity = ed807Service.updateED807(id, ed807);
 
         return ResponseEntity.ok(ed807Entity);
@@ -140,7 +140,7 @@ public class PutController {
             description = "Позволяет обновлять PartInfo по id у ED807 который передается, и по полям который передал пользователь"
     )
     public ResponseEntity<ED807DTO> updatePartInfo(@Parameter(description = "Идентификатор Ed807, который надо обновить")@PathVariable(value = "id") BigInteger id,
-                                                @Parameter(description = "Поля которые надо обновить")@RequestBody PartInfo partInfo){
+                                                @Parameter(description = "Поля которые надо обновить")@RequestBody PartInfoDTO partInfo){
         Optional<ED807Entity> entity = ed807EntityRepository.findById(id);
         if(entity.get()!= null) {
             if (entity.get().getPartInfoEntity()!= null) {
@@ -163,7 +163,7 @@ public class PutController {
             description = "Позволяет обновлять SWBIC по id который передается, и по полям который передал пользователь"
     )
     public ResponseEntity<SWBICSDTO> partialUpdateSWBIC(@Parameter(description = "Идентификатор SWBIC, который надо обновить")@PathVariable BigInteger id,
-                                                        @Parameter(description = "Поля которые надо обновить")@RequestBody SWBICList updateDTO) {
+                                                        @Parameter(description = "Поля которые надо обновить")@RequestBody SWBICSDTO updateDTO) {
         SWBICSEntity updatedEntity = swbicsService.updateSwbic(id,updateDTO);
         if (updatedEntity != null) {
             SWBICSDTO swbicList = ed807Service.convertToDTO(updatedEntity);

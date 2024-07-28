@@ -15,7 +15,7 @@ import java.util.Set;
 @Schema(description = "DTO для сущности Accounts")
 public class AccountsDTO {
 
-    @Schema(description = "Идентификатор аккаунта", example = "1")
+    @Schema(description = "Идентификатор аккаунта", example = "1",accessMode = Schema.AccessMode.READ_ONLY)
     private BigInteger id;
 
     @Schema(description = "Номер счета", required = true, example = "12345678901234567890")

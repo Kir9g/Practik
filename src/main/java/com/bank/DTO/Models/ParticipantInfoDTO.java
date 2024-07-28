@@ -2,55 +2,61 @@ package com.bank.DTO.Models;
 
 import com.bank.DB.BICDirectoryEntry;
 import com.bank.DB.RstrListEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.persistence.*;
 
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.Set;
-
+@Schema(description = "DTO для ParticipantInfo")
 public class ParticipantInfoDTO {
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY,example = "1",description = "Уникальный идентификатор")
     private BigInteger id;
 
-
+    @Schema(example = "ООО Ромашка", description = "Наименование участника")
     private String NameP;
 
-
+    @Schema(example = "Romashka LLC", description = "Наименование участника на английском языке")
     private String EnglName;
 
-
+    @Schema(example = "123456789", description = "Регистрационный порядковый номер")
     private String RegN;
 
-
+    @Schema(example = "RU", description = "Код страны")
     private String CntrCd;
 
-
+    @Schema(example = "77", description = "Код территории")
     private String Rgn;
-
+    @Schema(example = "123456", description = "Индекс")
     private String ind;
-
+    @Schema(example = "г", description = "Тип населенного пункта")
     private String Tnp;
-
+    @Schema(example = "Москва", description = "Наименование населенного пункта")
     private String Nnp;
-
+    @Schema(example = "ул. Пушкина, д. 1", description = "Адрес")
     private String Adr;
-
+    @Schema(example = "044525225", description = "БИК головной организации")
     private String PrntBIC;
-
+    @Schema(example = "2023-01-01", description = "Дата включения в состав участников перевода")
     private Date DateIn;
-
+    @Schema(example = "2024-01-01", description = "Дата исключения информации об участнике")
     private Date DateOut;
-
+    @Schema(example = "01", description = "Тип участника перевода")
     private String PtType;
-
+    @Schema(example = "1", description = "Доступные сервисы перевода денежных средств")
     private Integer Srvcs;
-
+    @Schema(example = "1", description = "Участник обмена")
     private Integer XchType;
 
+    @Schema(example = "1234567890", description = "УИС")
     private String UID;
-
+    @Schema(example = "ACTV", description = "Статус участника")
     private String ParticipantStatus;
 
+    @Schema(description = "Список ограничений",accessMode = Schema.AccessMode.READ_ONLY)
     private Set<RstrListDTO> rstrListEntity;
 
     public BigInteger getId() {

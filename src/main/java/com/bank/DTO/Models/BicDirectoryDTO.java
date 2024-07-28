@@ -11,7 +11,7 @@ import java.util.Set;
 @Schema(description = "DTO для представления информации о записи в справочнике BIC")
 public class BicDirectoryDTO {
 
-    @Schema(description = "Идентификатор записи", example = "1")
+    @Schema(description = "Идентификатор записи", example = "1",accessMode = Schema.AccessMode.READ_ONLY)
     private BigInteger id;
 
     @Schema(description = "БИК", example = "123456789")
@@ -20,13 +20,13 @@ public class BicDirectoryDTO {
     @Schema(description = "Тип изменения", example = "ADD")
     private String changeType;
 
-    @Schema(description = "Информация об участнике")
+    @Schema(description = "Информация об участнике",accessMode = Schema.AccessMode.READ_ONLY)
     private ParticipantInfoDTO participantInfo;
 
-    @Schema(description = "Список счетов")
+    @Schema(description = "Список счетов",accessMode = Schema.AccessMode.READ_ONLY)
     private Set<AccountsDTO> accounts = new HashSet<>();
 
-    @Schema(description = "Список SWBIC")
+    @Schema(description = "Список SWBIC",accessMode = Schema.AccessMode.READ_ONLY)
     private Set<SWBICSDTO> swbics = new HashSet<>();
 
 

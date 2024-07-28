@@ -4,6 +4,7 @@ import com.bank.DB.ED807Entity;
 import com.bank.DB.InitialED;
 import com.bank.DB.PartInfoEntity;
 import com.bank.DTO.Models.ED807DTO;
+import com.bank.DTO.Models.PartInfoDTO;
 import com.bank.DTO.ru.cbr.ed.v2.InitialEDInfo;
 import com.bank.DTO.ru.cbr.ed.v2.PartInfo;
 import com.bank.Repository.ED807EntityRepository;
@@ -21,7 +22,7 @@ public class PartInfoSerivce {
     private PartInfoRepository partInfoRepository;
     @Autowired
     private ED807EntityRepository ed807EntityRepository;
-    public ED807Entity updatePartInfo(ED807Entity ed807, PartInfo partInfo){
+    public ED807Entity updatePartInfo(ED807Entity ed807, PartInfoDTO partInfo){
         PartInfoEntity partInfoEntity = ed807.getPartInfoEntity();
         if(partInfoEntity!=null){
             if(partInfo.getPartQuantity()!=null) {
@@ -40,7 +41,7 @@ public class PartInfoSerivce {
         }
     }
     @Transactional
-    public PartInfoEntity createPart(ED807Entity ed807Entity, PartInfo partInfo){
+    public PartInfoEntity createPart(ED807Entity ed807Entity, PartInfoDTO partInfo){
         PartInfoEntity partInfoEntity = new PartInfoEntity();
         partInfoEntity.setEd807Entity(ed807Entity);
         partInfoEntity.setPartNo(partInfo.getPartNo());

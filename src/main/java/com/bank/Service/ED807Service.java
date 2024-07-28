@@ -413,7 +413,7 @@ public class ED807Service {
         return true;
     }
     @Transactional
-    public ED807DTO updateED807(BigInteger id, ED807 ed807) {
+    public ED807DTO updateED807(BigInteger id, ED807DTO ed807) {
         Optional<ED807Entity> ed807EntityOptional = ed807EntityRepository.findById(id);
         if (!ed807EntityOptional.isPresent()) {
             throw new RuntimeException("ED807 entity not found with id " + id);
@@ -421,17 +421,17 @@ public class ED807Service {
 
         ED807Entity ed807Entity = ed807EntityOptional.get();
 
-        if (ed807.getEDNo() != null) {
-            ed807Entity.setEdno(ed807.getEDNo());
+        if (ed807.getEdno() != null) {
+            ed807Entity.setEdno(ed807.getEdno());
         }
         if (ed807.getEDDate() != null) {
-            ed807Entity.setEDDate(ed807.getEDDate().toGregorianCalendar().getTime());
+            ed807Entity.setEDDate(ed807.getEDDate());
         }
         if (ed807.getEDAuthor() != null) {
             ed807Entity.setEDAuthor(ed807.getEDAuthor());
         }
         if (ed807.getEDReceiver() != null) {
-            ed807Entity.setEDReceiver(BigInteger.valueOf(Long.parseLong(ed807.getEDReceiver())));
+            ed807Entity.setEDReceiver(ed807.getEDReceiver());
         }
 
         ed807EntityRepository.save(ed807Entity);

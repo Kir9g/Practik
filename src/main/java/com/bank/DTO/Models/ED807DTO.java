@@ -4,55 +4,66 @@ import com.bank.DB.BICDirectoryEntry;
 import com.bank.DB.InitialED;
 import com.bank.DB.PartInfoEntity;
 import com.bank.DTO.ru.cbr.ed.v2.PartInfo;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
+@Schema(description = "DTO для представления информации о записи в справочнике ED807")
 public class ED807DTO {
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Уникальный идентификатор ED807")
     private BigInteger Id;
 
-
+    @Schema(description = "Название ED807 в системе")
     private String name;
 
-
+    @Schema(description = "Путь к файлу")
     private String filePath;
 
+    @Schema(description = "Время когда файл был загуржен в систему",example = "2023-01-01")
     @Temporal(TemporalType.DATE)
     private Date CreationDate;
 
-
+    @Schema(description = "Номер ЭС в течение опердня.")
+    @Size()
     private BigInteger Edno;
 
-
+    @Schema(description = "Дата составления ЭС", example = "2023-01-01")
     private Date EDDate;
 
-
+    @Schema(description = "Уникальный идентификатор составителя ЭС", example = "1234567890")
     private String EDAuthor;
-
+    @Schema(description = "Уникальный идентификатор получателя ЭС", example = "1234567890")
     private BigInteger EDReceiver;
 
-
+    @Schema(description = "Код причины формирования ЭС", example = "RQST")
+    @Size(min = 4,max = 4)
     private String CreationReason;
 
     @Temporal(TemporalType.DATE)
+    @Schema(description = "Дата и время создания ЭС.",example = "2023-01-01" )
     private Date CreationDateTime;
 
-
+    @Schema(description = "Вид представления информации.", example = "FIRR")
+    @Size(max = 4,min = 4)
     private String InfoTypeCode;
 
     @Temporal(TemporalType.DATE)
+    @Schema(description = "Дата ОД, к которой относятся данные Справочника БИК.", example = "2023-01-01")
     private Date BusinessDay;
-
+    @Schema(description = "Номер версии Справочника БИК в течение операционного дня.", example = "1")
+    @Size(max = 99,min = 1)
     private BigInteger DirectoryVersion;
 
-
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private PartInfoDTO partInfoDTO;
-
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private InitialEDDTO initialEDDTO;
-
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Set<BicDirectoryDTO> bicDirectoryDTOS = new HashSet<>();
 
     @Override

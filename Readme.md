@@ -15,7 +15,7 @@
 В проекте использовались:
 Spring Boot ,Spring Web, SWAGGER, Spring Security, H2-database;
 ## Запуск проекта
-Если запускать через IDEA топ запустите класс [Application.java](main%2Fjava%2Fcom%2Fbank%2FApplication.java)
+Если запускать через IDEA то запустите класс [Application.java](main%2Fjava%2Fcom%2Fbank%2FApplication.java)
 
 
 ## Команда для запуска:

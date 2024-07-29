@@ -14,7 +14,7 @@ public class RstrListDTO {
     private BigInteger id;
 
     @Schema(description = "Код ограничения, наложенного на участника.", example = "URRS")
-    private String Rstr;
+    private String rstr;
 
     @Temporal(TemporalType.DATE)
     @Schema(description = "Дата начала действия ограничения участника.", example = "2023-01-01")
@@ -29,11 +29,11 @@ public class RstrListDTO {
     }
 
     public String getRstr() {
-        return Rstr;
+        return rstr;
     }
 
     public void setRstr(String rstr) {
-        Rstr = rstr;
+        this.rstr = rstr;
     }
 
     public Date getRstrDate() {
@@ -48,7 +48,7 @@ public class RstrListDTO {
     public String toString() {
         return "RstrListDTO{" +
                 "id=" + id +
-                ", Rstr='" + Rstr + '\'' +
+                ", Rstr='" + rstr + '\'' +
                 ", RstrDate=" + RstrDate +
                 '}';
     }

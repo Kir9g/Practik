@@ -38,7 +38,7 @@ public class InitialEDService {
         return initialEDRepository.save(updateInitial);
     }
     @Transactional
-    public InitialED createInitial(ED807Entity ed807, InitialEDInfo initialEDInfo){
+    public InitialED createInitial(ED807Entity ed807, InitialEDDTO initialEDInfo){
         InitialED initialED = new InitialED();
         initialED.setEd807Entity(ed807);
         initialED.setEDAuthor(ed807.getInitialED().getEDAuthor());

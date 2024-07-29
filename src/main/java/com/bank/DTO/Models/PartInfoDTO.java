@@ -10,13 +10,13 @@ public class PartInfoDTO {
     @Schema(description = "ID", example = "1",accessMode = Schema.AccessMode.READ_ONLY)
     private BigInteger id;
     @Schema(description = "Уникальный идентификатор совокупности частей", example = "123456789012345678901234567")
-    private String PartAggregateID;
+    private String partAggregateID;
     @Schema(description = "Номер части",example = "123456")
     @Size(max = 999999)
-    private BigInteger PartNo;
+    private BigInteger partNo;
     @Schema(description = "Количество частей", example = "123456")
     @Size(max = 999999)
-    private BigInteger PartQuantity;
+    private BigInteger partQuantity;
 
 
 
@@ -31,36 +31,36 @@ public class PartInfoDTO {
     }
 
     public String getPartAggregateID() {
-        return PartAggregateID;
+        return partAggregateID;
     }
 
     public void setPartAggregateID(String partAggregateID) {
-        PartAggregateID = partAggregateID;
+        this.partAggregateID = partAggregateID;
     }
 
     public BigInteger getPartNo() {
-        return PartNo;
+        return partNo;
     }
 
     public void setPartNo(BigInteger partNo) {
-        PartNo = partNo;
+        this.partNo = partNo;
     }
 
     public BigInteger getPartQuantity() {
-        return PartQuantity;
+        return partQuantity;
     }
 
     public void setPartQuantity(BigInteger partQuantity) {
-        PartQuantity = partQuantity;
+        this.partQuantity = partQuantity;
     }
 
     @Override
     public String toString() {
         return "PartInfoDTO{" +
                 "id=" + id +
-                ", PartAggregateID='" + PartAggregateID + '\'' +
-                ", PartNo=" + PartNo +
-                ", PartQuantity=" + PartQuantity +
+                ", PartAggregateID='" + partAggregateID + '\'' +
+                ", PartNo=" + partNo +
+                ", PartQuantity=" + partQuantity +
                 '}';
     }
 }

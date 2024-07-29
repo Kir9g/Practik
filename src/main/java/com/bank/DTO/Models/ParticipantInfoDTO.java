@@ -17,44 +17,44 @@ public class ParticipantInfoDTO {
     private BigInteger id;
 
     @Schema(example = "ООО Ромашка", description = "Наименование участника")
-    private String NameP;
+    private String nameP;
 
     @Schema(example = "Romashka LLC", description = "Наименование участника на английском языке")
-    private String EnglName;
+    private String englName;
 
     @Schema(example = "123456789", description = "Регистрационный порядковый номер")
-    private String RegN;
+    private String regN;
 
     @Schema(example = "RU", description = "Код страны")
-    private String CntrCd;
+    private String cntrCd;
 
     @Schema(example = "77", description = "Код территории")
-    private String Rgn;
+    private String rgn;
     @Schema(example = "123456", description = "Индекс")
     private String ind;
     @Schema(example = "г", description = "Тип населенного пункта")
-    private String Tnp;
+    private String tnp;
     @Schema(example = "Москва", description = "Наименование населенного пункта")
-    private String Nnp;
+    private String nnp;
     @Schema(example = "ул. Пушкина, д. 1", description = "Адрес")
-    private String Adr;
+    private String adr;
     @Schema(example = "044525225", description = "БИК головной организации")
-    private String PrntBIC;
+    private String prntBIC;
     @Schema(example = "2023-01-01", description = "Дата включения в состав участников перевода")
     private Date DateIn;
     @Schema(example = "2024-01-01", description = "Дата исключения информации об участнике")
     private Date DateOut;
     @Schema(example = "01", description = "Тип участника перевода")
-    private String PtType;
+    private String ptType;
     @Schema(example = "1", description = "Доступные сервисы перевода денежных средств")
-    private Integer Srvcs;
+    private Integer srvcs;
     @Schema(example = "1", description = "Участник обмена")
-    private Integer XchType;
+    private Integer xchType;
 
     @Schema(example = "1234567890", description = "УИС")
-    private String UID;
+    private String uid;
     @Schema(example = "ACTV", description = "Статус участника")
-    private String ParticipantStatus;
+    private String participantStatus;
 
     @Schema(description = "Список ограничений",accessMode = Schema.AccessMode.READ_ONLY)
     private Set<RstrListDTO> rstrListEntity;
@@ -68,43 +68,43 @@ public class ParticipantInfoDTO {
     }
 
     public String getNameP() {
-        return NameP;
+        return nameP;
     }
 
     public void setNameP(String nameP) {
-        NameP = nameP;
+        this.nameP = nameP;
     }
 
     public String getEnglName() {
-        return EnglName;
+        return englName;
     }
 
     public void setEnglName(String englName) {
-        EnglName = englName;
+        this.englName = englName;
     }
 
     public String getRegN() {
-        return RegN;
+        return regN;
     }
 
     public void setRegN(String regN) {
-        RegN = regN;
+        this.regN = regN;
     }
 
     public String getCntrCd() {
-        return CntrCd;
+        return cntrCd;
     }
 
     public void setCntrCd(String cntrCd) {
-        CntrCd = cntrCd;
+        this.cntrCd = cntrCd;
     }
 
     public String getRgn() {
-        return Rgn;
+        return rgn;
     }
 
     public void setRgn(String rgn) {
-        Rgn = rgn;
+        this.rgn = rgn;
     }
 
     public String getInd() {
@@ -116,35 +116,35 @@ public class ParticipantInfoDTO {
     }
 
     public String getTnp() {
-        return Tnp;
+        return tnp;
     }
 
     public void setTnp(String tnp) {
-        Tnp = tnp;
+        this.tnp = tnp;
     }
 
     public String getNnp() {
-        return Nnp;
+        return nnp;
     }
 
     public void setNnp(String nnp) {
-        Nnp = nnp;
+        this.nnp = nnp;
     }
 
     public String getAdr() {
-        return Adr;
+        return adr;
     }
 
     public void setAdr(String adr) {
-        Adr = adr;
+        this.adr = adr;
     }
 
     public String getPrntBIC() {
-        return PrntBIC;
+        return prntBIC;
     }
 
     public void setPrntBIC(String prntBIC) {
-        PrntBIC = prntBIC;
+        this.prntBIC = prntBIC;
     }
 
     public Date getDateIn() {
@@ -164,43 +164,43 @@ public class ParticipantInfoDTO {
     }
 
     public String getPtType() {
-        return PtType;
+        return ptType;
     }
 
     public void setPtType(String ptType) {
-        PtType = ptType;
+        this.ptType = ptType;
     }
 
     public Integer getSrvcs() {
-        return Srvcs;
+        return srvcs;
     }
 
     public void setSrvcs(Integer srvcs) {
-        Srvcs = srvcs;
+        this.srvcs = srvcs;
     }
 
     public Integer getXchType() {
-        return XchType;
+        return xchType;
     }
 
     public void setXchType(Integer xchType) {
-        XchType = xchType;
+        this.xchType = xchType;
     }
 
-    public String getUID() {
-        return UID;
+    public String getUid() {
+        return uid;
     }
 
-    public void setUID(String UID) {
-        this.UID = UID;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getParticipantStatus() {
-        return ParticipantStatus;
+        return participantStatus;
     }
 
     public void setParticipantStatus(String participantStatus) {
-        ParticipantStatus = participantStatus;
+        this.participantStatus = participantStatus;
     }
 
     public Set<RstrListDTO> getRstrListEntity() {
@@ -209,30 +209,5 @@ public class ParticipantInfoDTO {
 
     public void setRstrListEntity(Set<RstrListDTO> rstrListEntity) {
         this.rstrListEntity = rstrListEntity;
-    }
-
-    @Override
-    public String toString() {
-        return "ParticipantInfoDTO{" +
-                "id=" + id +
-                ", NameP='" + NameP + '\'' +
-                ", EnglName='" + EnglName + '\'' +
-                ", RegN='" + RegN + '\'' +
-                ", CntrCd='" + CntrCd + '\'' +
-                ", Rgn='" + Rgn + '\'' +
-                ", ind='" + ind + '\'' +
-                ", Tnp='" + Tnp + '\'' +
-                ", Nnp='" + Nnp + '\'' +
-                ", Adr='" + Adr + '\'' +
-                ", PrntBIC='" + PrntBIC + '\'' +
-                ", DateIn=" + DateIn +
-                ", DateOut=" + DateOut +
-                ", PtType='" + PtType + '\'' +
-                ", Srvcs=" + Srvcs +
-                ", XchType=" + XchType +
-                ", UID='" + UID + '\'' +
-                ", ParticipantStatus='" + ParticipantStatus + '\'' +
-                ", rstrListEntity=" + rstrListEntity +
-                '}';
     }
 }

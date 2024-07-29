@@ -622,7 +622,7 @@ public class ED807Service {
         dto.setPtType(participantInfoEntity.getPtTypeEntity().getName());
         dto.setSrvcs(participantInfoEntity.getSrvcsEntity().getName());
         dto.setXchType(Integer.valueOf(participantInfoEntity.getXchTypeEntity().getName()));
-        dto.setUID(participantInfoEntity.getUID());
+        dto.setUid(participantInfoEntity.getUID());
         dto.setParticipantStatus(participantInfoEntity.getParticipantStatus().getName());
 
         // Преобразование rstrListEntity в rstrListType

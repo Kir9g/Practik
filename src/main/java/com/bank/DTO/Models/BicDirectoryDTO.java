@@ -15,7 +15,7 @@ public class BicDirectoryDTO {
     private BigInteger id;
 
     @Schema(description = "БИК", example = "123456789")
-    private String BIC;
+    private String bic;
 
     @Schema(description = "Тип изменения", example = "ADD")
     private String changeType;
@@ -41,11 +41,11 @@ public class BicDirectoryDTO {
     }
 
     public String getBIC() {
-        return BIC;
+        return bic;
     }
 
     public void setBIC(String BIC) {
-        this.BIC = BIC;
+        this.bic = BIC;
     }
 
     public String getChangeType() {
@@ -84,7 +84,7 @@ public class BicDirectoryDTO {
     public String toString() {
         return "BicDirectoryDTO{" +
                 "id=" + id +
-                ", BIC='" + BIC + '\'' +
+                ", BIC='" + bic + '\'' +
                 ", changeType='" + changeType + '\'' +
                 ", participantInfo=" + participantInfo +
                 ", accounts=" + accounts +

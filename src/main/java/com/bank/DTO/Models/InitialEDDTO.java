@@ -10,57 +10,57 @@ import java.util.Date;
 public class InitialEDDTO {
 
     @Schema(description = "ID", example = "1",accessMode = Schema.AccessMode.READ_ONLY)
-    private BigInteger ID;
+    private BigInteger id;
 
     @Schema(description = "Номер ЭС в течение опердня.",example = "14313")
     @Size(max = 999999999,min = 0)
-    private BigInteger EDNo;
+    private BigInteger edno;
 
     @Schema(description = "Дата составления ЭС.", example = "2024-01-01")
-    private Date EDDate;
+    private Date eddate;
 
     @Schema(description = "Уникальный идентификатор составителя ЭС - УИС., Цифровой, 10 знаков.",example = "4583001999")
-    private String EDAuthor;
+    private String edauthor;
 
     @Override
     public String toString() {
         return "InitialEDDTO{" +
-                "ID=" + ID +
-                ", EDNo=" + EDNo +
-                ", EDDate=" + EDDate +
-                ", EDAuthor='" + EDAuthor + '\'' +
+                "ID=" + id +
+                ", eDNo=" + edno +
+                ", eDDate=" + eddate +
+                ", eDAuthor='" + edauthor + '\'' +
                 '}';
     }
 
     public BigInteger getID() {
-        return ID;
+        return id;
     }
 
     public void setID(BigInteger ID) {
-        this.ID = ID;
+        this.id = ID;
     }
 
     public BigInteger getEDNo() {
-        return EDNo;
+        return edno;
     }
 
     public void setEDNo(BigInteger EDNo) {
-        this.EDNo = EDNo;
+        this.edno = EDNo;
     }
 
     public Date getEDDate() {
-        return EDDate;
+        return eddate;
     }
 
     public void setEDDate(Date EDDate) {
-        this.EDDate = EDDate;
+        this.eddate = EDDate;
     }
 
     public String getEDAuthor() {
-        return EDAuthor;
+        return edauthor;
     }
 
     public void setEDAuthor(String EDAuthor) {
-        this.EDAuthor = EDAuthor;
+        this.edauthor = EDAuthor;
     }
 }

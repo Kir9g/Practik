@@ -167,10 +167,10 @@ public class PostController {
             description = "Позволяет создавать InitialED для ed807, id которого передается в данный метод, создается без связанных сущностей"
     )
     public ResponseEntity<ED807DTO> createInitial(@Parameter(description = "Идентификатор ed807")@PathVariable(value = "id") BigInteger id,
-                                                  @Parameter(description = "Поля для создания")@RequestBody InitialEDInfo initialEDInfo){
+                                                  @Parameter(description = "Поля для создания")@RequestBody InitialEDDTO initialEDDTO){
         Optional<ED807Entity> entity = ed807EntityRepository.findById(id);//id от BIC
         if(entity.isPresent()){
-            InitialED accounts = initialEDService.createInitial(entity.get(),initialEDInfo);
+            InitialED accounts = initialEDService.createInitial(entity.get(),initialEDDTO);
             ED807DTO ed807 = ed807Service.convertToDTO(entity.get());
             return ResponseEntity.ok(ed807);
         }else {

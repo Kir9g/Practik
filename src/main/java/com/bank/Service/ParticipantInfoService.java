@@ -78,8 +78,8 @@ public class ParticipantInfoService {
             if (updatedParticipantInfo.getXchType() != null) {
                 existingParticipantInfo.setXchTypeEntity(xchTypeRepository.findByName(updatedParticipantInfo.getXchType()));
             }
-            if (updatedParticipantInfo.getUID() != null) {
-                existingParticipantInfo.setUID(updatedParticipantInfo.getUID());
+            if (updatedParticipantInfo.getUid() != null) {
+                existingParticipantInfo.setUID(updatedParticipantInfo.getUid());
             }
             if (updatedParticipantInfo.getParticipantStatus() != null) {
                 existingParticipantInfo.setParticipantStatus(participantStatusRepository.findByName(updatedParticipantInfo.getParticipantStatus()));
@@ -152,8 +152,8 @@ public class ParticipantInfoService {
         participantInfoEntity.setPtTypeEntity(ptTypeRepository.findByName(participantInfoType.getPtType()));
         participantInfoEntity.setSrvcsEntity(srvcsRepository.findByName(participantInfoType.getSrvcs()));
         participantInfoEntity.setXchTypeEntity(xchTypeRepository.findByName(participantInfoType.getXchType()));
-        if (participantInfoType.getUID() != null) {
-            participantInfoEntity.setUID(participantInfoType.getUID());
+        if (participantInfoType.getUid() != null) {
+            participantInfoEntity.setUID(participantInfoType.getUid());
         } else {
             participantInfoEntity.setUID(null);
         }
